@@ -1,0 +1,10 @@
+C:\VSProjects\System.Linq.Dynamic\System.Linq.Dynamic\bin\Debug\System.Linq.Dynamic.dll
+C:\VSProjects\System.Linq.Dynamic\System.Linq.Dynamic\bin\Debug\System.Linq.Dynamic.pdb
+C:\VSProjects\System.Linq.Dynamic\System.Linq.Dynamic\obj\Debug\ResolveAssemblyReference.cache
+C:\VSProjects\System.Linq.Dynamic\System.Linq.Dynamic\obj\Debug\System.Linq.Dynamic.dll
+C:\VSProjects\System.Linq.Dynamic\System.Linq.Dynamic\obj\Debug\System.Linq.Dynamic.pdb
+C:\VSProjects\System.Linq.Dynamic\Src\System.Linq.Dynamic\bin\Debug\System.Linq.Dynamic.dll
+C:\VSProjects\System.Linq.Dynamic\Src\System.Linq.Dynamic\bin\Debug\System.Linq.Dynamic.pdb
+C:\VSProjects\System.Linq.Dynamic\Src\System.Linq.Dynamic\obj\Debug\ResolveAssemblyReference.cache
+C:\VSProjects\System.Linq.Dynamic\Src\System.Linq.Dynamic\obj\Debug\System.Linq.Dynamic.dll
+C:\VSProjects\System.Linq.Dynamic\Src\System.Linq.Dynamic\obj\Debug\System.Linq.Dynamic.pdb
