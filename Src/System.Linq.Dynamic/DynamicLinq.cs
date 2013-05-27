@@ -613,7 +613,8 @@ namespace System.Linq.Dynamic
             typeof(TimeSpan),
             typeof(Guid),
             typeof(Math),
-            typeof(Convert)
+            typeof(Convert),
+			typeof(System.Data.Objects.EntityFunctions)
         };
 
         static readonly Expression trueLiteral = Expression.Constant(true);
