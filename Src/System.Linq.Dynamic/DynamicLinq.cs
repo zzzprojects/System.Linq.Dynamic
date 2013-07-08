@@ -513,9 +513,11 @@ namespace System.Linq.Dynamic
             void F(string x, string y);
             void F(char x, char y);
             void F(DateTime x, DateTime y);
+            void F(DateTimeOffset x, DateTimeOffset y);
             void F(TimeSpan x, TimeSpan y);
             void F(char? x, char? y);
             void F(DateTime? x, DateTime? y);
+            void F(DateTimeOffset? x, DateTimeOffset? y);
             void F(TimeSpan? x, TimeSpan? y);
         }
 
@@ -610,6 +612,7 @@ namespace System.Linq.Dynamic
             typeof(Double),
             typeof(Decimal),
             typeof(DateTime),
+            typeof(DateTimeOffset),
             typeof(TimeSpan),
             typeof(Guid),
             typeof(Math),
