@@ -1,14 +1,18 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-  <metadata>
-    <id>System.Linq.Dynamic</id>
-    <version>1.0.0</version>
-    <authors>Microsoft</authors>
-    <owners>Microsoft</owners>
-    <licenseUrl>http://www.opensource.org/licenses/ms-pl</licenseUrl>
-    <projectUrl>https://github.com/kahanu/System.Linq.Dynamic</projectUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>This is the Microsoft assembly for the .Net 4.0 Dynamic language functionality.</description>
-    <tags>system linq dynamic</tags>
-  </metadata>
+    <metadata>
+        <id>System.Linq.Dynamic.Library</id>
+        <version>1.1.0</version>
+        <title>Dynamic Linq Library</title>
+        <authors>Nathan Arnott,Microsoft</authors>
+        <owners>Nathan Arnott</owners>
+        <licenseUrl>http://www.opensource.org/licenses/ms-pl</licenseUrl>
+        <projectUrl>https://github.com/NArnott/System.Linq.Dynamic</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>This is the Microsoft assembly for the .Net 4.0 Dynamic language functionality.  Allows various calls to be made using strings expressions instead of lambda expressions.</description>
+        <tags>system linq dynamic</tags>
+    </metadata>
+    <files>
+        <file src="..\Src\System.Linq.Dynamic\bin\Release\System.Linq.Dynamic.dll" target="lib\net40\System.Linq.Dynamic.dll" />
+    </files>
 </package>
