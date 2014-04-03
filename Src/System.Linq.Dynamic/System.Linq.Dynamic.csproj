@@ -47,8 +47,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DynamicLinq.cs" />
+    <Compile Include="ClassFactory.cs" />
+    <Compile Include="DynamicClass.cs" />
+    <Compile Include="DynamicExpression.cs" />
+    <Compile Include="DynamicQueryable.cs" />
+    <Compile Include="DynamicOrdering.cs" />
+    <Compile Include="DynamicProperty.cs" />
+    <Compile Include="ExpressionParser.cs" />
+    <Compile Include="ParseException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Res.cs" />
+    <Compile Include="Signature.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\key.snk" />
