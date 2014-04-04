@@ -7,7 +7,7 @@ using System.Text;
 namespace System.Linq.Dynamic
 {
 
-    public static class DynamicExpression
+    internal static class DynamicExpression
     {
         public static Expression Parse(Type resultType, string expression, params object[] values)
         {

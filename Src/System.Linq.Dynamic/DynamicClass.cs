@@ -6,8 +6,18 @@ using System.Text;
 
 namespace System.Linq.Dynamic
 {
+    /// <summary>
+    /// Provides a base class for dynamic objects created by using the <see cref="DynamicQueryable.Select(IQueryable,string,object[])"/> 
+    /// method. For internal use only.
+    /// </summary>
     public abstract class DynamicClass
     {
+        internal DynamicClass() { }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
             PropertyInfo[] props = this.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace System.Linq.Dynamic
 {
-    public class DynamicProperty
+    internal class DynamicProperty
     {
         string name;
         Type type;

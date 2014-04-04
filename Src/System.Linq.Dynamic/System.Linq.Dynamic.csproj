@@ -58,6 +58,7 @@
     <Compile Include="ExpressionParser.cs" />
     <Compile Include="ParseException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="BasicQueryable.cs" />
     <Compile Include="Res.cs" />
     <Compile Include="Signature.cs" />
   </ItemGroup>
