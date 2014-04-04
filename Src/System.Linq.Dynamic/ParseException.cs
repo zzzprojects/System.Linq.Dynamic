@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace System.Linq.Dynamic
@@ -9,6 +10,7 @@ namespace System.Linq.Dynamic
     /// <summary>
     /// Represents errors that occur while parsing dynamic linq string expressions.
     /// </summary>
+    [Serializable]
     public sealed class ParseException : Exception
     {
         int _position;
@@ -40,5 +42,22 @@ namespace System.Linq.Dynamic
         {
             return string.Format(Res.ParseExceptionFormat, Message, _position);
         }
+
+        ParseException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+            _position = (int)info.GetValue("position", typeof(int));
+        }
+
+        /// <summary>
+        /// Supports Serialization
+        /// </summary>
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+
+            info.AddValue("position", _position);
+        }
+
     }
 }
