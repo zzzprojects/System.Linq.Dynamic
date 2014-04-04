@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentValidation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,12 +29,18 @@ namespace System.Linq.Dynamic
 
         public override bool Equals(object obj)
         {
-            return obj is Signature ? Equals((Signature)obj) : false;
+            var other = obj as Signature;
+
+            if (other != null) return Equals(other);
+
+            return false;
         }
 
         public bool Equals(Signature other)
         {
+            if (other == null) return false;
             if (properties.Length != other.properties.Length) return false;
+
             for (int i = 0; i < properties.Length; i++)
             {
                 if (properties[i].Name != other.properties[i].Name ||

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -10,6 +12,7 @@ namespace System.Linq.Dynamic
     /// <summary>
     /// Represents errors that occur while parsing dynamic linq string expressions.
     /// </summary>
+    [SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors")]
     [Serializable]
     public sealed class ParseException : Exception
     {
@@ -40,7 +43,7 @@ namespace System.Linq.Dynamic
         /// <returns>A string representation of the current exception.</returns>
         public override string ToString()
         {
-            return string.Format(Res.ParseExceptionFormat, Message, _position);
+            return string.Format(CultureInfo.CurrentCulture, Res.ParseExceptionFormat, Message, _position);
         }
 
         ParseException(SerializationInfo info, StreamingContext context)

@@ -148,7 +148,7 @@ namespace System.Linq.Dynamic
         {
             if (source == null) throw new ArgumentNullException("source");
             if (keySelector == null) throw new ArgumentNullException("keySelector");
-            if (resultSelector == null) throw new ArgumentNullException("elementSelector");
+            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
 
             LambdaExpression keyLambda = DynamicExpression.ParseLambda(source.ElementType, null, keySelector, args);
             LambdaExpression elementLambda = DynamicExpression.ParseLambda(source.ElementType, null, resultSelector, args);

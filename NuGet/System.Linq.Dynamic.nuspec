@@ -11,6 +11,9 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>This is the Microsoft assembly for the .Net 4.0 Dynamic language functionality.  Allows various calls to be made using strings expressions instead of lambda expressions.</description>
         <tags>system linq dynamic</tags>
+        <dependencies>
+            <dependency id="FluentValidationNA" version="1.0.8" />
+        </dependencies>
     </metadata>
     <files>
         <file src="..\Src\System.Linq.Dynamic\bin\Release\System.Linq.Dynamic.dll" target="lib\net40\System.Linq.Dynamic.dll" />

@@ -13,12 +13,10 @@ namespace System.Linq.Dynamic
     {
         public static readonly ClassFactory Instance = new ClassFactory();
 
-        static ClassFactory() { }  // Trigger lazy initialization of static fields
-
-        ModuleBuilder module;
-        Dictionary<Signature, Type> classes;
-        int classCount;
-        ReaderWriterLock rwLock;
+        ModuleBuilder _module;
+        Dictionary<Signature, Type> _classes;
+        int _classCount;
+        ReaderWriterLock _rwLock;
 
         private ClassFactory()
         {
@@ -29,7 +27,7 @@ namespace System.Linq.Dynamic
 #endif
             try
             {
-                module = assembly.DefineDynamicModule("Module");
+                _module = assembly.DefineDynamicModule("Module");
             }
             finally
             {
@@ -37,48 +35,48 @@ namespace System.Linq.Dynamic
                 PermissionSet.RevertAssert();
 #endif
             }
-            classes = new Dictionary<Signature, Type>();
-            rwLock = new ReaderWriterLock();
+            _classes = new Dictionary<Signature, Type>();
+            _rwLock = new ReaderWriterLock();
         }
 
         public Type GetDynamicClass(IEnumerable<DynamicProperty> properties)
         {
-            rwLock.AcquireReaderLock(Timeout.Infinite);
+            _rwLock.AcquireReaderLock(Timeout.Infinite);
             try
             {
                 Signature signature = new Signature(properties);
                 Type type;
-                if (!classes.TryGetValue(signature, out type))
+                if (!_classes.TryGetValue(signature, out type))
                 {
                     type = CreateDynamicClass(signature.properties);
-                    classes.Add(signature, type);
+                    _classes.Add(signature, type);
                 }
                 return type;
             }
             finally
             {
-                rwLock.ReleaseReaderLock();
+                _rwLock.ReleaseReaderLock();
             }
         }
 
         Type CreateDynamicClass(DynamicProperty[] properties)
         {
-            LockCookie cookie = rwLock.UpgradeToWriterLock(Timeout.Infinite);
+            LockCookie cookie = _rwLock.UpgradeToWriterLock(Timeout.Infinite);
             try
             {
-                string typeName = "DynamicClass" + (classCount + 1);
+                string typeName = "DynamicClass" + (_classCount + 1);
 #if ENABLE_LINQ_PARTIAL_TRUST
                 new ReflectionPermission(PermissionState.Unrestricted).Assert();
 #endif
                 try
                 {
-                    TypeBuilder tb = this.module.DefineType(typeName, TypeAttributes.Class |
+                    TypeBuilder tb = this._module.DefineType(typeName, TypeAttributes.Class |
                         TypeAttributes.Public, typeof(DynamicClass));
                     FieldInfo[] fields = GenerateProperties(tb, properties);
                     GenerateEquals(tb, fields);
                     GenerateGetHashCode(tb, fields);
                     Type result = tb.CreateType();
-                    classCount++;
+                    _classCount++;
                     return result;
                 }
                 finally
@@ -90,11 +88,11 @@ namespace System.Linq.Dynamic
             }
             finally
             {
-                rwLock.DowngradeFromWriterLock(ref cookie);
+                _rwLock.DowngradeFromWriterLock(ref cookie);
             }
         }
 
-        FieldInfo[] GenerateProperties(TypeBuilder tb, DynamicProperty[] properties)
+        static FieldInfo[] GenerateProperties(TypeBuilder tb, DynamicProperty[] properties)
         {
             FieldInfo[] fields = new FieldBuilder[properties.Length];
             for (int i = 0; i < properties.Length; i++)
@@ -124,7 +122,7 @@ namespace System.Linq.Dynamic
             return fields;
         }
 
-        void GenerateEquals(TypeBuilder tb, FieldInfo[] fields)
+        static void GenerateEquals(TypeBuilder tb, FieldInfo[] fields)
         {
             MethodBuilder mb = tb.DefineMethod("Equals",
                 MethodAttributes.Public | MethodAttributes.ReuseSlot |
@@ -161,7 +159,7 @@ namespace System.Linq.Dynamic
             gen.Emit(OpCodes.Ret);
         }
 
-        void GenerateGetHashCode(TypeBuilder tb, FieldInfo[] fields)
+        static void GenerateGetHashCode(TypeBuilder tb, FieldInfo[] fields)
         {
             MethodBuilder mb = tb.DefineMethod("GetHashCode",
                 MethodAttributes.Public | MethodAttributes.ReuseSlot |
