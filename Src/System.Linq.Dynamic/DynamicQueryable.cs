@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
+using FluentValidation;
 
 namespace System.Linq.Dynamic
 {
@@ -52,8 +53,9 @@ namespace System.Linq.Dynamic
         /// </example>
         public static IQueryable Where(this IQueryable source, string predicate, params object[] args)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (predicate == null) throw new ArgumentNullException("predicate");
+            Validate.Argument(source, "source").IsNotNull().Check()
+                    .Argument(predicate, "predicate").IsNotNull().IsNotEmpty().IsNotWhiteSpace().Check();
+
             LambdaExpression lambda = DynamicExpression.ParseLambda(source.ElementType, typeof(bool), predicate, args);
             return source.Provider.CreateQuery(
                 Expression.Call(
@@ -71,8 +73,9 @@ namespace System.Linq.Dynamic
         /// <returns>An <see cref="IQueryable{T}"/> whose elements are the result of invoking a projection string on each element of source.</returns>
         public static IQueryable Select(this IQueryable source, string selector, params object[] args)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (selector == null) throw new ArgumentNullException("selector");
+            Validate.Argument(source, "source").IsNotNull().Check()
+                    .Argument(selector, "selector").IsNotNull().IsNotEmpty().IsNotWhiteSpace().Check();
+
             LambdaExpression lambda = DynamicExpression.ParseLambda(source.ElementType, null, selector, args);
             return source.Provider.CreateQuery(
                 Expression.Call(
@@ -113,8 +116,10 @@ namespace System.Linq.Dynamic
         /// </example>
         public static IQueryable OrderBy(this IQueryable source, string ordering, params object[] args)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (ordering == null) throw new ArgumentNullException("ordering");
+            Validate.Argument(source, "source").IsNotNull().Check()
+                    .Argument(ordering, "ordering").IsNotNull().IsNotEmpty().IsNotWhiteSpace().Check();
+
+
             ParameterExpression[] parameters = new ParameterExpression[] {
                 Expression.Parameter(source.ElementType, "") };
             ExpressionParser parser = new ExpressionParser(parameters, ordering, args);
@@ -146,9 +151,9 @@ namespace System.Linq.Dynamic
         /// <returns>A <see cref="IQueryable"/> where each element represents a projection over a group and its key.</returns>
         public static IQueryable GroupBy(this IQueryable source, string keySelector, string resultSelector, params object[] args)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (keySelector == null) throw new ArgumentNullException("keySelector");
-            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
+            Validate.Argument(source, "source").IsNotNull().Check()
+                    .Argument(keySelector, "keySelector").IsNotNull().IsNotEmpty().IsNotWhiteSpace().Check()
+                    .Argument(resultSelector, "resultSelector").IsNotNull().IsNotEmpty().IsNotWhiteSpace().Check();
 
             LambdaExpression keyLambda = DynamicExpression.ParseLambda(source.ElementType, null, keySelector, args);
             LambdaExpression elementLambda = DynamicExpression.ParseLambda(source.ElementType, null, resultSelector, args);

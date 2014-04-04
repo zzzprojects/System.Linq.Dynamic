@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentValidation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -21,7 +22,9 @@ namespace System.Linq.Dynamic
         /// <returns>A <see cref="IQueryable"/> that contains the specified number of elements from the start of source.</returns>
         public static IQueryable Take(this IQueryable source, int count)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            Validate.Argument(source, "source").IsNotNull().Check()
+                    .Argument(count, "count").IsInRange(x => x > 0).Check();
+
             return source.Provider.CreateQuery(
                 Expression.Call(
                     typeof(Queryable), "Take",
@@ -37,7 +40,11 @@ namespace System.Linq.Dynamic
         /// <returns>A <see cref="IQueryable"/> that contains elements that occur after the specified index in the input sequence.</returns>
         public static IQueryable Skip(this IQueryable source, int count)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            Validate.Argument(source, "source").IsNotNull().Check()
+                    .Argument(count, "count").IsInRange(x => x >= 0).Check();
+
+            //no need to skip if count is zero
+            if (count == 0) return source;
 
             return source.Provider.CreateQuery(
                 Expression.Call(
@@ -53,7 +60,8 @@ namespace System.Linq.Dynamic
         /// <returns>true if the source sequence contains any elements; otherwise, false.</returns>
         public static bool Any(this IQueryable source)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            Validate.Argument(source, "source").IsNotNull().Check();
+
             return (bool)source.Provider.Execute(
                 Expression.Call(
                     typeof(Queryable), "Any",
@@ -67,7 +75,8 @@ namespace System.Linq.Dynamic
         /// <returns>The number of elements in the input sequence.</returns>
         public static int Count(this IQueryable source)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            Validate.Argument(source, "source").IsNotNull().Check();
+
             return (int)source.Provider.Execute(
                 Expression.Call(
                     typeof(Queryable), "Count",

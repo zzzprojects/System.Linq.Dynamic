@@ -212,7 +212,6 @@ namespace System.Linq.Dynamic
 
         public ExpressionParser(ParameterExpression[] parameters, string expression, object[] values)
         {
-            if (expression == null) throw new ArgumentNullException("expression");
             if (_keywords == null) _keywords = CreateKeywords();
             _symbols = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
             _literals = new Dictionary<Expression, string>();
