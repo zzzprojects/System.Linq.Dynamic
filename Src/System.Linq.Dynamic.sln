@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Linq.Dynamic", "Syst
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Linq.Dynamic.Tests", "System.Linq.Dynamic.Tests\System.Linq.Dynamic.Tests.csproj", "{CD61912B-3FC4-4598-A111-31D29A674220}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Linq.Dynamic.For35", "System.Linq.Dynamic.For35\System.Linq.Dynamic.For35.csproj", "{801D4F1D-1B5F-404C-BFA2-D69F38EEDDF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Linq.Dynamic.For35.Tests", "System.Linq.Dynamic.For35.Tests\System.Linq.Dynamic.For35.Tests.csproj", "{A52FEE93-1E63-4D8C-8E22-94DB07C163DD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "For35", "For35", "{1FDEF655-C276-4179-B8DD-E9FEB227E533}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,8 +27,20 @@ Global
 		{CD61912B-3FC4-4598-A111-31D29A674220}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD61912B-3FC4-4598-A111-31D29A674220}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD61912B-3FC4-4598-A111-31D29A674220}.Release|Any CPU.Build.0 = Release|Any CPU
+		{801D4F1D-1B5F-404C-BFA2-D69F38EEDDF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{801D4F1D-1B5F-404C-BFA2-D69F38EEDDF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{801D4F1D-1B5F-404C-BFA2-D69F38EEDDF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{801D4F1D-1B5F-404C-BFA2-D69F38EEDDF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A52FEE93-1E63-4D8C-8E22-94DB07C163DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A52FEE93-1E63-4D8C-8E22-94DB07C163DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A52FEE93-1E63-4D8C-8E22-94DB07C163DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A52FEE93-1E63-4D8C-8E22-94DB07C163DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A52FEE93-1E63-4D8C-8E22-94DB07C163DD} = {1FDEF655-C276-4179-B8DD-E9FEB227E533}
+		{801D4F1D-1B5F-404C-BFA2-D69F38EEDDF5} = {1FDEF655-C276-4179-B8DD-E9FEB227E533}
 	EndGlobalSection
 EndGlobal

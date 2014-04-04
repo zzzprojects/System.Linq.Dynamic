@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>System.Linq.Dynamic.Library</id>
-        <version>1.1.1</version>
+        <version>1.1.2</version>
         <title>Dynamic Linq Library</title>
         <authors>Nathan Arnott,Microsoft</authors>
         <owners>Nathan Arnott</owners>
@@ -12,13 +12,15 @@
         <description>This is the Microsoft assembly for the .Net 4.0 Dynamic language functionality.  Allows various calls to be made using strings expressions instead of lambda expressions.
 
 This is more than a simple deployment of the Microsoft Dynamic Linq Library example (NuGet Package System.Linq.Dynamic.Library). It is a living project, and contains XML documentation with examples.</description>
-        <summary />
+        <summary>Supports Framework 3.5 and 4.0+</summary>
         <tags>system linq dynamic</tags>
         <dependencies>
             <dependency id="FluentValidationNA" version="1.0.8" />
         </dependencies>
     </metadata>
     <files>
+        <file src="..\Src\System.Linq.Dynamic.For35\bin\Release\System.Linq.Dynamic.dll" target="lib\net35\System.Linq.Dynamic.dll" />
+        <file src="..\Src\System.Linq.Dynamic.For35\bin\Release\System.Linq.Dynamic.XML" target="lib\net35\System.Linq.Dynamic.XML" />
         <file src="..\Src\System.Linq.Dynamic\bin\Release\System.Linq.Dynamic.dll" target="lib\net40\System.Linq.Dynamic.dll" />
         <file src="..\Src\System.Linq.Dynamic\bin\Release\System.Linq.Dynamic.XML" target="lib\net40\System.Linq.Dynamic.XML" />
     </files>

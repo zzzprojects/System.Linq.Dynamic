@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{801D4F1D-1B5F-404C-BFA2-D69F38EEDDF5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>System.Linq.Dynamic</RootNamespace>
+    <AssemblyName>System.Linq.Dynamic</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET35</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\System.Linq.Dynamic.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NET35</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\System.Linq.Dynamic.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\System.Linq.Dynamic\Properties\key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FluentValidation">
+      <HintPath>..\packages\FluentValidationNA.1.0.8\lib\net35\FluentValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\System.Linq.Dynamic\Properties\key.snk">
+      <Link>Properties\key.snk</Link>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\System.Linq.Dynamic\BasicQueryable.cs">
+      <Link>BasicQueryable.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Linq.Dynamic\ClassFactory.cs">
+      <Link>ClassFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Linq.Dynamic\DynamicClass.cs">
+      <Link>DynamicClass.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Linq.Dynamic\DynamicExpression.cs">
+      <Link>DynamicExpression.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Linq.Dynamic\DynamicOrdering.cs">
+      <Link>DynamicOrdering.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Linq.Dynamic\DynamicProperty.cs">
+      <Link>DynamicProperty.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Linq.Dynamic\DynamicQueryable.cs">
+      <Link>DynamicQueryable.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Linq.Dynamic\ExpressionParser.cs">
+      <Link>ExpressionParser.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Linq.Dynamic\GlobalSuppressions.cs">
+      <Link>GlobalSuppressions.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Linq.Dynamic\ParseException.cs">
+      <Link>ParseException.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Linq.Dynamic\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Linq.Dynamic\Res.cs">
+      <Link>Res.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Linq.Dynamic\Signature.cs">
+      <Link>Signature.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
