@@ -14,5 +14,6 @@
     </metadata>
     <files>
         <file src="..\Src\System.Linq.Dynamic\bin\Release\System.Linq.Dynamic.dll" target="lib\net40\System.Linq.Dynamic.dll" />
+        <file src="..\Src\System.Linq.Dynamic\bin\Release\System.Linq.Dynamic.XML" target="lib\net40\System.Linq.Dynamic.XML" />
     </files>
 </package>
