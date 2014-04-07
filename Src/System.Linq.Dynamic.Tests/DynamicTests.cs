@@ -107,11 +107,19 @@ namespace System.Linq.Dynamic.Tests
             var userNames = qry.Select("UserName");
             var userFirstName = qry.Select("new (UserName, Profile.FirstName as MyFirstName)");
 
+
             //Assert
+#if NET35
             CollectionAssert.AreEqual(testList.Select(x => x.UserName).ToArray(), userNames.Cast<string>().ToArray());
             CollectionAssert.AreEqual(
                 testList.Select(x => "{UserName=" + x.UserName + ", MyFirstName=" + x.Profile.FirstName + "}").ToArray(),
                 userFirstName.Cast<object>().Select(x => x.ToString()).ToArray());
+#else
+            CollectionAssert.AreEqual(testList.Select(x => x.UserName).ToArray(), userNames.ToArray());
+            CollectionAssert.AreEqual(
+                testList.Select(x => "{UserName=" + x.UserName + ", MyFirstName=" + x.Profile.FirstName + "}").ToArray(),
+                userFirstName.AsEnumerable().Select(x => x.ToString()).ToArray());
+#endif
         }
 
         [TestMethod]
@@ -164,7 +172,7 @@ namespace System.Linq.Dynamic.Tests
             Helper.ExpectException<ParseException>(() => qry.GroupBy("new (Id, UserName"));
             Helper.ExpectException<ParseException>(() => qry.GroupBy("new (Id, UserName, Bad)"));
 
-            Helper.ExpectException<ArgumentNullException>(() => DynamicQueryable.GroupBy(null, "Id"));
+            Helper.ExpectException<ArgumentNullException>(() => DynamicQueryable.GroupBy((IQueryable<string>)null, "Id"));
             Helper.ExpectException<ArgumentNullException>(() => qry.GroupBy(null));
             Helper.ExpectException<ArgumentException>(() => qry.GroupBy(""));
             Helper.ExpectException<ArgumentException>(() => qry.GroupBy(" "));
