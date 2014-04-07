@@ -106,12 +106,12 @@ namespace System.Linq.Dynamic.Tests
             //Act
             var userNames = qry.Select("UserName");
             var userFirstName = qry.Select("new (UserName, Profile.FirstName as MyFirstName)");
-            
+
             //Assert
             CollectionAssert.AreEqual(testList.Select(x => x.UserName).ToArray(), userNames.Cast<string>().ToArray());
             CollectionAssert.AreEqual(
                 testList.Select(x => "{UserName=" + x.UserName + ", MyFirstName=" + x.Profile.FirstName + "}").ToArray(),
-                userFirstName.Cast<DynamicClass>().Select(x => x.ToString()).ToArray());
+                userFirstName.Cast<object>().Select(x => x.ToString()).ToArray());
         }
 
         [TestMethod]
@@ -172,7 +172,6 @@ namespace System.Linq.Dynamic.Tests
             Helper.ExpectException<ArgumentNullException>(() => qry.GroupBy("Id", (string)null));
             Helper.ExpectException<ArgumentException>(() => qry.GroupBy("Id", ""));
             Helper.ExpectException<ArgumentException>(() => qry.GroupBy("Id", " "));
-
         }
     }
 }

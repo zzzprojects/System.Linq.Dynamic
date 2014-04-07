@@ -45,6 +45,7 @@
     <Reference Include="FluentValidation">
       <HintPath>..\packages\FluentValidationNA.1.0.8\lib\net35\FluentValidation.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>

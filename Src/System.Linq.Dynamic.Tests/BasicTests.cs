@@ -50,7 +50,7 @@ namespace System.Linq.Dynamic.Tests
         {
             //Arrange
             var testList = User.GenerateSampleModels(100);
-            var testListQry = testList.AsQueryable();
+            IQueryable testListQry = testList.AsQueryable();
 
             //Act
             var resultFull = testListQry.Skip(0);
@@ -70,7 +70,7 @@ namespace System.Linq.Dynamic.Tests
         {
             //Arrange
             var testList = User.GenerateSampleModels(100);
-            var testListQry = testList.AsQueryable();
+            IQueryable testListQry = testList.AsQueryable();
 
             //Act
             var resultFull = testListQry.Take(100);
@@ -84,5 +84,165 @@ namespace System.Linq.Dynamic.Tests
             CollectionAssert.AreEqual(testList.Take(50).ToArray(), resultHalf.Cast<User>().ToArray());
             CollectionAssert.AreEqual(testList.Take(1).ToArray(), resultOne.Cast<User>().ToArray());
         }
+
+        [TestMethod]
+        public void Single()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100);
+            IQueryable testListQry = testList.AsQueryable();
+
+            //Act
+            var result = testListQry.Take(1).Single();
+
+            //Assert
+            Assert.AreEqual(testList[0].Id, result.GetDynamicProperty<Guid>("Id"));
+        }
+
+        [TestMethod]
+        public void SingleOrDefault()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100);
+            IQueryable testListQry = testList.AsQueryable();
+
+            //Act
+            var singleResult = testListQry.Take(1).SingleOrDefault();
+            var defaultResult = ((IQueryable)Enumerable.Empty<User>().AsQueryable()).SingleOrDefault();
+
+            //Assert
+            Assert.AreEqual(testList[0].Id, singleResult.GetDynamicProperty<Guid>("Id"));
+            Assert.IsNull(defaultResult);
+        }
+
+        [TestMethod]
+        public void First()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100);
+            IQueryable testListQry = testList.AsQueryable();
+
+            //Act
+            var result = testListQry.First();
+
+            //Assert
+            Assert.AreEqual(testList[0].Id, result.GetDynamicProperty<Guid>("Id"));
+        }
+
+        [TestMethod]
+        public void FirstOrDefault()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100);
+            IQueryable testListQry = testList.AsQueryable();
+
+            //Act
+            var singleResult = testListQry.FirstOrDefault();
+            var defaultResult = ((IQueryable)Enumerable.Empty<User>().AsQueryable()).FirstOrDefault();
+
+            //Assert
+            Assert.AreEqual(testList[0].Id, singleResult.GetDynamicProperty<Guid>("Id"));
+            Assert.IsNull(defaultResult);
+        }
+
+
+        #region As Dynamic Types
+
+#if !NET35
+
+        [TestMethod]
+        public void SingleDynamic()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100);
+            IQueryable testListQry = testList.AsQueryable();
+
+            //Act
+            var result = testListQry.Take(1).SingleDynamic();
+
+            //Assert
+            Assert.AreEqual(testList[0].Id, result.Id);
+        }
+
+
+        [TestMethod]
+        public void SingleOrDefaultDynamic()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100);
+            IQueryable testListQry = testList.AsQueryable();
+
+            //Act
+            var singleResult = testListQry.Take(1).SingleOrDefaultDynamic();
+            var defaultResult = ((IQueryable)Enumerable.Empty<User>().AsQueryable()).SingleOrDefaultDynamic();
+
+            //Assert
+            Assert.AreEqual(testList[0].Id, singleResult.Id);
+            Assert.IsNull(defaultResult);
+        }
+
+        [TestMethod]
+        public void FirstDynamic()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100);
+            IQueryable testListQry = testList.AsQueryable();
+
+            //Act
+            var result = testListQry.FirstDynamic();
+
+            //Assert
+            Assert.AreEqual(testList[0].Id, result.Id);
+        }
+
+
+        [TestMethod]
+        public void FirstOrDefaultDynamic()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100);
+            IQueryable testListQry = testList.AsQueryable();
+
+            //Act
+            var singleResult = testListQry.FirstOrDefaultDynamic();
+            var defaultResult = ((IQueryable)Enumerable.Empty<User>().AsQueryable()).FirstOrDefaultDynamic();
+
+            //Assert
+            Assert.AreEqual(testList[0].Id, singleResult.Id);
+            Assert.IsNull(defaultResult);
+        }
+
+        [TestMethod]
+        public void Reverse()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100);
+            IQueryable testListQry = testList.AsQueryable();
+
+            //Act
+            var reverseResult = testListQry.Reverse();
+
+            //Assert
+            CollectionAssert.AreEqual(testList.Reverse().Select(x => x.Id).ToArray(), reverseResult.Select("Id").Cast<Guid>().ToArray());
+        }
+
+        [TestMethod]
+        public void AsEnumerableDynamic()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100);
+            IQueryable testListQry = testList.AsQueryable();
+
+            //Act
+            var enumerable = testListQry.AsEnumerableDynamic();
+
+            //Assert
+            CollectionAssert.AreEqual(testList.Select(x => x.Id).ToArray(), enumerable.Select(x => x.Id).ToArray());
+        }
+#endif
+
+        #endregion
+
     }
+
 }
