@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>System.Linq.Dynamic.Library</id>
-        <version>1.1.2</version>
+        <version>1.1.3</version>
         <title>Dynamic Linq Library</title>
         <authors>Nathan Arnott,Microsoft</authors>
         <owners>Nathan Arnott</owners>
@@ -13,6 +13,9 @@
 
 This is more than a simple deployment of the Microsoft Dynamic Linq Library example (NuGet Package System.Linq.Dynamic.Library). It is a living project, and contains XML documentation with examples.</description>
         <summary>Supports Framework 3.5 and 4.0+</summary>
+        <releaseNotes>1.1.3 Added several new Methods to support base IQueryable interface, including: Single(), SingleOrDefault, First(), FirstOrDefault() and Reverse().  Also adds dynamics verisons of those methods for 4.0+ targets, including a AsEnumerableDynamic(). 
+Added GroupBy Method that Doesn't Require a resultSelector predicate.
+Bug Fix when using Select Method to select multiple values.</releaseNotes>
         <tags>system linq dynamic</tags>
         <dependencies>
             <dependency id="FluentValidationNA" version="1.0.8" />
