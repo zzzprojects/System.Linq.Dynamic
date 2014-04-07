@@ -76,5 +76,21 @@ namespace System.Linq.Dynamic.Tests
                 testList.Select(x => "{UserName=" + x.UserName + ", MyFirstName=" + x.Profile.FirstName + "}").ToArray(),
                 userFirstName.Cast<DynamicClass>().Select(x => x.ToString()).ToArray());
         }
+
+        [TestMethod]
+        public void GroupBy()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100);
+            var qry = testList.AsQueryable();
+
+            //Act
+            var byAge = qry.GroupBy("Profile.Age", "UserName");
+            var byAgeReal = testList.GroupBy(x => x.Profile.Age, x => x.UserName);
+
+
+            //Assert
+            Assert.AreEqual(byAgeReal.Count(), byAge.Count());
+        }
     }
 }
