@@ -62,11 +62,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="..\System.Linq.Dynamic.Tests\DynamicTests.cs">
+      <Link>DynamicTests.cs</Link>
+    </Compile>
     <Compile Include="..\System.Linq.Dynamic.Tests\Helpers\SampleModels.cs">
       <Link>SampleModels.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Linq.Dynamic.Tests\PrimaryTests.cs">
-      <Link>PrimaryTests.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

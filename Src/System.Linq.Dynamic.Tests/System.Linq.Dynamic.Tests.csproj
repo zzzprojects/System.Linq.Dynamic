@@ -64,7 +64,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Helpers\SampleModels.cs" />
-    <Compile Include="PrimaryTests.cs" />
+    <Compile Include="DynamicTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\System.Linq.Dynamic\Properties\key.snk">

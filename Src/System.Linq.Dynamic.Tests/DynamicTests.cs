@@ -7,7 +7,7 @@ using System.Linq.Dynamic.Tests.Helpers;
 namespace System.Linq.Dynamic.Tests
 {
     [TestClass]
-    public class PrimaryTests
+    public class DynamicTests
     {
         [TestMethod]
         public void Where()
