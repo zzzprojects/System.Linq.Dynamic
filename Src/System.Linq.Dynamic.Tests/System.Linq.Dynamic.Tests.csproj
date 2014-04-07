@@ -63,6 +63,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="BasicTests.cs" />
     <Compile Include="Helpers\SampleModels.cs" />
     <Compile Include="DynamicTests.cs" />
   </ItemGroup>
