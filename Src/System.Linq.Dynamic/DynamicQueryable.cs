@@ -71,6 +71,12 @@ namespace System.Linq.Dynamic
         /// <param name="selector">A projection string to apply to each element.</param>
         /// <param name="args">An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way String.Format formats strings.</param>
         /// <returns>An <see cref="IQueryable{T}"/> whose elements are the result of invoking a projection string on each element of source.</returns>
+        /// <example>
+        /// <code>
+        /// var singleField = qry.Select("StringProperty");
+        /// var dynamicObject = qry.Select("new (StringProperty1, StringProperty2 as OtherStringPropertyName)");
+        /// </code>
+        /// </example>
         public static IQueryable Select(this IQueryable source, string selector, params object[] args)
         {
             Validate.Argument(source, "source").IsNotNull().Check()

@@ -12,8 +12,6 @@ namespace System.Linq.Dynamic
     /// </summary>
     public abstract class DynamicClass
     {
-        internal DynamicClass() { }
-
         /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>

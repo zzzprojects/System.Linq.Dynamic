@@ -58,5 +58,23 @@ namespace System.Linq.Dynamic.Tests
             CollectionAssert.AreEqual(testList.OrderBy(x => x.Profile.Age).ThenBy(x => x.Id).ToArray(), orderByComplex.ToArray());
             CollectionAssert.AreEqual(testList.OrderByDescending(x => x.Profile.Age).ThenBy(x => x.Id).ToArray(), orderByComplex2.ToArray());
         }
+
+        [TestMethod]
+        public void Select()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100);
+            var qry = testList.AsQueryable();
+
+            //Act
+            var userNames = qry.Select("UserName");
+            var userFirstName = qry.Select("new (UserName, Profile.FirstName as MyFirstName)");
+            
+            //Assert
+            CollectionAssert.AreEqual(testList.Select(x => x.UserName).ToArray(), userNames.Cast<string>().ToArray());
+            CollectionAssert.AreEqual(
+                testList.Select(x => "{UserName=" + x.UserName + ", MyFirstName=" + x.Profile.FirstName + "}").ToArray(),
+                userFirstName.Cast<DynamicClass>().Select(x => x.ToString()).ToArray());
+        }
     }
 }
