@@ -32,6 +32,24 @@ namespace System.Linq.Dynamic.Tests
             Assert.AreEqual(testList.Where(x => x.Profile == null).Count(), nullProfileCount.Count());
             Assert.AreEqual(testList[1], userByFirstName.Single());
         }
+
+        [TestMethod]
+        public void Where_Exceptions()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100, allowNullableProfiles: true);
+            var qry = testList.AsQueryable();
+
+            //Act
+            Helper.ExpectException<ParseException>(() => qry.Where("Id"));
+            Helper.ExpectException<ParseException>(() => qry.Where("Bad=3"));
+            Helper.ExpectException<ParseException>(() => qry.Where("Id=123"));
+
+            Helper.ExpectException<ArgumentNullException>(() => DynamicQueryable.Where(null, "Id=1"));
+            Helper.ExpectException<ArgumentNullException>(() => qry.Where(null));
+            Helper.ExpectException<ArgumentException>(() => qry.Where(""));
+            Helper.ExpectException<ArgumentException>(() => qry.Where(" "));
+        }    
         
         [TestMethod]
         public void OrderBy()
@@ -62,6 +80,23 @@ namespace System.Linq.Dynamic.Tests
         }
 
         [TestMethod]
+        public void OrderBy_Exceptions()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100, allowNullableProfiles: true);
+            var qry = testList.AsQueryable();
+
+            //Act
+            Helper.ExpectException<ParseException>(() => qry.OrderBy("Bad=3"));
+            Helper.ExpectException<ParseException>(() => qry.Where("Id=123"));
+
+            Helper.ExpectException<ArgumentNullException>(() => DynamicQueryable.OrderBy(null, "Id"));
+            Helper.ExpectException<ArgumentNullException>(() => qry.OrderBy(null));
+            Helper.ExpectException<ArgumentException>(() => qry.OrderBy(""));
+            Helper.ExpectException<ArgumentException>(() => qry.OrderBy(" "));
+        }    
+
+        [TestMethod]
         public void Select()
         {
             //Arrange
@@ -80,6 +115,26 @@ namespace System.Linq.Dynamic.Tests
         }
 
         [TestMethod]
+        public void Select_Exceptions()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100, allowNullableProfiles: true);
+            var qry = testList.AsQueryable();
+
+            //Act
+            Helper.ExpectException<ParseException>(() => qry.Select("Bad"));
+            Helper.ExpectException<ParseException>(() => qry.Select("Id, UserName"));
+            Helper.ExpectException<ParseException>(() => qry.Select("new Id, UserName"));
+            Helper.ExpectException<ParseException>(() => qry.Select("new (Id, UserName"));
+            Helper.ExpectException<ParseException>(() => qry.Select("new (Id, UserName, Bad)"));
+
+            Helper.ExpectException<ArgumentNullException>(() => DynamicQueryable.Select(null, "Id"));
+            Helper.ExpectException<ArgumentNullException>(() => qry.Select(null));
+            Helper.ExpectException<ArgumentException>(() => qry.Select(""));
+            Helper.ExpectException<ArgumentException>(() => qry.Select(" "));
+        }
+
+        [TestMethod]
         public void GroupBy()
         {
             //Arrange
@@ -93,6 +148,31 @@ namespace System.Linq.Dynamic.Tests
             //Assert
             Assert.AreEqual(testList.GroupBy(x => x.Profile.Age).Count(), byAgeReturnUserName.Count());
             Assert.AreEqual(testList.GroupBy(x => x.Profile.Age).Count(), byAgeReturnAll.Count());
+        }
+
+        [TestMethod]
+        public void GroupBy_Exceptions()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100, allowNullableProfiles: true);
+            var qry = testList.AsQueryable();
+
+            //Act
+            Helper.ExpectException<ParseException>(() => qry.GroupBy("Bad"));
+            Helper.ExpectException<ParseException>(() => qry.GroupBy("Id, UserName"));
+            Helper.ExpectException<ParseException>(() => qry.GroupBy("new Id, UserName"));
+            Helper.ExpectException<ParseException>(() => qry.GroupBy("new (Id, UserName"));
+            Helper.ExpectException<ParseException>(() => qry.GroupBy("new (Id, UserName, Bad)"));
+
+            Helper.ExpectException<ArgumentNullException>(() => DynamicQueryable.GroupBy(null, "Id"));
+            Helper.ExpectException<ArgumentNullException>(() => qry.GroupBy(null));
+            Helper.ExpectException<ArgumentException>(() => qry.GroupBy(""));
+            Helper.ExpectException<ArgumentException>(() => qry.GroupBy(" "));
+
+            Helper.ExpectException<ArgumentNullException>(() => qry.GroupBy("Id", (string)null));
+            Helper.ExpectException<ArgumentException>(() => qry.GroupBy("Id", ""));
+            Helper.ExpectException<ArgumentException>(() => qry.GroupBy("Id", " "));
+
         }
     }
 }
