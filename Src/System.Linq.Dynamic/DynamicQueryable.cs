@@ -155,7 +155,13 @@ namespace System.Linq.Dynamic
         /// <param name="resultSelector">A string to specify a result value from each group.</param>
         /// <param name="args">An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way String.Format formats strings.</param>
         /// <returns>A <see cref="IQueryable"/> where each element represents a projection over a group and its key.</returns>
-        public static IQueryable GroupBy(this IQueryable source, string keySelector, string resultSelector, params object[] args)
+        /// <example>
+        /// <code>
+        /// var groupResult1 = qry.GroupBy("NumberPropertyAsKey", "StringProperty");
+        /// var groupResult2 = qry.GroupBy("new (NumberPropertyAsKey, StringPropertyAsKey)", "new (StringProperty1, StringProperty2)");
+        /// </code>
+        /// </example>
+        public static IQueryable GroupBy(this IQueryable source, string keySelector, string resultSelector, object[] args)
         {
             Validate.Argument(source, "source").IsNotNull().Check()
                     .Argument(keySelector, "keySelector").IsNotNull().IsNotEmpty().IsNotWhiteSpace().Check()
@@ -168,6 +174,71 @@ namespace System.Linq.Dynamic
                     typeof(Queryable), "GroupBy",
                     new Type[] { source.ElementType, keyLambda.Body.Type, elementLambda.Body.Type },
                     source.Expression, Expression.Quote(keyLambda), Expression.Quote(elementLambda)));
+        }
+
+        /// <summary>
+        /// Groups the elements of a sequence according to a specified key string function 
+        /// and creates a result value from each group and its key.
+        /// </summary>
+        /// <param name="source">A <see cref="IQueryable"/> whose elements to group.</param>
+        /// <param name="keySelector">A string to specify the key for each element.</param>
+        /// <param name="resultSelector">A string to specify a result value from each group.</param>
+        /// <returns>A <see cref="IQueryable"/> where each element represents a projection over a group and its key.</returns>
+        /// <example>
+        /// <code>
+        /// var groupResult1 = qry.GroupBy("NumberPropertyAsKey", "StringProperty");
+        /// var groupResult2 = qry.GroupBy("new (NumberPropertyAsKey, StringPropertyAsKey)", "new (StringProperty1, StringProperty2)");
+        /// </code>
+        /// </example>
+        public static IQueryable GroupBy(this IQueryable source, string keySelector, string resultSelector)
+        {
+            return GroupBy(source, keySelector, resultSelector, (object[])null);
+        }
+
+        /// <summary>
+        /// Groups the elements of a sequence according to a specified key string function 
+        /// and creates a result value from each group and its key.
+        /// </summary>
+        /// <param name="source">A <see cref="IQueryable"/> whose elements to group.</param>
+        /// <param name="keySelector">A string to specify the key for each element.</param>
+        /// <param name="args">An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way String.Format formats strings.</param>
+        /// <returns>A <see cref="IQueryable"/> where each element represents a projection over a group and its key.</returns>
+        /// <example>
+        /// <code>
+        /// var groupResult1 = qry.GroupBy("NumberPropertyAsKey");
+        /// var groupResult2 = qry.GroupBy("new (NumberPropertyAsKey, StringPropertyAsKey)");
+        /// </code>
+        /// </example>
+        public static IQueryable GroupBy(this IQueryable source, string keySelector, object[] args)
+        {
+            Validate.Argument(source, "source").IsNotNull().Check()
+                .Argument(keySelector, "keySelector").IsNotNull().IsNotEmpty().IsNotWhiteSpace().Check();
+
+            LambdaExpression keyLambda = DynamicExpression.ParseLambda(source.ElementType, null, keySelector, args);
+
+            return source.Provider.CreateQuery(
+                Expression.Call(
+                    typeof(Queryable), "GroupBy",
+                    new Type[] { source.ElementType, keyLambda.Body.Type },
+                    source.Expression, Expression.Quote(keyLambda)));
+        }
+
+        /// <summary>
+        /// Groups the elements of a sequence according to a specified key string function 
+        /// and creates a result value from each group and its key.
+        /// </summary>
+        /// <param name="source">A <see cref="IQueryable"/> whose elements to group.</param>
+        /// <param name="keySelector">A string to specify the key for each element.</param>
+        /// <returns>A <see cref="IQueryable"/> where each element represents a projection over a group and its key.</returns>
+        /// <example>
+        /// <code>
+        /// var groupResult1 = qry.GroupBy("NumberPropertyAsKey");
+        /// var groupResult2 = qry.GroupBy("new (NumberPropertyAsKey, StringPropertyAsKey)");
+        /// </code>
+        /// </example>
+        public static IQueryable GroupBy(this IQueryable source, string keySelector)
+        {
+            return GroupBy(source, keySelector, (object[])null);
         }
 
     }

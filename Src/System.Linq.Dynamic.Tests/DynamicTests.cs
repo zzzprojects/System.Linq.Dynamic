@@ -3,6 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Linq.Dynamic.Tests.Helpers;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace System.Linq.Dynamic.Tests
 {
@@ -85,12 +87,12 @@ namespace System.Linq.Dynamic.Tests
             var qry = testList.AsQueryable();
 
             //Act
-            var byAge = qry.GroupBy("Profile.Age", "UserName");
-            var byAgeReal = testList.GroupBy(x => x.Profile.Age, x => x.UserName);
-
+            var byAgeReturnUserName = qry.GroupBy("Profile.Age", "UserName");
+            var byAgeReturnAll = qry.GroupBy("Profile.Age");
 
             //Assert
-            Assert.AreEqual(byAgeReal.Count(), byAge.Count());
+            Assert.AreEqual(testList.GroupBy(x => x.Profile.Age).Count(), byAgeReturnUserName.Count());
+            Assert.AreEqual(testList.GroupBy(x => x.Profile.Age).Count(), byAgeReturnAll.Count());
         }
     }
 }
