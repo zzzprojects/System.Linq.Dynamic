@@ -42,8 +42,9 @@
     <AssemblyOriginatorKeyFile>..\System.Linq.Dynamic\Properties\key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentValidation">
-      <HintPath>..\packages\FluentValidationNA.1.0.8\lib\net35\FluentValidation.dll</HintPath>
+    <Reference Include="FluentValidation, Version=1.1.13.15625, Culture=neutral, PublicKeyToken=0950390b87309e14, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentValidationNA.1.1.13\lib\net40\FluentValidation.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
