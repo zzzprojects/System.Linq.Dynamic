@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>System.Linq.Dynamic.Library</id>
-        <version>1.1.4</version>
+        <version>1.1.5</version>
         <title>Dynamic Linq Library</title>
         <authors>Nathan Arnott,Microsoft</authors>
         <owners>Nathan Arnott</owners>
@@ -13,7 +13,9 @@
 
 This is more than a simple deployment of the Microsoft Dynamic Linq Library example (NuGet Package System.Linq.Dynamic.Library). It is a living project, and contains XML documentation with examples.</description>
         <summary>Supports Framework 3.5 and 4.0+</summary>
-        <releaseNotes>1.1.4 For .NET 4.0+, Select and GroupBy now take advantage of the dynamic keyword, allowing for prevervation of generic types when possible, and easier access to members of dynamic queries.
+        <releaseNotes>1.1.5 Added ability to select members of sub-tables.  Example: var dynamicObject = qry.Select("new (StringProperty, SubTable.Select(SubTableId) as SubTableIds)") 
+
+1.1.4 For .NET 4.0+, Select and GroupBy now take advantage of the dynamic keyword, allowing for prevervation of generic types when possible, and easier access to members of dynamic queries.
 
 1.1.3 Added several new Methods to support base IQueryable interface, including: Single(), SingleOrDefault(), First(), FirstOrDefault() and Reverse().  Also adds dynamics verisons of those methods for 4.0+ targets, including a AsEnumerableDynamic(). 
 
@@ -26,9 +28,9 @@ Bug Fix when using Select Method to select multiple values.</releaseNotes>
         </dependencies>
     </metadata>
     <files>
-        <file src="..\Src\System.Linq.Dynamic.For35\bin\Release\System.Linq.Dynamic.dll" target="lib\net35\System.Linq.Dynamic.dll" />
-        <file src="..\Src\System.Linq.Dynamic.For35\bin\Release\System.Linq.Dynamic.XML" target="lib\net35\System.Linq.Dynamic.XML" />
-        <file src="..\Src\System.Linq.Dynamic\bin\Release\System.Linq.Dynamic.dll" target="lib\net40\System.Linq.Dynamic.dll" />
-        <file src="..\Src\System.Linq.Dynamic\bin\Release\System.Linq.Dynamic.XML" target="lib\net40\System.Linq.Dynamic.XML" />
+        <file src="..\..\DynamicLinq\Src\System.Linq.Dynamic.For35\bin\Release\System.Linq.Dynamic.dll" target="lib\net35\System.Linq.Dynamic.dll" />
+        <file src="..\..\DynamicLinq\Src\System.Linq.Dynamic.For35\bin\Release\System.Linq.Dynamic.XML" target="lib\net35\System.Linq.Dynamic.XML" />
+        <file src="..\..\DynamicLinq\Src\System.Linq.Dynamic\bin\Release\System.Linq.Dynamic.dll" target="lib\net40\System.Linq.Dynamic.dll" />
+        <file src="..\..\DynamicLinq\Src\System.Linq.Dynamic\bin\Release\System.Linq.Dynamic.XML" target="lib\net40\System.Linq.Dynamic.XML" />
     </files>
 </package>
