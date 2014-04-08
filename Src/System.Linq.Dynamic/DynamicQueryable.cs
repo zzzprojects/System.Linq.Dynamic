@@ -111,6 +111,7 @@ namespace System.Linq.Dynamic
         /// <code>
         /// var singleField = qry.Select("StringProperty");
         /// var dynamicObject = qry.Select("new (StringProperty1, StringProperty2 as OtherStringPropertyName)");
+        /// var dynamicObject = qry.Select("new (StringProperty, SubTable.Select(SubTableId) as SubTableIds)");
         /// </code>
         /// </example>
         public static IQueryable<dynamic> Select(this IQueryable source, string selector, params object[] args)
