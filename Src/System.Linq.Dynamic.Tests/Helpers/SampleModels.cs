@@ -14,6 +14,8 @@ namespace System.Linq.Dynamic.Tests.Helpers
 
         public UserProfile Profile { get; set; }
 
+        public List<Role> Roles { get; set; }
+
         public static IList<User> GenerateSampleModels(int total, bool allowNullableProfiles = false)
         {
             Validate.Argument(total).IsInRange(x => total >= 0).Check();
@@ -38,6 +40,8 @@ namespace System.Linq.Dynamic.Tests.Helpers
                     };
                 }
 
+                user.Roles = new List<Role>(Role.StandardRoles);
+
                 list.Add(user);
             }
 
@@ -52,5 +56,23 @@ namespace System.Linq.Dynamic.Tests.Helpers
         public string LastName { get; set; }
 
         public int? Age { get; set; }
+    }
+
+    public class Role
+    {
+        public static readonly Role[] StandardRoles = new Role[] {
+            new Role() { Name="Admin"},
+            new Role() { Name="User"},
+            new Role() { Name="Guest"}
+        };
+
+        public Role()
+        {
+            Id = Guid.NewGuid();
+        }
+
+        public Guid Id { get; set; }
+
+        public string Name { get; set; }
     }
 }
