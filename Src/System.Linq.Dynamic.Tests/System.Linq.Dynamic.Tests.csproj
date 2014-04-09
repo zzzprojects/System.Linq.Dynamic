@@ -69,6 +69,7 @@
     <Compile Include="Helpers\Helper.cs" />
     <Compile Include="Helpers\SampleModels.cs" />
     <Compile Include="DynamicTests.cs" />
+    <Compile Include="ComplexTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\System.Linq.Dynamic\Properties\key.snk">

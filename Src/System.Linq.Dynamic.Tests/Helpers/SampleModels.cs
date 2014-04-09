@@ -12,6 +12,8 @@ namespace System.Linq.Dynamic.Tests.Helpers
 
         public string UserName { get; set; }
 
+        public int Income { get; set; }
+
         public UserProfile Profile { get; set; }
 
         public List<Role> Roles { get; set; }
@@ -27,7 +29,8 @@ namespace System.Linq.Dynamic.Tests.Helpers
                 var user = new User()
                 {
                     Id = Guid.NewGuid(),
-                    UserName = "User" + i.ToString()
+                    UserName = "User" + i.ToString(),
+                    Income = ((i) % 15) * 100
                 };
 
                 if (!allowNullableProfiles || (i % 8) != 5)

@@ -6,6 +6,11 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
+#if !NET35
+using System.Dynamic;
+using CSharp = Microsoft.CSharp.RuntimeBinder;
+#endif
+
 namespace System.Linq.Dynamic
 {
 
@@ -749,10 +754,10 @@ namespace System.Linq.Dynamic
                 }
                 else
                 {
-                    MemberExpression me = expr as MemberExpression;
-                    if (me == null) throw ParseError(exprPos, Res.MissingAsClause);
-                    propName = me.Member.Name;
+                    if (!TryGetMemberName(expr, out propName)) 
+                        throw ParseError(exprPos, Res.MissingAsClause);
                 }
+
                 expressions.Add(expr);
                 properties.Add(new DynamicProperty(propName, expr.Type));
                 if (_token.id != TokenId.Comma) break;
@@ -871,8 +876,14 @@ namespace System.Linq.Dynamic
             {
                 MemberInfo member = FindPropertyOrField(type, id, instance == null);
                 if (member == null)
+                {
+#if !NET35
+                    //only try to get the member dynamically if the instance type is an object.
+                    if( type == typeof( object ) ) return GetDynamicMember(instance, id);
+#endif
                     throw ParseError(errorPos, Res.UnknownPropertyOrField,
                         id, GetTypeName(type));
+                }
 
                 var property = member as PropertyInfo;
 
@@ -881,6 +892,7 @@ namespace System.Linq.Dynamic
                 return Expression.Field(instance, (FieldInfo)member);
             }
         }
+
 
         static Type FindGenericType(Type generic, Type type)
         {
@@ -1010,6 +1022,27 @@ namespace System.Linq.Dynamic
             return s;
         }
 
+        static bool TryGetMemberName(Expression expression, out string memberName)
+        {
+            var memberExpression = expression as MemberExpression;
+            if( memberExpression != null )
+            {
+                memberName = memberExpression.Member.Name;
+                return true;
+            }
+#if !NET35
+            var dynamicExpression = expression as Expressions.DynamicExpression;
+            if (dynamicExpression != null)
+            {
+                memberName = ((GetMemberBinder)dynamicExpression.Binder).Name;
+                return true;
+            }
+#endif
+
+            memberName = null;
+            return false;
+        }
+
         static bool IsNumericType(Type type)
         {
             return GetNumericTypeKind(type) != 0;
@@ -1094,6 +1127,26 @@ namespace System.Linq.Dynamic
             }
             return null;
         }
+
+#if !NET35
+
+        
+
+        static Expression GetDynamicMember(Expression instance, string memberName)
+        {
+            var binder = CSharp.Binder.GetMember(
+                CSharp.CSharpBinderFlags.None,
+                memberName,
+                typeof(ExpressionParser),
+                new CSharp.CSharpArgumentInfo[] { CSharp.CSharpArgumentInfo.Create(CSharp.CSharpArgumentInfoFlags.None, null) }
+                );
+
+            var e = Expression.Dynamic(binder, typeof(object), instance);
+
+            return e;
+        }
+
+#endif
 
         int FindMethod(Type type, string methodName, bool staticAccess, Expression[] args, out MethodBase method)
         {

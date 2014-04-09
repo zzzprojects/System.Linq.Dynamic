@@ -29,7 +29,7 @@ namespace System.Linq.Dynamic.Tests.Helpers
 
             Assert.Fail("Expected Exception did not occur.");
         }
-#if NET35
+
         public static T GetDynamicProperty<T>(this object obj, string propertyName)
         {
             if (obj == null) throw new ArgumentNullException("obj");
@@ -39,6 +39,6 @@ namespace System.Linq.Dynamic.Tests.Helpers
 
             return (T)propInfo.GetValue(obj, null);
         }
-#endif
+
     }
 }

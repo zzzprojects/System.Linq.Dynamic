@@ -66,6 +66,9 @@
     <Compile Include="..\System.Linq.Dynamic.Tests\BasicTests.cs">
       <Link>BasicTests.cs</Link>
     </Compile>
+    <Compile Include="..\System.Linq.Dynamic.Tests\ComplexTests.cs">
+      <Link>ComplexTests.cs</Link>
+    </Compile>
     <Compile Include="..\System.Linq.Dynamic.Tests\DynamicTests.cs">
       <Link>DynamicTests.cs</Link>
     </Compile>
