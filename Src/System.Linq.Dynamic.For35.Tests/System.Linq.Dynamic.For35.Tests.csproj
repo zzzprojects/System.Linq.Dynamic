@@ -78,6 +78,9 @@
     <Compile Include="..\System.Linq.Dynamic.Tests\Helpers\SampleModels.cs">
       <Link>SampleModels.cs</Link>
     </Compile>
+    <Compile Include="..\System.Linq.Dynamic.Tests\InternalTests.cs">
+      <Link>InternalTests.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -92,9 +92,6 @@
     <Compile Include="..\System.Linq.Dynamic\Res.cs">
       <Link>Res.cs</Link>
     </Compile>
-    <Compile Include="..\System.Linq.Dynamic\Signature.cs">
-      <Link>Signature.cs</Link>
-    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
