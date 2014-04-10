@@ -20,14 +20,14 @@ namespace System.Linq.Dynamic
 
         private ClassFactory()
         {
-            AssemblyName name = new AssemblyName("DynamicClasses");
+            AssemblyName name = new AssemblyName("System.Linq.Dynamic.DynamicClasses");
             AssemblyBuilder assembly = AppDomain.CurrentDomain.DefineDynamicAssembly(name, AssemblyBuilderAccess.Run);
 #if ENABLE_LINQ_PARTIAL_TRUST
             new ReflectionPermission(PermissionState.Unrestricted).Assert();
 #endif
             try
             {
-                _module = assembly.DefineDynamicModule("Module");
+                _module = assembly.DefineDynamicModule("System.Linq.Dynamic.DynamicClasses");
             }
             finally
             {
