@@ -46,6 +46,7 @@
       <HintPath>..\packages\FluentValidationNA.1.1.14\lib\net35\FluentValidation.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -87,6 +88,7 @@
     <None Include="..\System.Linq.Dynamic\Properties\key.snk">
       <Link>Properties\key.snk</Link>
     </None>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

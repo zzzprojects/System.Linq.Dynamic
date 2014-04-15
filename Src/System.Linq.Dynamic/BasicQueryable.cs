@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -14,7 +15,7 @@ namespace System.Linq.Dynamic
     /// </summary>
     public static class BasicQueryable
     {
-#if NET35
+        #region IQueryable Adjustors
 
         /// <summary>
         /// Returns a specified number of contiguous elements from the start of a sequence.
@@ -55,6 +56,24 @@ namespace System.Linq.Dynamic
                     source.Expression, Expression.Constant(count)));
         }
 
+
+        /// <summary>
+        /// Inverts the order of the elements in a sequence.
+        /// </summary>
+        /// <param name="source">A sequence of values to reverse.</param>
+        /// <returns>A <see cref="IQueryable"/> whose elements correspond to those of the input sequence in reverse order.</returns>
+        public static IQueryable Reverse(this IQueryable source)
+        {
+            Validate.Argument(source, "source").IsNotNull().Check();
+
+            return source.Provider.CreateQuery(Expression.Call(
+                typeof(Queryable), "Reverse",
+                new Type[] { source.ElementType }, source.Expression));
+        }
+
+        #endregion
+
+        #region Aggregates
         /// <summary>
         /// Determines whether a sequence contains any elements.
         /// </summary>
@@ -85,13 +104,21 @@ namespace System.Linq.Dynamic
                     new Type[] { source.ElementType }, source.Expression));
         }
 
+        #endregion
+
+        #region Executors
+
         /// <summary>
         /// Returns the only element of a sequence, and throws an exception if there
         /// is not exactly one element in the sequence.
         /// </summary>
         /// <param name="source">A <see cref="IQueryable"/> to return the single element of.</param>
         /// <returns>The single element of the input sequence.</returns>
+#if NET35
         public static object Single(this IQueryable source)
+#else
+        public static dynamic Single(this IQueryable source)
+#endif
         {
             Validate.Argument(source, "source").IsNotNull().Check();
 
@@ -107,7 +134,11 @@ namespace System.Linq.Dynamic
         /// </summary>
         /// <param name="source">A <see cref="IQueryable"/> to return the single element of.</param>
         /// <returns>The single element of the input sequence, or default(TSource) if the sequence contains no elements.</returns>
+#if NET35
         public static object SingleOrDefault(this IQueryable source)
+#else
+        public static dynamic SingleOrDefault(this IQueryable source)
+#endif
         {
             Validate.Argument(source, "source").IsNotNull().Check();
 
@@ -121,7 +152,11 @@ namespace System.Linq.Dynamic
         /// </summary>
         /// <param name="source">The <see cref="IQueryable"/> to return the first element of.</param>
         /// <returns>The first element in source.</returns>
+#if NET35
         public static object First(this IQueryable source)
+#else
+        public static dynamic First(this IQueryable source)
+#endif
         {
             Validate.Argument(source, "source").IsNotNull().Check();
 
@@ -130,12 +165,18 @@ namespace System.Linq.Dynamic
                 new Type[] { source.ElementType }, source.Expression));
         }
 
+
+
         /// <summary>
         /// Returns the first element of a sequence, or a default value if the sequence contains no elements.
         /// </summary>
         /// <param name="source">The <see cref="IQueryable"/> to return the first element of.</param>
         /// <returns>default(TSource) if source is empty; otherwise, the first element in source.</returns>
+#if NET35
         public static object FirstOrDefault(this IQueryable source)
+#else
+        public static dynamic FirstOrDefault(this IQueryable source)
+#endif
         {
             Validate.Argument(source, "source").IsNotNull().Check();
 
@@ -144,21 +185,46 @@ namespace System.Linq.Dynamic
                 new Type[] { source.ElementType }, source.Expression));
         }
 
-        /// <summary>
-        /// Inverts the order of the elements in a sequence.
-        /// </summary>
-        /// <param name="source">A sequence of values to reverse.</param>
-        /// <returns>A <see cref="IQueryable"/> whose elements correspond to those of the input sequence in reverse order.</returns>
-        public static IQueryable Reverse(this IQueryable source)
-        {
-            Validate.Argument(source, "source").IsNotNull().Check();
 
-            return source.Provider.CreateQuery(Expression.Call(
-                typeof(Queryable), "Reverse",
-                new Type[] { source.ElementType }, source.Expression));
+
+#if NET35
+        /// <summary>
+        /// Returns the input typed as <see cref="IEnumerable{T}"/> of <see cref="object"/>./>
+        /// </summary>
+        /// <param name="source">The sequence to type as <see cref="IEnumerable{T}"/> of <see cref="object"/>.</param>
+        /// <returns>the input typed as <see cref="IEnumerable{T}"/> of <see cref="object"/>.</returns>
+        public static IEnumerable<object> AsEnumerable(this IQueryable source)
+#else
+        /// <summary>
+        /// Returns the input typed as <see cref="IEnumerable{T}"/> of dynamic.
+        /// </summary>
+        /// <param name="source">The sequence to type as <see cref="IEnumerable{T}"/> of dynamic.</param>
+        /// <returns>the input typed as <see cref="IEnumerable{T}"/> of dynamic.</returns>
+        public static IEnumerable<dynamic> AsEnumerable(this IQueryable source)
+#endif
+        {
+            foreach (var obj in source)
+            {
+                yield return obj;
+            }
         }
 
+
+#if !NET35
+        /// <summary>
+        /// Creates an array of dynamics from a <see cref="IEnumerable"/>.
+        /// </summary>
+        /// <param name="source">A <see cref="IEnumerable"/> to create an array from.</param>
+        /// <returns>An array that contains the elements from the input sequence.</returns>
+        public static dynamic[] ToDynamicArray(this IEnumerable source)
+
+        {
+            return source.Cast<object>().ToArray();
+        }
 #endif
+
+
+        #endregion
 
 
     }

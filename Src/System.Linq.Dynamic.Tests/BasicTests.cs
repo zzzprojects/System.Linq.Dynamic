@@ -7,7 +7,7 @@ namespace System.Linq.Dynamic.Tests
     [TestClass]
     public class BasicTests
     {
-#if NET35
+
         [TestMethod]
         public void Any()
         {
@@ -97,7 +97,11 @@ namespace System.Linq.Dynamic.Tests
             var result = testListQry.Take(1).Single();
 
             //Assert
+#if NET35
             Assert.AreEqual(testList[0].Id, result.GetDynamicProperty<Guid>("Id"));
+#else
+            Assert.AreEqual(testList[0].Id, result.Id);
+#endif
         }
 
         [TestMethod]
@@ -112,7 +116,11 @@ namespace System.Linq.Dynamic.Tests
             var defaultResult = ((IQueryable)Enumerable.Empty<User>().AsQueryable()).SingleOrDefault();
 
             //Assert
+#if NET35
             Assert.AreEqual(testList[0].Id, singleResult.GetDynamicProperty<Guid>("Id"));
+#else
+            Assert.AreEqual(testList[0].Id, singleResult.Id);
+#endif
             Assert.IsNull(defaultResult);
         }
 
@@ -127,7 +135,11 @@ namespace System.Linq.Dynamic.Tests
             var result = testListQry.First();
 
             //Assert
+#if NET35
             Assert.AreEqual(testList[0].Id, result.GetDynamicProperty<Guid>("Id"));
+#else
+            Assert.AreEqual(testList[0].Id, result.Id);
+#endif
         }
 
         [TestMethod]
@@ -142,10 +154,13 @@ namespace System.Linq.Dynamic.Tests
             var defaultResult = ((IQueryable)Enumerable.Empty<User>().AsQueryable()).FirstOrDefault();
 
             //Assert
+#if NET35
             Assert.AreEqual(testList[0].Id, singleResult.GetDynamicProperty<Guid>("Id"));
+#else
+            Assert.AreEqual(testList[0].Id, singleResult.Id);
+#endif
             Assert.IsNull(defaultResult);
         }
-#endif
 
     }
 

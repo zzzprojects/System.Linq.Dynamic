@@ -30,12 +30,23 @@ namespace System.Linq.Dynamic.Tests
 
             //Assert
             Assert.AreEqual(realQry.Count(), selectQry.Count());
+#if NET35
             CollectionAssert.AreEqual(
                 realQry.Select(x => x.Age).ToArray(),
                 selectQry.Cast<object>().Select(x => ((object)x).GetDynamicProperty<int?>("Age")).ToArray());
+
             CollectionAssert.AreEqual(
                 realQry.Select(x => x.TotalIncome).ToArray(),
                 selectQry.Cast<object>().Select(x => ((object)x).GetDynamicProperty<int>("TotalIncome")).ToArray());
+#else
+            CollectionAssert.AreEqual(
+                realQry.Select(x => x.Age).ToArray(),
+                selectQry.AsEnumerable().Select(x => x.Age).ToArray());
+
+            CollectionAssert.AreEqual(
+                realQry.Select(x => x.TotalIncome).ToArray(),
+                selectQry.AsEnumerable().Select(x => x.TotalIncome).ToArray());
+#endif
         }
 
     }

@@ -70,8 +70,6 @@ namespace System.Linq.Dynamic
 
         #region Select
 
-#if NET35
-
         /// <summary>
         /// Projects each element of a sequence into a new form.
         /// </summary>
@@ -98,38 +96,38 @@ namespace System.Linq.Dynamic
                     source.Expression, Expression.Quote(lambda)));
         }
 
-#else
-
         /// <summary>
-        /// Projects each element of a sequence into a new dynamic form.
+        /// Projects each element of a sequence to an <see cref="IQueryable"/> and combines the 
+        /// resulting sequences into one sequence.
         /// </summary>
         /// <param name="source">A sequence of values to project.</param>
-        /// <param name="selector">A projection string to apply to each element.</param>
+        /// <param name="selector"> A projection string to apply to each element.</param>
         /// <param name="args">An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way String.Format formats strings.</param>
-        /// <returns>An <see cref="IQueryable{T}"/> whose elements are the result of invoking a projection string on each element of source.</returns>
-        /// <example>
-        /// <code>
-        /// var singleField = qry.Select("StringProperty");
-        /// var dynamicObject = qry.Select("new (StringProperty1, StringProperty2 as OtherStringPropertyName)");
-        /// var dynamicObject = qry.Select("new (StringProperty, SubTable.Select(SubTableId) as SubTableIds)");
-        /// </code>
-        /// </example>
-        public static IQueryable<dynamic> Select(this IQueryable source, string selector, params object[] args)
+        /// <returns>An <see cref="IQueryable"/> whose elements are the result of invoking a one-to-many projection function on each element of the input sequence.</returns>
+        public static IQueryable SelectMany( this IQueryable source, string selector, params object[] args)
         {
             Validate.Argument(source, "source").IsNotNull().Check()
                     .Argument(selector, "selector").IsNotNull().IsNotEmpty().IsNotWhiteSpace().Check();
 
-            LambdaExpression lambda = DynamicExpression.ParseLambda(source.ElementType, typeof(object), selector, args);
-            var result =  source.Provider.CreateQuery(
-                Expression.Call(
-                    typeof(Queryable), "Select",
-                    new Type[] { source.ElementType, lambda.Body.Type },
-                    source.Expression, Expression.Quote(lambda)));
+            LambdaExpression lambda = DynamicExpression.ParseLambda(source.ElementType, null, selector, args);
+         
+            //Extra help to get SelectMany to work from StackOverflow Answer
+            //http://stackoverflow.com/a/3001674/2465182
 
-            return (IQueryable<dynamic>)result;
+            //we have to adjust to lambda to return an IEnumerable<T> instead of whatever the actual property is.
+            Type inputType = source.Expression.Type.GetGenericArguments()[0];
+            Type resultType = lambda.Body.Type.GetGenericArguments()[0];
+            Type enumerableType = typeof(IEnumerable<>).MakeGenericType(resultType);
+            Type delegateType = typeof(Func<,>).MakeGenericType(inputType, enumerableType);
+            lambda = Expression.Lambda(delegateType, lambda.Body, lambda.Parameters);
+
+            return source.Provider.CreateQuery(
+                Expression.Call(
+                    typeof(Queryable), "SelectMany",
+                    new Type[] { source.ElementType, resultType },
+                    source.Expression, Expression.Quote(lambda)));
         }
 
-#endif
 
         #endregion
         
@@ -194,8 +192,6 @@ namespace System.Linq.Dynamic
 
         #region GroupBy
 
-#if NET35
-
         /// <summary>
         /// Groups the elements of a sequence according to a specified key string function 
         /// and creates a result value from each group and its key.
@@ -246,6 +242,7 @@ namespace System.Linq.Dynamic
             return GroupBy(source, keySelector, resultSelector, (object[])null);
         }
 
+
         /// <summary>
         /// Groups the elements of a sequence according to a specified key string function 
         /// and creates a result value from each group and its key.
@@ -292,109 +289,6 @@ namespace System.Linq.Dynamic
             return GroupBy(source, keySelector, (object[])null);
         }
 
-#else
-
-        /// <summary>
-        /// Groups the elements of a sequence according to a specified key string function 
-        /// and creates a result value of dynamic objects from each group and its dynamic key.
-        /// </summary>
-        /// <param name="source">A <see cref="IQueryable"/> whose elements to group.</param>
-        /// <param name="keySelector">A string to specify the key for each element.</param>
-        /// <param name="resultSelector">A string to specify a result value from each group.</param>
-        /// <param name="args">An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way String.Format formats strings.</param>
-        /// <returns>A <see cref="IQueryable"/> where each element represents a projection over a group and its key.</returns>
-        /// <example>
-        /// <code>
-        /// var groupResult1 = qry.GroupBy("NumberPropertyAsKey", "StringProperty");
-        /// var groupResult2 = qry.GroupBy("new (NumberPropertyAsKey, StringPropertyAsKey)", "new (StringProperty1, StringProperty2)");
-        /// </code>
-        /// </example>
-        public static IQueryable<IGrouping<dynamic,dynamic>> GroupBy(this IQueryable source, string keySelector, string resultSelector, object[] args)
-        {
-            Validate.Argument(source, "source").IsNotNull().Check()
-                    .Argument(keySelector, "keySelector").IsNotNull().IsNotEmpty().IsNotWhiteSpace().Check()
-                    .Argument(resultSelector, "resultSelector").IsNotNull().IsNotEmpty().IsNotWhiteSpace().Check();
-
-            LambdaExpression keyLambda = DynamicExpression.ParseLambda(source.ElementType, typeof(object), keySelector, args);
-            LambdaExpression elementLambda = DynamicExpression.ParseLambda(source.ElementType, typeof(object), resultSelector, args);
-
-            var result = source.Provider.CreateQuery(
-                Expression.Call(
-                    typeof(Queryable), "GroupBy",
-                    new Type[] { source.ElementType, keyLambda.Body.Type, elementLambda.Body.Type },
-                    source.Expression, Expression.Quote(keyLambda), Expression.Quote(elementLambda)));
-
-            return (IQueryable<IGrouping<dynamic, dynamic>>)result;
-        }
-
-        /// <summary>
-        /// Groups the elements of a sequence according to a specified key string function 
-        /// and creates a result value of dynamic objects from each group and its dynamic key.
-        /// </summary>
-        /// <param name="source">A <see cref="IQueryable"/> whose elements to group.</param>
-        /// <param name="keySelector">A string to specify the key for each element.</param>
-        /// <param name="resultSelector">A string to specify a result value from each group.</param>
-        /// <returns>A <see cref="IQueryable"/> where each element represents a projection over a group and its key.</returns>
-        /// <example>
-        /// <code>
-        /// var groupResult1 = qry.GroupBy("NumberPropertyAsKey", "StringProperty");
-        /// var groupResult2 = qry.GroupBy("new (NumberPropertyAsKey, StringPropertyAsKey)", "new (StringProperty1, StringProperty2)");
-        /// </code>
-        /// </example>
-        public static IQueryable<IGrouping<dynamic, dynamic>> GroupBy(this IQueryable source, string keySelector, string resultSelector)
-        {
-            return GroupBy(source, keySelector, resultSelector, (object[])null);
-        }
-
-        /// <summary>
-        /// Groups the elements of a sequence according to a specified key string function 
-        /// and creates a result value from each group and its dynamic key.
-        /// </summary>
-        /// <param name="source">A <see cref="IQueryable"/> whose elements to group.</param>
-        /// <param name="keySelector">A string to specify the key for each element.</param>
-        /// <param name="args">An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way String.Format formats strings.</param>
-        /// <returns>A <see cref="IQueryable"/> where each element represents a projection over a group and its key.</returns>
-        /// <example>
-        /// <code>
-        /// var groupResult1 = qry.GroupBy("NumberPropertyAsKey");
-        /// var groupResult2 = qry.GroupBy("new (NumberPropertyAsKey, StringPropertyAsKey)");
-        /// </code>
-        /// </example>
-        public static IQueryable<IGrouping<dynamic, TSource>> GroupBy<TSource>(this IQueryable<TSource> source, string keySelector, object[] args)
-        {
-            Validate.Argument(source, "source").IsNotNull().Check()
-                .Argument(keySelector, "keySelector").IsNotNull().IsNotEmpty().IsNotWhiteSpace().Check();
-
-            LambdaExpression keyLambda = DynamicExpression.ParseLambda(source.ElementType, typeof(object), keySelector, args);
-
-            var result = source.Provider.CreateQuery(
-                Expression.Call(
-                    typeof(Queryable), "GroupBy",
-                    new Type[] { source.ElementType, keyLambda.Body.Type },
-                    source.Expression, Expression.Quote(keyLambda)));
-
-            return (IQueryable<IGrouping<dynamic, TSource>>)result;
-        }
-
-        /// <summary>
-        /// Groups the elements of a sequence according to a specified key string function 
-        /// and creates a result value from each group and its dynamic key.
-        /// </summary>
-        /// <param name="source">A <see cref="IQueryable"/> whose elements to group.</param>
-        /// <param name="keySelector">A string to specify the key for each element.</param>
-        /// <returns>A <see cref="IQueryable"/> where each element represents a projection over a group and its key.</returns>
-        /// <example>
-        /// <code>
-        /// var groupResult1 = qry.GroupBy("NumberPropertyAsKey");
-        /// var groupResult2 = qry.GroupBy("new (NumberPropertyAsKey, StringPropertyAsKey)");
-        /// </code>
-        /// </example>
-        public static IQueryable<IGrouping<dynamic, TSource>> GroupBy<TSource>(this IQueryable<TSource> source, string keySelector)
-        {
-            return GroupBy(source, keySelector, (object[])null);
-        }
-
-#endif
 
         #endregion
 

@@ -111,13 +111,13 @@ namespace System.Linq.Dynamic.Tests
 
             //Assert
 #if NET35
-            CollectionAssert.AreEqual(testList.Select(x => x.UserName).ToArray(), userNames.Cast<string>().ToArray());
+            CollectionAssert.AreEqual(testList.Select(x => x.UserName).ToArray(), userNames.AsEnumerable().ToArray());
             CollectionAssert.AreEqual(
                 testList.Select(x => "{UserName=" + x.UserName + ", MyFirstName=" + x.Profile.FirstName + "}").ToArray(),
                 userFirstName.Cast<object>().Select(x => x.ToString()).ToArray());
             CollectionAssert.AreEqual(testList[0].Roles.Select(x => x.Id).ToArray(), Enumerable.ToArray(userRoles.First().GetDynamicProperty<IEnumerable<Guid>>("RoleIds")));
 #else
-            CollectionAssert.AreEqual(testList.Select(x => x.UserName).ToArray(), userNames.ToArray());
+            CollectionAssert.AreEqual(testList.Select(x => x.UserName).ToArray(), userNames.ToDynamicArray());
             CollectionAssert.AreEqual(
                 testList.Select(x => "{UserName=" + x.UserName + ", MyFirstName=" + x.Profile.FirstName + "}").ToArray(),
                 userFirstName.AsEnumerable().Select(x => x.ToString()).ToArray());

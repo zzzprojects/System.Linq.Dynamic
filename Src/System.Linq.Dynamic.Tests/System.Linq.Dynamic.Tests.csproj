@@ -42,12 +42,19 @@
     <AssemblyOriginatorKeyFile>..\System.Linq.Dynamic\Properties\key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net40\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="FluentValidation, Version=1.1.14.15542, Culture=neutral, PublicKeyToken=0950390b87309e14, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\FluentValidationNA.1.1.14\lib\net40\FluentValidation.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -66,6 +73,9 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BasicTests.cs" />
+    <Compile Include="EntitiesTests.cs" />
+    <Compile Include="Helpers\Entities\BlogContext.cs" />
+    <Compile Include="Helpers\Entities\SampleEntities.cs" />
     <Compile Include="Helpers\Helper.cs" />
     <Compile Include="Helpers\SampleModels.cs" />
     <Compile Include="DynamicTests.cs" />
@@ -76,6 +86,7 @@
     <None Include="..\System.Linq.Dynamic\Properties\key.snk">
       <Link>key.snk</Link>
     </None>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
