@@ -171,6 +171,7 @@ namespace System.Linq.Dynamic
             void Select(object selector);
             void OrderBy(object selector);
             void OrderByDescending(object selector);
+            void Contains(object selector);
 
             //Executors
             void Single();
@@ -924,9 +925,21 @@ namespace System.Linq.Dynamic
         {
             ParameterExpression outerIt = _it;
             ParameterExpression innerIt = Expression.Parameter(elementType, "");
-            _it = innerIt;
+
+            if (methodName == "Contains")
+            {
+                //for any method that acts on the parent element type, we need to specify the outerIt as scope.
+                _it = outerIt;
+            }
+            else
+            {
+                _it = innerIt;
+            }
+
             Expression[] args = ParseArgumentList();
+
             _it = outerIt;
+
             MethodBase signature;
             if (FindMethod(typeof(IEnumerableSignatures), methodName, false, args, out signature) != 1)
                 throw ParseError(errorPos, Res.NoApplicableAggregate, methodName);
@@ -945,7 +958,12 @@ namespace System.Linq.Dynamic
             {
                 typeArgs = new Type[] { elementType };
             }
-            if (args.Length == 0)
+
+            if( signature.Name == "Contains")
+            {
+                args = new Expression[] { instance, args[0] };
+            }
+            else if (args.Length == 0)
             {
                 args = new Expression[] { instance };
             }
@@ -953,6 +971,7 @@ namespace System.Linq.Dynamic
             {
                 args = new Expression[] { instance, Expression.Lambda(args[0], innerIt) };
             }
+
             return Expression.Call(typeof(Enumerable), signature.Name, typeArgs, args);
         }
 

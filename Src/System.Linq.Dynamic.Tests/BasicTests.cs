@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq.Dynamic.Tests.Helpers;
+using System.Collections.Generic;
 
 namespace System.Linq.Dynamic.Tests
 {
@@ -26,6 +27,22 @@ namespace System.Linq.Dynamic.Tests
             Assert.IsTrue(resultFull);
             Assert.IsTrue(resultOne);
             Assert.IsFalse(resultNone);
+        }
+
+        [TestMethod]
+        public void Contains()
+        {
+            //Arrange
+            var baseQuery = User.GenerateSampleModels(100).AsQueryable();
+            var containsList = new List<string>() { "User1", "User5", "User10" };
+
+
+            //Act
+            var realQuery = baseQuery.Where(x => containsList.Contains(x.UserName)).Select(x => x.Id);
+            var testQuery = baseQuery.Where("@0.Contains(UserName)", containsList).Select("Id");
+
+            //Assert
+            CollectionAssert.AreEqual(realQuery.ToArray(), testQuery.Cast<Guid>().ToArray());
         }
 
         [TestMethod]
