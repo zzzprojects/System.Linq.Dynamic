@@ -82,13 +82,11 @@
     <Compile Include="..\System.Linq.Dynamic.Tests\InternalTests.cs">
       <Link>InternalTests.cs</Link>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\System.Linq.Dynamic\Properties\key.snk">
-      <Link>Properties\key.snk</Link>
+      <Link>key.snk</Link>
     </None>
-    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +94,9 @@
       <Project>{801d4f1d-1b5f-404c-bfa2-d69f38eeddf5}</Project>
       <Name>System.Linq.Dynamic.For35</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
