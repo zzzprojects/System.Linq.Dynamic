@@ -91,6 +91,19 @@ namespace System.Linq.Dynamic.Tests
             CollectionAssert.AreEqual(testList.Take(1).ToArray(), resultOne.Cast<User>().ToArray());
         }
 
+        [TestMethod]
+        public void Reverse()
+        {
+            var testList = User.GenerateSampleModels(100);
+            IQueryable testListQry = testList.AsQueryable();
+
+            //Act
+            var result = BasicQueryable.Reverse(testListQry);
+
+            //Assert
+            CollectionAssert.AreEqual(Enumerable.Reverse(testList).ToArray(), result.Cast<User>().ToArray());
+        }
+
         #endregion
 
         #region Executors
