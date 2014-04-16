@@ -80,6 +80,26 @@ namespace System.Linq.Dynamic.Tests
         }
 
         [TestMethod]
+        public void OrderBy_AsStringExpression()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100);
+            var qry = testList.AsQueryable();
+
+            //Act
+            var orderById = qry.SelectMany("Roles.OrderBy(Name)").Select("Name");
+            var expected = qry.SelectMany(x => x.Roles.OrderBy(y => y.Name)).Select( x => x.Name);
+
+            var orderByIdDesc = qry.SelectMany("Roles.OrderByDescending(Name)").Select("Name");
+            var expectedDesc = qry.SelectMany(x => x.Roles.OrderByDescending(y => y.Name)).Select(x => x.Name);
+
+
+            //Assert
+            CollectionAssert.AreEqual(expected.ToArray(), orderById.Cast<string>().ToArray());
+            CollectionAssert.AreEqual(expectedDesc.ToArray(), orderByIdDesc.Cast<string>().ToArray());
+        }
+
+        [TestMethod]
         public void OrderBy_Exceptions()
         {
             //Arrange

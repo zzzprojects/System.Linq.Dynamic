@@ -140,7 +140,6 @@ namespace System.Linq.Dynamic
 
         interface IEnumerableSignatures
         {
-			void FirstOrDefault();
             void Where(bool predicate);
             void Any();
             void Any(bool predicate);
@@ -170,6 +169,14 @@ namespace System.Linq.Dynamic
             void Average(decimal selector);
             void Average(decimal? selector);
             void Select(object selector);
+            void OrderBy(object selector);
+            void OrderByDescending(object selector);
+
+            //Executors
+            void Single();
+            void SingleOrDefault();
+            void First();
+            void FirstOrDefault();
         }
 
         static readonly Type[] predefinedTypes = {
@@ -924,7 +931,13 @@ namespace System.Linq.Dynamic
             if (FindMethod(typeof(IEnumerableSignatures), methodName, false, args, out signature) != 1)
                 throw ParseError(errorPos, Res.NoApplicableAggregate, methodName);
             Type[] typeArgs;
-            if (signature.Name == "Min" || signature.Name == "Max" || signature.Name == "Select")
+            if (
+                signature.Name == "Min" || 
+                signature.Name == "Max" || 
+                signature.Name == "Select" ||
+                signature.Name == "OrderBy" ||
+                signature.Name == "OrderByDescending"
+                )
             {
                 typeArgs = new Type[] { elementType, args[0].Type };
             }

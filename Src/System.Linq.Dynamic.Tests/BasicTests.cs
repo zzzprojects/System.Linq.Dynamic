@@ -7,6 +7,7 @@ namespace System.Linq.Dynamic.Tests
     [TestClass]
     public class BasicTests
     {
+        #region Aggregates
 
         [TestMethod]
         public void Any()
@@ -45,6 +46,10 @@ namespace System.Linq.Dynamic.Tests
             Assert.AreEqual(1, resultOne);
             Assert.AreEqual(0, resultNone);
         }
+
+        #endregion
+
+        #region Adjustors
 
         [TestMethod]
         public void Skip()
@@ -85,6 +90,10 @@ namespace System.Linq.Dynamic.Tests
             CollectionAssert.AreEqual(testList.Take(50).ToArray(), resultHalf.Cast<User>().ToArray());
             CollectionAssert.AreEqual(testList.Take(1).ToArray(), resultOne.Cast<User>().ToArray());
         }
+
+        #endregion
+
+        #region Executors
 
         [TestMethod]
         public void Single()
@@ -161,6 +170,49 @@ namespace System.Linq.Dynamic.Tests
 #endif
             Assert.IsNull(defaultResult);
         }
+
+
+        [TestMethod]
+        public void First_AsStringExpression()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100);
+            IQueryable testListQry = testList.AsQueryable();
+
+            //Act
+            var realResult = testList.OrderBy(x => x.Roles.First().Name).Select(x => x.Id).ToArray();
+            var testResult = testListQry.OrderBy("Roles.First().Name").Select("Id");
+
+            //Assert
+#if NET35
+            CollectionAssert.AreEqual(realResult, testResult.Cast<Guid>().ToArray());
+#else
+            CollectionAssert.AreEqual(realResult, testResult.ToDynamicArray());
+#endif
+        }
+
+        [TestMethod]
+        public void Single_AsStringExpression()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(1);
+            while (testList[0].Roles.Count > 1) testList[0].Roles.RemoveAt(0);
+            IQueryable testListQry = testList.AsQueryable();
+
+            //Act
+            var realResult = testList.OrderBy(x => x.Roles.Single().Name).Select(x => x.Id).ToArray();
+            var testResult = testListQry.OrderBy("Roles.Single().Name").Select("Id");
+
+            //Assert
+#if NET35
+            CollectionAssert.AreEqual(realResult, testResult.Cast<Guid>().ToArray());
+#else
+            CollectionAssert.AreEqual(realResult, testResult.ToDynamicArray());
+#endif
+        }
+
+
+        #endregion
 
     }
 

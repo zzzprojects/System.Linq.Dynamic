@@ -66,7 +66,10 @@ namespace System.Linq.Dynamic.Tests.Helpers
         public static readonly Role[] StandardRoles = new Role[] {
             new Role() { Name="Admin"},
             new Role() { Name="User"},
-            new Role() { Name="Guest"}
+            new Role() { Name="Guest"},
+            new Role() { Name="G"},
+            new Role() { Name="J"},
+            new Role() { Name="A"},
         };
 
         public Role()

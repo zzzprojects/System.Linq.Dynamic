@@ -68,7 +68,7 @@ namespace System.Linq.Dynamic.Tests
                         Blog = blog,
                         Title = String.Format("Blog {0} - Post {1}", i + 1, j + 1),
                         Content = "My Content",
-                        PostDate = DateTime.Today.AddDays(-Rnd.Next(0,3)),
+                        PostDate = DateTime.Today.AddDays(-Rnd.Next(0,100)).AddSeconds(Rnd.Next(0, 30000)),
                         NumberOfReads = Rnd.Next(0, 5000)
                     };
 
@@ -308,6 +308,29 @@ namespace System.Linq.Dynamic.Tests
                 Assert.AreEqual(expectedRow.Key, testRow.Key);
                 Assert.AreEqual(expectedRow.Reads, testRow.Reads);
             }
+        }
+
+        #endregion
+
+        #region Executor Tests
+
+        [TestMethod]
+        public void FirstOrDefault_AsStringExpressions()
+        {
+            //Arrange
+            PopulateTestData();
+
+            //remove all posts from first record (to allow Defaults case to validate)
+            _context.Posts.RemoveRange(_context.Blogs.OrderBy(x => x.BlogId).First<Blog>().Posts);
+            _context.SaveChanges();
+
+            
+            //Act
+            var firstExpected = _context.Blogs.OrderBy(x => x.Posts.OrderBy(y => y.PostDate).FirstOrDefault().PostDate).Select(x => x.BlogId);
+            var firstTest = _context.Blogs.OrderBy("Posts.OrderBy(PostDate).FirstOrDefault().PostDate").Select("BlogId");
+
+            //Assert
+            CollectionAssert.AreEqual(firstExpected.ToArray(), firstTest.ToDynamicArray());
         }
 
         #endregion
