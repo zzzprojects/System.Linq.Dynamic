@@ -13,16 +13,15 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("System.Linq.Dynamic")]
-[assembly: AssemblyDescription("For .Net 4 Framework")]
 [assembly: AssemblyCompany("Nathan Arnott")]
 [assembly: AssemblyProduct("System.Linq.Dynamic")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
 
 #if NET35
 [assembly: AssemblyConfiguration("Net35")]
+[assembly: AssemblyDescription("Adds support for Dynamic Linq string expressions, rather than lambda expressions. For .Net 3.5 Framework.")]
 #else
 [assembly: AssemblyConfiguration("Net40")]
+[assembly: AssemblyDescription("Adds support for Dynamic Linq string expressions, rather than lambda expressions. For .Net 4 Framework.")]
 #endif
 
 
