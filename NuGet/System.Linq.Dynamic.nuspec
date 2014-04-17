@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>System.Linq.Dynamic.Library</id>
-        <version>1.1.7</version>
+        <version>1.1.8</version>
         <title>Dynamic Linq Library</title>
         <authors>Nathan Arnott,Microsoft</authors>
         <owners>Nathan Arnott</owners>
@@ -13,7 +13,9 @@
 
 This is more than a simple deployment of the Microsoft Dynamic Linq Library example (NuGet Package System.Linq.Dynamic.Library). It is a living project, and contains XML documentation with examples.</description>
         <summary>Supports Framework 3.5 and 4.0+</summary>
-        <releaseNotes>1.1.7 Added SelectMany Method.
+        <releaseNotes>1.1.8 Added support for the use of Single(), SingleOrDefault(), First(), FirstOrDefault(), OrderBy(), OrderByDescending(), and Contains() in string expressions.
+
+1.1.7 Added SelectMany Method.
 
 Fixed bugs that only appear when using LINQ-to-Entities.
 
