@@ -64,6 +64,28 @@ namespace System.Linq.Dynamic.Tests
             Assert.AreEqual(0, resultNone);
         }
 
+        [TestMethod]
+        public void In()
+        {
+            //Arrange
+            var testRange = Enumerable.Range(1, 100).ToArray();
+            var testModels = User.GenerateSampleModels(10);
+            var testModelByUsername = String.Format("Username in (\"{0}\",\"{1}\",\"{2}\")", testModels[0].UserName, testModels[1].UserName, testModels[2].UserName);
+            var testInExpression = new int[] { 2, 4, 6, 8 };
+
+            //Act
+            var result1 = testRange.AsQueryable().Where("it in (2,4,6,8)").ToArray();
+            var result2 = testModels.AsQueryable().Where(testModelByUsername).ToArray();
+            var result3 = testModels.AsQueryable().Where("Id in (@0, @1, @2)", testModels[0].Id, testModels[1].Id, testModels[2].Id).ToArray();
+            var result4 = testRange.AsQueryable().Where("it in @0", testInExpression).ToArray();
+
+            //Assert
+            CollectionAssert.AreEqual(new int[] { 2, 4, 6, 8 }, result1);
+            CollectionAssert.AreEqual(testModels.Take(3).ToArray(), result2);
+            CollectionAssert.AreEqual(testModels.Take(3).ToArray(), result3);
+            CollectionAssert.AreEqual(new int[] { 2, 4, 6, 8 }, result4);
+        }
+
         #endregion
 
         #region Adjustors

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using System.Collections;
 
 #if !NET35
 using System.Dynamic;
@@ -346,7 +347,7 @@ namespace System.Linq.Dynamic
         // &&, and operator
         Expression ParseLogicalAnd()
         {
-            Expression left = ParseComparison();
+            Expression left = ParseIn();
             while (_token.id == TokenId.DoubleAmphersand || TokenIdentifierIs("and"))
             {
                 Token op = _token;
@@ -356,6 +357,70 @@ namespace System.Linq.Dynamic
                 left = Expression.AndAlso(left, right);
             }
             return left;
+        }
+
+        // in operator for literals - example: "x in (1,2,3,4)"
+        // in operator to mimic contains - example: "x in @0", compare to @0.contains(x)
+        // Adapted from ticket submitted by github user mlewis9548 
+        Expression ParseIn()
+        {
+            Expression left = ParseComparison();
+            Expression accumulate = left;
+
+            while (TokenIdentifierIs("in"))
+            {
+                var op = _token;
+
+                NextToken();
+                if (_token.id == TokenId.OpenParen) //literals (or other inline list)
+                {
+                    Expression identitifer = left;
+                    while (_token.id != TokenId.CloseParen)
+                    {
+                        NextToken();
+                        Expression right = ParsePrimary();
+
+                        if (identitifer.Type != right.Type) throw ParseError(op.pos, Res.ExpressionTypeMismatch, identitifer.Type);
+
+                        CheckAndPromoteOperands(typeof(IEqualitySignatures), "==", ref identitifer, ref right, op.pos);
+
+                        if (accumulate.Type != typeof(bool))
+                        {
+                            accumulate = GenerateEqual(identitifer, right);
+                        }
+                        else
+                        {
+                            accumulate = Expression.OrElse(accumulate, GenerateEqual(identitifer, right));
+                        }
+
+                        if (_token.id == TokenId.End) throw ParseError(op.pos, Res.CloseParenOrCommaExpected);
+                    }
+                }
+                else if (_token.id == TokenId.Identifier) //a single argument
+                {
+                    Expression right = ParsePrimary();
+
+                    if (!typeof(IEnumerable).IsAssignableFrom(right.Type))
+                        throw ParseError(_token.pos, Res.IdentifierImplementingInterfaceExpected, typeof(IEnumerable));
+
+                    var args = new Expression[] { left };
+
+                    MethodBase containsSignature;
+                    if (FindMethod(typeof(IEnumerableSignatures), "Contains", false, args, out containsSignature) != 1)
+                        throw ParseError(op.pos, Res.NoApplicableAggregate, "Contains");
+
+                    var typeArgs = new Type[] { left.Type };
+                    args = new Expression[] { right, left };
+
+                    accumulate = Expression.Call(typeof(Enumerable), containsSignature.Name, typeArgs, args);
+                }
+                else
+                    throw ParseError(op.pos, Res.OpenParenOrIdentifierExpected);
+
+                NextToken();
+            }
+
+            return accumulate;
         }
 
         // =, ==, !=, <>, >, >=, <, <= operators

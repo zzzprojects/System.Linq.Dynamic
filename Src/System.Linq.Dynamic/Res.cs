@@ -52,5 +52,7 @@ namespace System.Linq.Dynamic
         public const string OpenBracketExpected = "'[' expected";
         public const string CloseBracketOrCommaExpected = "']' or ',' expected";
         public const string IdentifierExpected = "Identifier expected";
+        public const string OpenParenOrIdentifierExpected = "'(' or Identifier expected";
+        public const string IdentifierImplementingInterfaceExpected = "Identifier implementing interface '{0}' expected";
     }
 }
