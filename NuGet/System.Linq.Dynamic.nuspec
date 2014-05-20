@@ -9,9 +9,9 @@
         <licenseUrl>http://www.opensource.org/licenses/ms-pl</licenseUrl>
         <projectUrl>https://github.com/NArnott/System.Linq.Dynamic</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>This is the Microsoft assembly for the .Net 4.0 Dynamic language functionality.  Allows various calls to be made using strings expressions instead of lambda expressions.
+        <description>This is a branch of the Microsoft Dyamic LINQ library. It allows developers to construct LINQ queries using string expressions instead of lambda expressions. 
 
-This is more than a simple deployment of the Microsoft Dynamic Linq Library example (NuGet Package System.Linq.Dynamic.Library). It is a living project, and contains XML documentation with examples.</description>
+This package is more than a simple NuGet deployment of the Dynamic Linq Library. It is a living project, and contains XML documentation with examples.</description>
         <summary>Supports Framework 3.5 and 4.0+</summary>
         <releaseNotes>1.1.8 Added support for the use of Single(), SingleOrDefault(), First(), FirstOrDefault(), OrderBy(), OrderByDescending(), and Contains() in string expressions.
 
