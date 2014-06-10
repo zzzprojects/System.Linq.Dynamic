@@ -1,0 +1,27 @@
+﻿@model IEnumerable<DynamicLinqWebDocs.Models.Expression>
+
+@{
+    ViewBag.Title = "Expressions";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>TODO: Add some description here explaining what "expressions" are and why they aren't considered methods of classes.</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Expression</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var exp in Model.OrderBy(x => x.Name))
+        {
+            <tr>
+                <td>@Html.ActionLink(exp.Name, "Expression", "Expression", new { expressionName = exp.Name }, null)</td>
+                <td>@Html.FormatMarkdown(exp.Description)</td>
+            </tr>
+        }
+    </tbody>
+</table>

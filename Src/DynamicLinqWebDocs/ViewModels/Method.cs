@@ -1,0 +1,80 @@
+﻿using DynamicLinqWebDocs.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Web;
+
+namespace DynamicLinqWebDocs.ViewModels
+{
+    public class Method
+    {
+        public string Namespace { get; set; }
+
+        public string Class { get; set; }
+
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        public IList<Models.Argument> Arguments { get; set; }
+
+        public string ReturnType { get; set; }
+
+        public string ReturnDescription { get; set; }
+        
+        public string Remarks { get; set; }
+
+        public bool IsStatic { get; set; }
+
+        public bool IsExtensionMethod { get; set; }
+
+        public IList<Models.Example> Examples { get; set; }
+
+        public Frameworks Frameworks { get; set; }
+
+        public string GenerateCSharpSyntaxCode()
+        {
+            var sb = new StringBuilder();
+
+            sb.Append("public");
+            if (IsStatic || IsExtensionMethod) sb.Append(" static");
+
+            if (ReturnType != null)
+                sb.AppendFormat(" {0}", ReturnType);
+            else
+                sb.Append(" void");
+
+            sb.AppendFormat(" {0}", Name);
+
+            if (Arguments != null && Arguments.Count > 0)
+            {
+                sb.Append("(");
+
+                bool isFirst = true;
+
+                foreach (var arg in Arguments)
+                {
+                    if (!isFirst) sb.Append(",");
+
+                    sb.Append("\n\t");
+
+                    if (isFirst && IsExtensionMethod) sb.Append("this ");
+
+                    sb.AppendFormat("{0} {1}", arg.Type, arg.Name);
+
+                    isFirst = false;
+                }
+
+                sb.Append("\n)");
+            }
+            else
+            {
+                sb.Append("()");
+            }
+
+
+            return sb.ToString();
+        }
+    }
+}

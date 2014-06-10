@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<DynLINQDoc>
+  
+  <Classes>
+    
+    <Class name="BasicQueryable" namespace="System.Linq.Dynamic">
+      <Description>Provides a set of **static** methods for querying data structures that implement `IQueryable`.</Description>
+      <Remarks>The purpose of this class is to mimic several basic methods implemented by the standard `System.Linq.IQueryable&lt;T&gt;`, but that work with `IQueryable`.</Remarks>
+      
+      <Methods>
+        <Method name="Take" isExtensionMethod="true" returnType="IQueryable">
+          <Description>Returns a specified number of contiguous elements from the start of a sequence.</Description>
+          <ReturnDescription>A `IQueryable` that contains the specified number of elements from the start of `source`.</ReturnDescription>
+          <Remarks></Remarks>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>The sequence to return elements from.</Description>
+            </Argument>
+            <Argument name="count" type="int" typeNamespace="System.Int32">
+              <Description>The number of elements to return.</Description>
+            </Argument>
+          </Arguments>
+        </Method>
+
+        <Method name="Skip">
+          <Description>Placeholder</Description>
+        </Method>
+        
+        <Method name="Reverse">
+          <Description>Placeholder</Description>
+        </Method>
+    
+        <Method name="Any" isExtensionMethod="true" returnType="bool">
+          <Description>Determines whether a sequence contains any elements.</Description>
+          <ReturnDescription>`true` if the source sequence contains any elements; otherwise, `false`.</ReturnDescription>
+          <Remarks>The query behavior that occurs as a result of executing an expression tree that represents calling `Any&lt;TSource&gt;(IQueryable&lt;TSource&gt;)` depends on the implementation of the type of the source parameter. The expected behavior is that it determines if source contains any elements.&#xA;&#xA;This is very similar to `Queryable.Any()`, except that the standard `Any()` method uses `IQueryable&lt;T&gt;`.</Remarks>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A sequence to check for being empty.</Description>
+            </Argument>
+          </Arguments>
+          <Examples>
+            <Example>
+              <HeaderRemarks>The following code example demonstrates how to use `Any&lt;TSource&gt;(IQueryable&lt;TSource&gt;)` to determine whether a sequence contains any elements.</HeaderRemarks>
+              <FooterRemarks>The Boolean value that the `Any&lt;TSource&gt;(IQueryable&lt;TSource&gt;)` method returns is typically used in the predicate of a where clause (Where clause in Visual Basic) or a direct call to the `Where&lt;TSource&gt;(IQueryable&lt;TSource&gt;, Expression&lt;Func&lt;TSource, Boolean&gt;&gt;)` method. The following example demonstrates this use of the Any method.</FooterRemarks>
+              <ExampleCode>List&lt;int&gt;numbers = new List&lt;int&gt; { 1, 2 };&#xA;&#xA;// Determine if the list contains any elements.&#xA;bool hasElements = numbers.AsQueryable().Any();</ExampleCode>
+            </Example>
+          </Examples>
+        </Method>
+
+        <Method name="Count">
+          <Description>Placeholder</Description>
+        </Method>
+
+        <Method name="Single" frameworks="Net35" isExtensionMethod="true" returnType="object">
+          <Description>Returns the only element of a sequence, and throws an exception if there is not exactly one element in the sequence.</Description>
+          <ReturnDescription>The single element of the input sequence.</ReturnDescription>
+          <Remarks></Remarks>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A `IQueryable` to return the single element of.</Description>
+            </Argument>
+          </Arguments>
+          <Examples>
+            <Example>
+              <ExampleCode>//Placeholder</ExampleCode>
+            </Example>
+          </Examples>
+        </Method>
+
+        <Method name="Single" frameworks="Net40Plus" isExtensionMethod="true" returnType="dynamic">
+          <Description>Returns the only element of a sequence, and throws an exception if there is not exactly one element in the sequence.</Description>
+          <ReturnDescription>The single element of the input sequence.</ReturnDescription>
+          <Remarks></Remarks>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A `IQueryable` to return the single element of.</Description>
+            </Argument>
+          </Arguments>
+          <Examples>
+            <Example>
+              <ExampleCode>//Placeholder</ExampleCode>
+            </Example>
+          </Examples>
+        </Method>
+
+        <Method name="SingleOrDefault" frameworks="Net35" isExtensionMethod="true">
+          <Description>Placeholder</Description>
+        </Method>
+
+        <Method name="SingleOrDefault" frameworks="Net40Plus" isExtensionMethod="true">
+          <Description>Placeholder</Description>
+        </Method>
+
+        <Method name="First" frameworks="Net35" isExtensionMethod="true">
+          <Description>Placeholder</Description>
+        </Method>
+
+        <Method name="First" frameworks="Net40Plus" isExtensionMethod="true">
+          <Description>Placeholder</Description>
+        </Method>
+
+        <Method name="FirstOrDefault" frameworks="Net35" isExtensionMethod="true">
+          <Description>Placeholder</Description>
+        </Method>
+
+        <Method name="FirstOrDefault" frameworks="Net40Plus" isExtensionMethod="true">
+          <Description>Placeholder</Description>
+        </Method>
+
+        <Method name="AsEnumerable" frameworks="Net35" isExtensionMethod="true">
+          <Description>Placeholder</Description>
+        </Method>
+
+        <Method name="AsEnumerable" frameworks="Net40Plus" isExtensionMethod="true">
+          <Description>Placeholder</Description>
+        </Method>
+
+        <Method name="ToDynamicArray" frameworks="Net40Plus" isExtensionMethod="true">
+          <Description>Placeholder</Description>
+        </Method>
+        
+      </Methods>
+    </Class>  <!--BasicQueryable-->
+
+    <Class name="DynamicQueryable" namespace="System.Linq.Dynamic">
+      <Description>Provides a set of **static** methods for querying data structures that implement `IQueryable`. It allows dynamic string based querying.  Very handy when, at compile time, you don't know the type of queries that will be generated, or when downstream components only return column names to sort and filter by.</Description>
+      <Remarks></Remarks>
+
+      <Methods>
+        <Method name="Where&lt;TSource&gt;" isExtensionMethod="true">
+          <Description>Filters a sequence of values based on a predicate.</Description>
+          <ReturnDescription>A `IQueryable&lt;T&gt;` that contains elements from the input sequence that satisfy the condition specified by predicate.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable&lt;TSource&gt;" typeNamespace="System.Linq">
+              <Description>A `IQueryable` to filter.</Description>
+            </Argument>
+            <Argument name="predicate" type="string" typeNamespace="System">
+              <Description>An expression string to test each element for a condition.</Description>
+            </Argument>
+            <Argument name="args" type="object[]" typeNamespace="System">
+              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way `String.Format` formats strings.</Description>
+            </Argument>
+          </Arguments>
+          <Examples>
+            <Example>
+              <HeaderRemarks>The following is an example of a basic value used in the `Where` string expression</HeaderRemarks>
+              <ExampleCode>var result = list.Where("NumberProperty=1");</ExampleCode>
+            </Example>
+            <Example>
+              <HeaderRemarks>The following is an example of a static argument value used in the `Where` string expression</HeaderRemarks>
+              <ExampleCode>var result = list.Where("NumberProperty=@0", 1);</ExampleCode>
+            </Example>
+            <Example>
+              <HeaderRemarks>The following is an example of a variable argument value used in the `Where` string expression</HeaderRemarks>
+              <ExampleCode>int someIntValue = 1;&#xA;var result = list.Where("NumberProperty=@0", someIntValue);</ExampleCode>
+            </Example>
+          </Examples>
+        </Method>
+
+        <Method name="Where" isExtensionMethod="true">
+          <Description>Placeholder</Description>
+        </Method>
+
+        <Method name="Select" isExtensionMethod="true">
+          <Description>Placeholder</Description>
+        </Method>
+
+        <Method name="SelectMany" isExtensionMethod="true">
+          <Description>Placeholder</Description>
+        </Method>
+
+        <Method name="OrderBy&lt;TSource&gt;" isExtensionMethod="true">
+          <Description>Placeholder</Description>
+        </Method>
+
+        <Method name="OrderBy" isExtensionMethod="true">
+          <Description>Placeholder</Description>
+        </Method>
+
+        <Method name="GroupBy" isExtensionMethod="true">
+          <Description>Groups the elements of a sequence according to a specified key string function and creates a result value from each group and its key.</Description>
+          <ReturnDescription>A `IQueryable` where each element represents a projection over a group and its key.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A `IQueryable` whose elements to group.</Description>
+            </Argument>
+            <Argument name="keySelector" type="string" typeNamespace="System">
+              <Description>A string expression to specify the key for each element.</Description>
+            </Argument>
+            <Argument name="resultSelector" type="string" typeNamespace="System">
+              <Description>A string expression to specify a result value from each group.</Description>
+            </Argument>
+            <Argument name="args" type="object[]" typeNamespace="System">
+              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way String.Format formats strings.</Description>
+            </Argument>
+          </Arguments>
+          <Examples>
+            <Example>
+              <HeaderRemarks>The following is an example of a simple `GroupBy`.</HeaderRemarks>
+              <ExampleCode>var groupResult = qry.GroupBy("NumberPropertyAsKey", "StringProperty");</ExampleCode>
+            </Example>
+            <Example>
+              <HeaderRemarks>The following is an example of a `GroupBy` using multiple key fields and multiple grouped fields.</HeaderRemarks>
+              <ExampleCode>var groupResult = qry.GroupBy("new (NumberPropertyAsKey, StringPropertyAsKey)", "new (StringProperty1, StringProperty2)");</ExampleCode>
+            </Example>
+          </Examples>
+        </Method>
+
+        <Method name="GroupBy" isExtensionMethod="true">
+          <Description>Placeholder</Description>        
+        </Method>
+
+        <Method name="GroupBy" isExtensionMethod="true">
+          <Description>Placeholder</Description>
+        </Method>
+
+        <Method name="GroupBy" isExtensionMethod="true">
+          <Description>Placeholder</Description>
+        </Method>
+      </Methods>
+    </Class>
+
+    <Class name="ParseException" namespace="System.Linq.Dynamic">
+      <Description>Represents errors that occur while parsing dynamic linq string expressions.</Description>
+    </Class>
+    
+  </Classes>
+  
+  <Expressions>
+    <Expression name="Sum">
+      <Description>Computes the sum of a sequence of values.</Description>
+      <Remarks>Remarks Placeholder</Remarks>
+      <Examples>
+        <Example>
+          <HeaderRemarks>The following is an example of a `Sum` expression.</HeaderRemarks>
+          <ExampleCode>int[] initValues = new int[] { 1, 2, 3, 4, 5 };&#xA;var qry = initValues&#xA;    .AsQueryable()&#xA;    .Select(x => new { strValue = "str", intValue = x })&#xA;    .GroupBy(x => x.strValue);&#xA;&#xA;var result = qry.Select("Sum(intValue)");</ExampleCode>
+          <EquivalentCode>int[] initValues = new int[] { 1, 2, 3, 4, 5 };&#xA;var qry = initValues&#xA;    .AsQueryable()&#xA;    .Select(x => new { strValue = "str", intValue = x })&#xA;    .GroupBy(x => x.strValue);&#xA;&#xA;var result = qry.Sum(x => x.intValue);</EquivalentCode>
+        </Example>
+      </Examples>
+    </Expression>
+
+    <Expression name="Contains">
+      <Description>Placeholder</Description>
+    </Expression>
+
+    <Expression name="In">
+      <Description>Placeholder</Description>
+    </Expression>
+
+    <Expression name="First">
+      <Description>Placeholder</Description>
+    </Expression>
+
+    <Expression name="Single">
+      <Description>Placeholder</Description>
+    </Expression>
+  </Expressions>
+  
+</DynLINQDoc>

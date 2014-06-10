@@ -197,8 +197,8 @@ namespace System.Linq.Dynamic
         /// and creates a result value from each group and its key.
         /// </summary>
         /// <param name="source">A <see cref="IQueryable"/> whose elements to group.</param>
-        /// <param name="keySelector">A string to specify the key for each element.</param>
-        /// <param name="resultSelector">A string to specify a result value from each group.</param>
+        /// <param name="keySelector">A string expression to specify the key for each element.</param>
+        /// <param name="resultSelector">A string expression to specify a result value from each group.</param>
         /// <param name="args">An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way String.Format formats strings.</param>
         /// <returns>A <see cref="IQueryable"/> where each element represents a projection over a group and its key.</returns>
         /// <example>
@@ -228,8 +228,8 @@ namespace System.Linq.Dynamic
         /// and creates a result value from each group and its key.
         /// </summary>
         /// <param name="source">A <see cref="IQueryable"/> whose elements to group.</param>
-        /// <param name="keySelector">A string to specify the key for each element.</param>
-        /// <param name="resultSelector">A string to specify a result value from each group.</param>
+        /// <param name="keySelector">A string expression to specify the key for each element.</param>
+        /// <param name="resultSelector">A string expression to specify a result value from each group.</param>
         /// <returns>A <see cref="IQueryable"/> where each element represents a projection over a group and its key.</returns>
         /// <example>
         /// <code>
@@ -248,7 +248,7 @@ namespace System.Linq.Dynamic
         /// and creates a result value from each group and its key.
         /// </summary>
         /// <param name="source">A <see cref="IQueryable"/> whose elements to group.</param>
-        /// <param name="keySelector">A string to specify the key for each element.</param>
+        /// <param name="keySelector">A string expression to specify the key for each element.</param>
         /// <param name="args">An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way String.Format formats strings.</param>
         /// <returns>A <see cref="IQueryable"/> where each element represents a projection over a group and its key.</returns>
         /// <example>
@@ -276,7 +276,7 @@ namespace System.Linq.Dynamic
         /// and creates a result value from each group and its key.
         /// </summary>
         /// <param name="source">A <see cref="IQueryable"/> whose elements to group.</param>
-        /// <param name="keySelector">A string to specify the key for each element.</param>
+        /// <param name="keySelector">A string expression to specify the key for each element.</param>
         /// <returns>A <see cref="IQueryable"/> where each element represents a projection over a group and its key.</returns>
         /// <example>
         /// <code>

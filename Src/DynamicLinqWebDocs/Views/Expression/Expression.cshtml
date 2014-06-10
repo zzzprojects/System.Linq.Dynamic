@@ -1,0 +1,12 @@
+﻿@model DynamicLinqWebDocs.Models.Expression
+
+@{
+    ViewBag.Title = Model.Name + " Expression";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Html.FormatMarkdown(Model.Description)
+
+@Html.DisplayFor(x => x.Remarks, "Remarks")
+@Html.DisplayFor(x => x.Examples, "Examples")

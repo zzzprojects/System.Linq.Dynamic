@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Xml.Serialization;
+
+namespace DynamicLinqWebDocs.Models
+{
+    public class Class
+    {
+        [XmlAttribute(AttributeName = "namespace")]
+        public string Namespace { get; set; }
+        
+        [XmlAttribute(AttributeName="name")]
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        public List<Method> Methods { get; set; }
+
+        public string Remarks { get; set; }
+    }
+}

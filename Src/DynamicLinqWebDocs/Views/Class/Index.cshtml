@@ -1,0 +1,30 @@
+﻿@model IEnumerable<DynamicLinqWebDocs.Models.Class>
+
+@{
+    ViewBag.Title = "Classes";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@foreach (var ns in Model.GroupBy(x => x.Namespace).OrderBy(x => x.Key))
+{
+    <h4>Namespace: @ns.Key</h4>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Class</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var classObj in ns.OrderBy(x => x.Name))
+            {
+                <tr>
+                    <td>@Html.ActionLink(@classObj.Name, "Class", "Class", new { className = classObj.Name }, null)</td>
+                    <td>@Html.FormatMarkdown(classObj.Description)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

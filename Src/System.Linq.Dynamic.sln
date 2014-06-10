@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Linq.Dynamic.For35.T
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "For35", "For35", "{1FDEF655-C276-4179-B8DD-E9FEB227E533}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebDocs", "WebDocs", "{26DA1D2C-741D-4EF5-8869-AAF480C89028}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicLinqWebDocs", "DynamicLinqWebDocs\DynamicLinqWebDocs.csproj", "{1942BDB5-CDA0-4B50-85BD-D726303F219C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,10 @@ Global
 		{A52FEE93-1E63-4D8C-8E22-94DB07C163DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A52FEE93-1E63-4D8C-8E22-94DB07C163DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A52FEE93-1E63-4D8C-8E22-94DB07C163DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1942BDB5-CDA0-4B50-85BD-D726303F219C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1942BDB5-CDA0-4B50-85BD-D726303F219C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1942BDB5-CDA0-4B50-85BD-D726303F219C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1942BDB5-CDA0-4B50-85BD-D726303F219C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -40,5 +48,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{A52FEE93-1E63-4D8C-8E22-94DB07C163DD} = {1FDEF655-C276-4179-B8DD-E9FEB227E533}
 		{801D4F1D-1B5F-404C-BFA2-D69F38EEDDF5} = {1FDEF655-C276-4179-B8DD-E9FEB227E533}
+		{1942BDB5-CDA0-4B50-85BD-D726303F219C} = {26DA1D2C-741D-4EF5-8869-AAF480C89028}
 	EndGlobalSection
 EndGlobal
