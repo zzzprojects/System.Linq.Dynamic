@@ -9,8 +9,10 @@ namespace DynamicLinqWebDocs
         {
             filters.Add(new HandleErrorAttribute());
 
+#if !DEBUG
             //Cache all pages for 15 minutes
             filters.Add(new OutputCacheAttribute() { Duration = 900 }); 
+#endif
         }
     }
 }
