@@ -27,11 +27,11 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("Classes", "Index", "Class")</li>
                     <li>@Html.ActionLink("Expressions", "Index", "Expression")</li>
-                    <li>@Html.ActionLink("Samples", "Index", "Samples")</li>
+                    <li class="disabled">@Html.ActionLink("Samples", "Index", "Sample")</li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li><button onclick="location.href='@Settings.GIT_HUB_ISSUES'" class="btn btn-danger btn-xs navbar-btn">Report an issue</button></li>
                 </ul>
             </div>
         </div>

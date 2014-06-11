@@ -1,31 +1,49 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Home";
+
+    var classesRef = Url.Action("Index", "Class");
+    var expressionsRef = Url.Action("Index", "Expression");
+    var samplesRef = Url.Action("Index", "Sample");
 }
 
 <div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+    <h1>Dynamic LINQ Documentation</h1>
+    <p class="lead">This is a living branch of the Microsoft Dyamic LINQ library. It allows developers to construct LINQ queries using <strong>string expressions</strong> instead of lambda expressions.</p>
 </div>
 
 <div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+    <div class="col-md-9">
+        <p>Have you ever wanted to dynamically construct queryable LINQ expressions on objects that couldn't be determined at runtime? With Dyanmic LINQ, you can.</p>
+        @Html.FormatMarkdownCodeBlock("//instead of\nvar result = myQuery.Select(x => new { x.Field1, x.Field2 });\n\n//Dynamic LINQ lets you do this\nvar result = myQuery.Select(\"Field1, Field2\");")
+        <p>Now you can dynamically create strings that will create your LINQ expressions that works with any data source that supports IQueryable.</p>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+    <div class="col-md-3">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                Work in Progress
+            </div>
+            <div class="panel-body">
+                <p>This documentation is a work in progress.  It, along with this branch of the Dynamic LINQ library, is an open source project, and as such, is worked on during developers' free time.</p>
+                <p>Please be patient while we continue to add more information and functionality to the project.</p>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+</div>
+
+<div class="row">
+    <div class="col-md-4 text-center">
+        <h2><a href="@classesRef">Classes</a></h2>
+        <p>Documentation on the classes defined in the Dynamic LINQ library, their methods, their arguments.  Includes examples and remarks.</p>
+        <p><a class="btn btn-default" href="@classesRef">Look at Classes &raquo;</a></p>
+    </div>
+    <div class="col-md-4 text-center">
+        <h2><a href="@expressionsRef">Expressions</a></h2>
+        <p>Description Placeholder</p>
+        <p><a class="btn btn-default" href="@expressionsRef">Look at Expressions &raquo;</a></p>
+    </div>
+    <div class="col-md-4 text-center">
+        <h2><a href="@samplesRef">Samples</a></h2>
+        <p>No samples have been developed yet. Please refer to the examples provided for methods and expressions.</p>
+        <p><a class="btn btn-default disabled" href="@samplesRef">Look at Samples &raquo;</a></p>
     </div>
 </div>

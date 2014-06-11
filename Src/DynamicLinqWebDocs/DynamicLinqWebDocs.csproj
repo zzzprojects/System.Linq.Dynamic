@@ -128,6 +128,7 @@
     <Compile Include="Infrastructure\Data\IDataRepo.cs" />
     <Compile Include="Infrastructure\EnumRouteConstraint.cs" />
     <Compile Include="Infrastructure\Helpers.cs" />
+    <Compile Include="Infrastructure\Settings.cs" />
     <Compile Include="Models\Frameworks.cs" />
     <Compile Include="Infrastructure\Data\TestDataRepo.cs" />
     <Compile Include="Infrastructure\HtmlHelpers.cs" />
@@ -177,7 +178,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
