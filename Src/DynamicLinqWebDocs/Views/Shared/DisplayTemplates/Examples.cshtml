@@ -12,18 +12,18 @@
     
         if (example.EquivalentCode == null)
         {
-            @Html.FormatMarkdownCodeBlock(example.ExampleCode)
+            @Html.FormatCodeBlock(example.ExampleCode)
         }
         else
         {
             <div class="row">
                 <div class="col-md-6">
                     <h5>Dynamic LINQ Example</h5>
-                    @Html.FormatMarkdownCodeBlock(example.ExampleCode)
+                    @Html.FormatCodeBlock(example.ExampleCode)
                 </div>
                 <div class="col-md-6">
                     <h5>Standard LINQ Equivalent Example</h5>
-                    @Html.FormatMarkdownCodeBlock(example.EquivalentCode)
+                    @Html.FormatCodeBlock(example.EquivalentCode)
                 </div>
             </div>
         }

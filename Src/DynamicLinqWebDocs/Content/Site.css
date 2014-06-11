@@ -19,34 +19,15 @@
     padding-top: 15px;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+
+/*Fix Issues with bootstrap and Sunlight for code snippets*/
+pre {
+    padding: 0;
+    border: none;
+    background-color: white;
 }
 
-/* styles for validation helpers */
-.field-validation-error {
-    color: #b94a48;
-}
-
-.field-validation-valid {
-    display: none;
-}
-
-input.input-validation-error {
-    border: 1px solid #b94a48;
-}
-
-input[type="checkbox"].input-validation-error {
-    border: 0 none;
-}
-
-.validation-summary-errors {
-    color: #b94a48;
-}
-
-.validation-summary-valid {
-    display: none;
+.sunlight-code-container {
+    padding: 4px;
+    border-radius: 3px;
 }

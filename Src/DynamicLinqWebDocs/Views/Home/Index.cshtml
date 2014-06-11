@@ -14,7 +14,7 @@
 <div class="row">
     <div class="col-md-9">
         <p>Have you ever wanted to dynamically construct queryable LINQ expressions on objects that couldn't be determined at runtime? With Dyanmic LINQ, you can.</p>
-        @Html.FormatMarkdownCodeBlock("//instead of\nvar result = myQuery.Select(x => new { x.Field1, x.Field2 });\n\n//Dynamic LINQ lets you do this\nvar result = myQuery.Select(\"Field1, Field2\");")
+        @Html.FormatCodeBlock("//instead of\nvar result = myQuery.Select(x => new { x.Field1, x.Field2 });\n\n//Dynamic LINQ lets you do this\nvar result = myQuery.Select(\"Field1, Field2\");")
         <p>Now you can dynamically create strings that will create your LINQ expressions that works with any data source that supports IQueryable.</p>
     </div>
     <div class="col-md-3">

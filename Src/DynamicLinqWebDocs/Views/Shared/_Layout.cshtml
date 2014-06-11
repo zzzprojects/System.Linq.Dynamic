@@ -6,10 +6,6 @@
     <title>@ViewBag.Title - Dynamic LINQ Documentation</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
-    <link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/vs.min.css">
-    <script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -53,5 +49,6 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    <script type="text/javascript">Sunlight.highlightAll();</script>
 </body>
 </html>

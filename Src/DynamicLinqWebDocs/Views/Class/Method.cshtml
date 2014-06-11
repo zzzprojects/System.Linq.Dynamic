@@ -15,7 +15,7 @@
 @Html.FormatMarkdown("**Namespace**: `{0}`", Model.Namespace)
 
 <h3>Syntax</h3>
-@Html.FormatMarkdownCodeBlock(Model.GenerateCSharpSyntaxCode())
+@Html.FormatCodeBlock(Model.GenerateCSharpSyntaxCode())
 
 @if (Model.Arguments.Count > 0)
 {
