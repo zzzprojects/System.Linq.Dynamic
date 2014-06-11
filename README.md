@@ -6,5 +6,8 @@ Suggestions and comments are welcome.
 
 The binary is available on [NuGet][1].  **Install-Package System.Linq.Dynamic.Library**
 
+Documentation can be found [Here][2].
+
 
 [1]: https://www.nuget.org/packages/System.Linq.Dynamic.Library/ "NuGet - Dynamic Linq Library"
+[2]: http://dynamiclinq.azurewebsites.net
