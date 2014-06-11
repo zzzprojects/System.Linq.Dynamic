@@ -143,6 +143,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\github-logo.png" />
+    <Content Include="Content\github-logo-text.png" />
+    <Content Include="Content\linkedin-logo.png" />
     <Content Include="Content\sunlight.default-1.22.0.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -150,7 +153,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <None Include="Properties\PublishProfiles\dynamiclinq - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\dynamiclinq - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -174,7 +176,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Info.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
     <Content Include="Views\Class\Method.cshtml" />

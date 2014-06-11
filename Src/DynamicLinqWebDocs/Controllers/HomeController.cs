@@ -14,8 +14,8 @@ namespace DynamicLinqWebDocs.Controllers
             return View();
         }
 
-        [Route("Contact")]
-        public ActionResult Contact()
+        [Route("Info")]
+        public ActionResult Info()
         {
             return View();
         }
