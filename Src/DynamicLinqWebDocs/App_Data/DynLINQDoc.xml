@@ -252,9 +252,34 @@
       <Description>Placeholder</Description>
     </Expression>
 
+    <Expression name="FirstOrDefault">
+      <Description>Placeholder</Description>
+    </Expression>
+
     <Expression name="Single">
       <Description>Placeholder</Description>
     </Expression>
+
+    <Expression name="SingleOrDefault">
+      <Description>Placeholder</Description>
+    </Expression>
+
+    <Expression name="Select">
+      <Description>Placeholder</Description>
+    </Expression>
+
+    <Expression name="Where">
+      <Description>Placeholder</Description>
+    </Expression>
+
+    <Expression name="OrderBy">
+      <Description>Placeholder</Description>
+    </Expression>
+
+    <Expression name="OrderByDecending">
+      <Description>Placeholder</Description>
+    </Expression>
+
   </Expressions>
   
 </DynLINQDoc>
