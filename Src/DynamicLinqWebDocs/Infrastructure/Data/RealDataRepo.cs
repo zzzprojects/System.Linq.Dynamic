@@ -24,11 +24,24 @@ namespace DynamicLinqWebDocs.Infrastructure.Data
 
         static RealDataRepo()
         {
+            LoadData();
+        }
+
+        public RealDataRepo()
+        {
+#if DEBUG
+            //reload data in debug mode so we can see xml changes without recycling IIS. 
+            LoadData(); 
+#endif
+        }
+
+        static void LoadData()
+        {
             var serializer = new XmlSerializer(typeof(DynLINQDoc));
 
             var filePath = HostingEnvironment.MapPath(@"~/App_Data/DynLINQDoc.xml");
 
-            using( var file = File.Open(filePath, FileMode.Open))
+            using (var file = File.Open(filePath, FileMode.Open))
             {
                 _doc = (DynLINQDoc)serializer.Deserialize(file);
             }
