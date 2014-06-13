@@ -139,8 +139,31 @@ Console.WriteLine("The list {0} empty.",
           </Examples>
         </Method>
 
-        <Method name="Count">
-          <Description>Placeholder</Description>
+        <Method name="Count" isExtensionMethod="true" returnType="int">
+          <Description>Returns the number of elements in a sequence.</Description>
+          <ReturnDescription>The number of elements in the input sequence.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>The `IQueryable` that contains the elements to be counted.</Description>
+            </Argument>
+          </Arguments>
+          <Examples>
+            <Example>
+              <HeaderRemarks>The following code example demonstrates how to use `Count(IQueryable)` to count the elements in a sequence.</HeaderRemarks>
+              <ExampleCode>string[] fruits = { "apple", "banana", "mango",
+"orange", "passionfruit", "grape" };
+
+int numberOfFruits = fruits.AsQueryable().Count();
+
+Console.WriteLine(
+    "There are {0} items in the array.",
+    numberOfFruits);
+
+// This code produces the following output:
+//
+// There are 6 items in the array.</ExampleCode>
+            </Example>
+          </Examples>
         </Method>
 
         <Method name="Single" frameworks="Net35" isExtensionMethod="true" returnType="object">
@@ -151,11 +174,6 @@ Console.WriteLine("The list {0} empty.",
               <Description>A `IQueryable` to return the single element of.</Description>
             </Argument>
           </Arguments>
-          <Examples>
-            <Example>
-              <ExampleCode>//Placeholder</ExampleCode>
-            </Example>
-          </Examples>
         </Method>
 
         <Method name="Single" frameworks="Net40Plus" isExtensionMethod="true" returnType="dynamic">
@@ -166,47 +184,96 @@ Console.WriteLine("The list {0} empty.",
               <Description>A `IQueryable` to return the single element of.</Description>
             </Argument>
           </Arguments>
-          <Examples>
-            <Example>
-              <ExampleCode>//Placeholder</ExampleCode>
-            </Example>
-          </Examples>
         </Method>
 
-        <Method name="SingleOrDefault" frameworks="Net35" isExtensionMethod="true">
-          <Description>Placeholder</Description>
+        <Method name="SingleOrDefault" frameworks="Net35" isExtensionMethod="true" returnType="object">
+          <Description>Returns the only element of a sequence, or a default value if the sequence is empty; this method throws an exception if there is more than one element in the sequence.</Description>
+          <ReturnDescription>The single element of the input sequence, or `null` if the sequence contains no elements.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A `IQueryable` to return the single element of.</Description>
+            </Argument>
+          </Arguments>
         </Method>
 
-        <Method name="SingleOrDefault" frameworks="Net40Plus" isExtensionMethod="true">
-          <Description>Placeholder</Description>
+        <Method name="SingleOrDefault" frameworks="Net40Plus" isExtensionMethod="true" returnType="dynamic">
+          <Description>Returns the only element of a sequence, or a default value if the sequence is empty; this method throws an exception if there is more than one element in the sequence.</Description>
+          <ReturnDescription>The single element of the input sequence, or `null` if the sequence contains no elements.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A `IQueryable` to return the single element of.</Description>
+            </Argument>
+          </Arguments>
         </Method>
 
-        <Method name="First" frameworks="Net35" isExtensionMethod="true">
-          <Description>Placeholder</Description>
+        <Method name="First" frameworks="Net35" isExtensionMethod="true" returnType="object">
+          <Description>Returns the first element of a sequence.</Description>
+          <ReturnDescription>The first element in source.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A `IQueryable` to return the first element of.</Description>
+            </Argument>
+          </Arguments>
         </Method>
 
-        <Method name="First" frameworks="Net40Plus" isExtensionMethod="true">
-          <Description>Placeholder</Description>
+        <Method name="First" frameworks="Net40Plus" isExtensionMethod="true" returnType="dynamic">
+          <Description>Returns the first element of a sequence.</Description>
+          <ReturnDescription>The first element in source.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A `IQueryable` to return the first element of.</Description>
+            </Argument>
+          </Arguments>
         </Method>
 
-        <Method name="FirstOrDefault" frameworks="Net35" isExtensionMethod="true">
-          <Description>Placeholder</Description>
+        <Method name="FirstOrDefault" frameworks="Net35" isExtensionMethod="true" returnType="object">
+          <Description>Returns the first element of a sequence, or a default value if the sequence contains no elements.</Description>
+          <ReturnDescription>`null` if source is empty; otherwise, the first element in *source*.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A `IQueryable` to return the first element of.</Description>
+            </Argument>
+          </Arguments>
         </Method>
 
-        <Method name="FirstOrDefault" frameworks="Net40Plus" isExtensionMethod="true">
-          <Description>Placeholder</Description>
+        <Method name="FirstOrDefault" frameworks="Net40Plus" isExtensionMethod="true" returnType="dynamic">
+          <Description>Returns the first element of a sequence, or a default value if the sequence contains no elements.</Description>
+          <ReturnDescription>`null` if source is empty; otherwise, the first element in *source*.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A `IQueryable` to return the first element of.</Description>
+            </Argument>
+          </Arguments>
         </Method>
 
-        <Method name="AsEnumerable" frameworks="Net35" isExtensionMethod="true">
-          <Description>Placeholder</Description>
+        <Method name="AsEnumerable" frameworks="Net35" isExtensionMethod="true" returnType="IEnumerable&lt;object&gt;">
+          <Description>Returns the input typed as `IEnumerable&lt;T&gt;` of `object`.</Description>
+          <ReturnDescription>The input typed as `IEnumerable&lt;T&gt;` of `object`.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>The sequence to type as `IEnumerable&lt;T&gt;` of `object`.</Description>
+            </Argument>
+          </Arguments>
         </Method>
 
-        <Method name="AsEnumerable" frameworks="Net40Plus" isExtensionMethod="true">
-          <Description>Placeholder</Description>
+        <Method name="AsEnumerable" frameworks="Net40Plus" isExtensionMethod="true" returnType="IEnumerable&lt;dynamic&gt;">
+          <Description>Returns the input typed as `IEnumerable&lt;T&gt;` of `dynamic`.</Description>
+          <ReturnDescription>The input typed as `IEnumerable&lt;T&gt;` of `dynamic`.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>The sequence to type as `IEnumerable&lt;T&gt;` of `dynamic`.</Description>
+            </Argument>
+          </Arguments>
         </Method>
 
-        <Method name="ToDynamicArray" frameworks="Net40Plus" isExtensionMethod="true">
-          <Description>Placeholder</Description>
+        <Method name="ToDynamicArray" frameworks="Net40Plus" isExtensionMethod="true" returnType="dynamic[]">
+          <Description>Creates an array of `dynamic` `objects` from a `IEnumerable`.</Description>
+          <ReturnDescription>An array that contains the elements from the input sequence.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A `IQueryable` to create an array from.</Description>
+            </Argument>
+          </Arguments>
         </Method>
         
       </Methods>

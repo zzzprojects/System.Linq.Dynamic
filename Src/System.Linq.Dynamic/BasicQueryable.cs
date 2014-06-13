@@ -192,14 +192,14 @@ namespace System.Linq.Dynamic
         /// Returns the input typed as <see cref="IEnumerable{T}"/> of <see cref="object"/>./>
         /// </summary>
         /// <param name="source">The sequence to type as <see cref="IEnumerable{T}"/> of <see cref="object"/>.</param>
-        /// <returns>the input typed as <see cref="IEnumerable{T}"/> of <see cref="object"/>.</returns>
+        /// <returns>The input typed as <see cref="IEnumerable{T}"/> of <see cref="object"/>.</returns>
         public static IEnumerable<object> AsEnumerable(this IQueryable source)
 #else
         /// <summary>
         /// Returns the input typed as <see cref="IEnumerable{T}"/> of dynamic.
         /// </summary>
         /// <param name="source">The sequence to type as <see cref="IEnumerable{T}"/> of dynamic.</param>
-        /// <returns>the input typed as <see cref="IEnumerable{T}"/> of dynamic.</returns>
+        /// <returns>The input typed as <see cref="IEnumerable{T}"/> of dynamic.</returns>
         public static IEnumerable<dynamic> AsEnumerable(this IQueryable source)
 #endif
         {
@@ -212,7 +212,7 @@ namespace System.Linq.Dynamic
 
 #if !NET35
         /// <summary>
-        /// Creates an array of dynamics from a <see cref="IEnumerable"/>.
+        /// Creates an array of dynamic objects from a <see cref="IEnumerable"/>.
         /// </summary>
         /// <param name="source">A <see cref="IEnumerable"/> to create an array from.</param>
         /// <returns>An array that contains the elements from the input sequence.</returns>
