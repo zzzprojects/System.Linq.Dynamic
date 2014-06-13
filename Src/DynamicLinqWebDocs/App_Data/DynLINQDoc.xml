@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<DynLINQDoc>
+<DynLINQDoc xmlns="http://schemas.plainlogic.net/dynamiclinqdocs/2014">
   
   <Classes>
-    
     <Class name="BasicQueryable" namespace="System.Linq.Dynamic">
       <Description>Provides a set of **static** methods for querying data structures that implement `IQueryable`.</Description>
       <Remarks>The purpose of this class is to mimic several basic methods implemented by the standard `System.Linq.IQueryable&lt;T&gt;`, but that work with `IQueryable`.</Remarks>
@@ -11,8 +10,8 @@
         
         <Method name="Take" isExtensionMethod="true" returnType="IQueryable">
           <Description>Returns a specified number of contiguous elements from the start of a sequence.</Description>
-          <ReturnDescription>A `IQueryable` that contains the specified number of elements from the start of `source`.</ReturnDescription>
           <Remarks>`Take` enumerates *source* and *yields* elements until *count* elements have been yielded or *source* contains no more elements.&#xA;&#xA;If *count* is less than or equal to zero, *source* is not enumerated and an empty `IQueryable` is returned.</Remarks>
+          <ReturnDescription>A `IQueryable` that contains the specified number of elements from the start of `source`.</ReturnDescription>
           <Arguments>
             <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
               <Description>The sequence to return elements from.</Description>
@@ -147,7 +146,6 @@ Console.WriteLine("The list {0} empty.",
         <Method name="Single" frameworks="Net35" isExtensionMethod="true" returnType="object">
           <Description>Returns the only element of a sequence, and throws an exception if there is not exactly one element in the sequence.</Description>
           <ReturnDescription>The single element of the input sequence.</ReturnDescription>
-          <Remarks></Remarks>
           <Arguments>
             <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
               <Description>A `IQueryable` to return the single element of.</Description>
@@ -163,7 +161,6 @@ Console.WriteLine("The list {0} empty.",
         <Method name="Single" frameworks="Net40Plus" isExtensionMethod="true" returnType="dynamic">
           <Description>Returns the only element of a sequence, and throws an exception if there is not exactly one element in the sequence.</Description>
           <ReturnDescription>The single element of the input sequence.</ReturnDescription>
-          <Remarks></Remarks>
           <Arguments>
             <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
               <Description>A `IQueryable` to return the single element of.</Description>
