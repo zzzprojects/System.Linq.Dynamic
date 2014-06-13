@@ -37,7 +37,7 @@ namespace DynamicLinqWebDocs.Infrastructure.Data
 
         static void LoadData()
         {
-            var serializer = new XmlSerializer(typeof(DynLINQDoc));
+            var serializer = new XmlSerializer(typeof(DynLINQDoc), "http://schemas.plainlogic.net/dynamiclinqdocs/2014");
 
             var filePath = HostingEnvironment.MapPath(@"~/App_Data/DynLINQDoc.xml");
 
