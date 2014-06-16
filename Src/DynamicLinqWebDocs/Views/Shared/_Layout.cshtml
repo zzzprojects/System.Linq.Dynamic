@@ -1,15 +1,21 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var title = "Dynamic LINQ Documentation";
+    
+    if (!String.IsNullOrWhiteSpace(ViewBag.Title))
+    {
+        title = ViewBag.Title + " - " + title;
+    }
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @if (String.IsNullOrWhiteSpace(ViewBag.Title))
+    <title>@title</title>
+    @if (ViewBag.MetaDescription != null)
     {
-        <title>Dynamic LINQ Documentation</title>
-    }
-    else
-    {
-        <title>@ViewBag.Title - Dynamic LINQ Documentation</title>
+    <meta name="description" content="@ViewBag.MetaDescription" />
     }
     @Styles.Render("~/Content/css")
 </head>
