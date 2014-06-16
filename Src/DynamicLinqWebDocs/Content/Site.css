@@ -31,3 +31,8 @@ pre {
     padding: 4px;
     border-radius: 3px;
 }
+
+/*Correction for jReject popup background color */
+#jr_inner {
+    background-color: #F5F5F5;
+}

@@ -143,8 +143,13 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\Browsers\browser_chrome.gif" />
+    <Content Include="Content\Browsers\browser_firefox.gif" />
+    <Content Include="Content\Browsers\browser_msie.gif" />
+    <Content Include="Content\Browsers\browser_safari.gif" />
     <Content Include="Content\github-logo.png" />
     <Content Include="Content\github-logo-text.png" />
+    <Content Include="Content\jquery.reject.css" />
     <Content Include="Content\linkedin-logo.png" />
     <Content Include="Content\sunlight.default-1.22.0.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -162,10 +167,12 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
+    <Content Include="Scripts\jquery.reject.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\site.js" />
     <Content Include="Scripts\sunlight-1.22.0.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
