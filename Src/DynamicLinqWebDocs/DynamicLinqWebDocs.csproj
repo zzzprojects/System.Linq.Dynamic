@@ -162,11 +162,11 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\PublishProfiles\dynamiclinq - Web Deploy.pubxml" />
-    <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\jquery-2.1.1.js" />
-    <Content Include="Scripts\jquery-2.1.1.min.js" />
+    <None Include="Scripts\jquery-1.11.1.intellisense.js" />
+    <Content Include="Scripts\jquery-1.11.1.js" />
+    <Content Include="Scripts\jquery-1.11.1.min.js" />
     <Content Include="Scripts\jquery.reject.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
@@ -188,7 +188,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Info.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Scripts\jquery-2.1.1.min.map" />
     <Content Include="Views\Class\Method.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Remarks.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Examples.cshtml" />
@@ -196,6 +195,7 @@
     <Content Include="Views\Class\Index.cshtml" />
     <Content Include="Views\Expression\Index.cshtml" />
     <Content Include="Views\Expression\Expression.cshtml" />
+    <Content Include="Scripts\jquery-1.11.1.min.map" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
