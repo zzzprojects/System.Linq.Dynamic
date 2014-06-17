@@ -23,6 +23,9 @@ namespace DynamicLinqWebDocs.Models
         [XmlAttribute(AttributeName = "isExtensionMethod")]
         public bool IsExtensionMethod { get; set; }
 
+        [XmlAttribute(AttributeName = "hasParamsArgument")]
+        public bool HasParamsArgument { get; set; }
+
         public List<Argument> Arguments { get; set; }
 
         [XmlAttribute(AttributeName = "returnType")]

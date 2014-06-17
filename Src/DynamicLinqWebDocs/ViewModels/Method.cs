@@ -19,6 +19,8 @@ namespace DynamicLinqWebDocs.ViewModels
 
         public IList<Models.Argument> Arguments { get; set; }
 
+        public bool HasParamsArgument { get; set; }
+
         public string ReturnType { get; set; }
 
         public string ReturnDescription { get; set; }
@@ -49,6 +51,8 @@ namespace DynamicLinqWebDocs.ViewModels
 
             if (Arguments != null && Arguments.Count > 0)
             {
+                var last = Arguments[Arguments.Count - 1];
+
                 sb.Append("(");
 
                 bool isFirst = true;
@@ -60,6 +64,7 @@ namespace DynamicLinqWebDocs.ViewModels
                     sb.Append("\n\t");
 
                     if (isFirst && IsExtensionMethod) sb.Append("this ");
+                    if (arg == last && HasParamsArgument) sb.Append("params ");
 
                     sb.AppendFormat("{0} {1}", arg.Type, arg.Name);
 

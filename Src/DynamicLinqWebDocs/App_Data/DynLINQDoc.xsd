@@ -79,6 +79,7 @@
     <xs:attribute name="isExtensionMethod" type="xs:boolean" />
     <xs:attribute name="returnType" type="xs:string" />
     <xs:attribute name="frameworks" type="Frameworks" default="NotSet" />
+    <xs:attribute name="hasParamsArgument" type="xs:boolean" default="false" />
   </xs:complexType>
 
   <xs:complexType name="Arguments">

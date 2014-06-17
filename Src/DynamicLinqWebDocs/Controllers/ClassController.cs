@@ -62,7 +62,8 @@ namespace DynamicLinqWebDocs.Controllers
                 Description = method.Description,
                 Examples = method.Examples,
                 ReturnDescription = method.ReturnDescription,
-                Frameworks = method.Frameworks
+                Frameworks = method.Frameworks,
+                HasParamsArgument = method.HasParamsArgument
             };
 
             return View(viewModel);
