@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
-using FluentValidation;
+using FluentValidationNA;
 
 namespace System.Linq.Dynamic
 {

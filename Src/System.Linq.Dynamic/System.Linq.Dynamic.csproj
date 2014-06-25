@@ -43,9 +43,9 @@
     <AssemblyOriginatorKeyFile>Properties\key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentValidation, Version=1.1.14.15542, Culture=neutral, PublicKeyToken=0950390b87309e14, processorArchitecture=MSIL">
+    <Reference Include="FluentValidation, Version=1.2.15.25765, Culture=neutral, PublicKeyToken=0950390b87309e14, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\FluentValidationNA.1.1.14\lib\net40\FluentValidation.dll</HintPath>
+      <HintPath>..\packages\FluentValidationNA.1.2.15\lib\net40\FluentValidation.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

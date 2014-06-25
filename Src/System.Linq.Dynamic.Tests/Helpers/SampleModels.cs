@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+﻿using FluentValidationNA;
 using System;
 using System.Collections.Generic;
 using System.Linq;
