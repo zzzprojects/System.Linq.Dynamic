@@ -120,16 +120,20 @@ namespace System.Linq.Dynamic.Tests
         public void Select()
         {
             //Arrange
+            List<int> range = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             var testList = User.GenerateSampleModels(100);
             var qry = testList.AsQueryable();
 
             //Act
+            IEnumerable rangeResult = range.AsQueryable().Select("it * it");
             var userNames = qry.Select("UserName");
             var userFirstName = qry.Select("new (UserName, Profile.FirstName as MyFirstName)");
             var userRoles = qry.Select("new (UserName, Roles.Select(Id) AS RoleIds)");
 
 
             //Assert
+            CollectionAssert.AreEqual(range.Select(x => x * x).ToArray(), rangeResult.Cast<int>().ToArray());
+
 #if NET35
             CollectionAssert.AreEqual(testList.Select(x => x.UserName).ToArray(), userNames.AsEnumerable().ToArray());
             CollectionAssert.AreEqual(

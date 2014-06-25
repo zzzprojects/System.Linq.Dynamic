@@ -74,7 +74,7 @@ namespace System.Linq.Dynamic
         /// Projects each element of a sequence into a new form.
         /// </summary>
         /// <param name="source">A sequence of values to project.</param>
-        /// <param name="selector">A projection string to apply to each element.</param>
+        /// <param name="selector">A projection string expression to apply to each element.</param>
         /// <param name="args">An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way String.Format formats strings.</param>
         /// <returns>An <see cref="IQueryable"/> whose elements are the result of invoking a projection string on each element of source.</returns>
         /// <example>
@@ -101,7 +101,7 @@ namespace System.Linq.Dynamic
         /// resulting sequences into one sequence.
         /// </summary>
         /// <param name="source">A sequence of values to project.</param>
-        /// <param name="selector"> A projection string to apply to each element.</param>
+        /// <param name="selector">A projection string expression to apply to each element.</param>
         /// <param name="args">An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way String.Format formats strings.</param>
         /// <returns>An <see cref="IQueryable"/> whose elements are the result of invoking a one-to-many projection function on each element of the input sequence.</returns>
         public static IQueryable SelectMany( this IQueryable source, string selector, params object[] args)
