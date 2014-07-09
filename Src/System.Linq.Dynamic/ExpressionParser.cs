@@ -57,7 +57,9 @@ namespace System.Linq.Dynamic
             LessGreater,
             DoubleEqual,
             GreaterThanEqual,
-            DoubleBar
+            DoubleBar,
+            DoubleGreaterThan,
+            DoubleLessThan,
         }
 
         interface ILogicalSignatures
@@ -103,6 +105,8 @@ namespace System.Linq.Dynamic
             void F(bool? x, bool? y);
             void F(Guid x, Guid y);
             void F(Guid? x, Guid? y);
+            void F(Guid x, string y);
+            void F(Guid? x, string y);
         }
 
         interface IAddSignatures : IArithmeticSignatures
@@ -203,6 +207,7 @@ namespace System.Linq.Dynamic
             typeof(Guid),
             typeof(Math),
             typeof(Convert),
+            typeof(Uri),
 #if !NET35
 			typeof(System.Data.Objects.EntityFunctions)
 #endif
@@ -364,7 +369,7 @@ namespace System.Linq.Dynamic
         // Adapted from ticket submitted by github user mlewis9548 
         Expression ParseIn()
         {
-            Expression left = ParseComparison();
+            Expression left = ParseLogical();
             Expression accumulate = left;
 
             while (TokenIdentifierIs("in"))
@@ -423,11 +428,44 @@ namespace System.Linq.Dynamic
             return accumulate;
         }
 
+        // &, | operators
+        Expression ParseLogical()
+        {
+            Expression left = this.ParseComparison();
+            while (_token.id == TokenId.Amphersand || _token.id == TokenId.Bar)
+            {
+                Token op = _token;
+                this.NextToken();
+                Expression right = this.ParseComparison();
+
+                if (left.Type.IsEnum)
+                {
+                    left = Expression.Convert(left, Enum.GetUnderlyingType(left.Type));
+                }
+
+                if (right.Type.IsEnum)
+                {
+                    right = Expression.Convert(right, Enum.GetUnderlyingType(right.Type));
+                }
+
+                switch (op.id)
+                {
+                    case TokenId.Amphersand:
+                        left = Expression.And(left, right);
+                        break;
+                    case TokenId.Bar:
+                        left = Expression.Or(left, right);
+                        break;
+                }
+            }
+            return left;
+        }
+
         // =, ==, !=, <>, >, >=, <, <= operators
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         Expression ParseComparison()
         {
-            Expression left = ParseAdditive();
+            Expression left = ParseShift();
             while (_token.id == TokenId.Equal || _token.id == TokenId.DoubleEqual ||
                 _token.id == TokenId.ExclamationEqual || _token.id == TokenId.LessGreater ||
                 _token.id == TokenId.GreaterThan || _token.id == TokenId.GreaterThanEqual ||
@@ -438,7 +476,7 @@ namespace System.Linq.Dynamic
                 Expression right = ParseAdditive();
                 bool isEquality = op.id == TokenId.Equal || op.id == TokenId.DoubleEqual ||
                     op.id == TokenId.ExclamationEqual || op.id == TokenId.LessGreater;
-                if (isEquality && !left.Type.IsValueType && !right.Type.IsValueType)
+                if (isEquality && ((!left.Type.IsValueType && !right.Type.IsValueType) || (left.Type == typeof(Guid) && right.Type == typeof(Guid))))
                 {
                     if (left.Type != right.Type)
                     {
@@ -468,6 +506,16 @@ namespace System.Linq.Dynamic
                         else if ((e = PromoteExpression(left, right.Type, true)) != null)
                         {
                             left = e;
+                        }
+                        else if (IsEnumType(left.Type) && right is ConstantExpression)
+                        {
+                            var wrt = Enum.ToObject(left.Type, ((ConstantExpression)right).Value);
+                            right = Expression.Constant(wrt, left.Type);
+                        }
+                        else if (IsEnumType(right.Type) && left is ConstantExpression)
+                        {
+                            var wrt = Enum.ToObject(right.Type, ((ConstantExpression)left).Value);
+                            left = Expression.Constant(wrt, right.Type);
                         }
                         else
                         {
@@ -507,12 +555,35 @@ namespace System.Linq.Dynamic
             return left;
         }
 
-        // +, -, & operators
+        // <<, >> operators
+        Expression ParseShift()
+        {
+            Expression left = this.ParseAdditive();
+            while (_token.id == TokenId.DoubleLessThan || _token.id == TokenId.DoubleGreaterThan)
+            {
+                Token op = _token;
+                this.NextToken();
+                Expression right = this.ParseAdditive();
+                switch (op.id)
+                {
+                    case TokenId.DoubleLessThan:
+                        this.CheckAndPromoteOperands(typeof(IArithmeticSignatures), op.text, ref left, ref right, op.pos);
+                        left = Expression.LeftShift(left, right);
+                        break;
+                    case TokenId.DoubleGreaterThan:
+                        this.CheckAndPromoteOperands(typeof(IArithmeticSignatures), op.text, ref left, ref right, op.pos);
+                        left = Expression.RightShift(left, right);
+                        break;
+                }
+            }
+            return left;
+        }
+
+        // +, - operators
         Expression ParseAdditive()
         {
             Expression left = ParseMultiplicative();
-            while (_token.id == TokenId.Plus || _token.id == TokenId.Minus ||
-                _token.id == TokenId.Amphersand)
+            while (_token.id == TokenId.Plus || _token.id == TokenId.Minus)
             {
                 Token op = _token;
                 NextToken();
@@ -520,17 +591,19 @@ namespace System.Linq.Dynamic
                 switch (op.id)
                 {
                     case TokenId.Plus:
-                        if (left.Type == typeof(string) || right.Type == typeof(string))
-                            goto case TokenId.Amphersand;
-                        CheckAndPromoteOperands(typeof(IAddSignatures), op.text, ref left, ref right, op.pos);
-                        left = GenerateAdd(left, right);
+                        if (left.Type == typeof (string) || right.Type == typeof (string))
+                        {
+                            left = GenerateStringConcat(left, right);
+                        }
+                        else
+                        {
+                            CheckAndPromoteOperands(typeof (IAddSignatures), op.text, ref left, ref right, op.pos);
+                            left = GenerateAdd(left, right);
+                        }
                         break;
                     case TokenId.Minus:
                         CheckAndPromoteOperands(typeof(ISubtractSignatures), op.text, ref left, ref right, op.pos);
                         left = GenerateSubtract(left, right);
-                        break;
-                    case TokenId.Amphersand:
-                        left = GenerateStringConcat(left, right);
                         break;
                 }
             }
@@ -948,6 +1021,13 @@ namespace System.Linq.Dynamic
             }
             else
             {
+                if (type.IsEnum)
+                {
+                    var wr = Enum.Parse(type, id, true);
+                    if (wr != null)
+                        return Expression.Constant(wr);
+                }
+
                 MemberInfo member = FindPropertyOrField(type, id, instance == null);
                 if (member == null)
                 {
@@ -1623,11 +1703,19 @@ namespace System.Linq.Dynamic
 
         static Expression GenerateEqual(Expression left, Expression right)
         {
+            if ((left.Type == typeof(Guid) || left.Type == typeof(Guid?)) && right.Type == typeof(string))
+            {
+                right = Expression.Call(typeof(Guid).GetMethod("Parse"), right);
+            }
             return Expression.Equal(left, right);
         }
 
         static Expression GenerateNotEqual(Expression left, Expression right)
         {
+            if ((left.Type == typeof(Guid) || left.Type == typeof(Guid?)) && right.Type == typeof(string))
+            {
+                right = Expression.Call(typeof(Guid).GetMethod("Parse"), right);
+            }
             return Expression.NotEqual(left, right);
         }
 
@@ -1639,6 +1727,11 @@ namespace System.Linq.Dynamic
                     GenerateStaticMethodCall("Compare", left, right),
                     Expression.Constant(0)
                 );
+            }
+            else if (left.Type.IsEnum || right.Type.IsEnum)
+            {
+                return Expression.GreaterThan(left.Type.IsEnum ? Expression.Convert(left, Enum.GetUnderlyingType(left.Type)) : left,
+                    right.Type.IsEnum ? Expression.Convert(right, Enum.GetUnderlyingType(right.Type)) : right);
             }
             return Expression.GreaterThan(left, right);
         }
@@ -1652,6 +1745,11 @@ namespace System.Linq.Dynamic
                     Expression.Constant(0)
                 );
             }
+            else if (left.Type.IsEnum || right.Type.IsEnum)
+            {
+                return Expression.GreaterThanOrEqual(left.Type.IsEnum ? Expression.Convert(left, Enum.GetUnderlyingType(left.Type)) : left,
+                    right.Type.IsEnum ? Expression.Convert(right, Enum.GetUnderlyingType(right.Type)) : right);
+            }
             return Expression.GreaterThanOrEqual(left, right);
         }
 
@@ -1664,6 +1762,11 @@ namespace System.Linq.Dynamic
                     Expression.Constant(0)
                 );
             }
+            else if (left.Type.IsEnum || right.Type.IsEnum)
+            {
+                return Expression.LessThan(left.Type.IsEnum ? Expression.Convert(left, Enum.GetUnderlyingType(left.Type)) : left,
+                    right.Type.IsEnum ? Expression.Convert(right, Enum.GetUnderlyingType(right.Type)) : right);
+            }
             return Expression.LessThan(left, right);
         }
 
@@ -1675,6 +1778,11 @@ namespace System.Linq.Dynamic
                     GenerateStaticMethodCall("Compare", left, right),
                     Expression.Constant(0)
                 );
+            }
+            else if (left.Type.IsEnum || right.Type.IsEnum)
+            {
+                return Expression.LessThanOrEqual(left.Type.IsEnum ? Expression.Convert(left, Enum.GetUnderlyingType(left.Type)) : left,
+                    right.Type.IsEnum ? Expression.Convert(right, Enum.GetUnderlyingType(right.Type)) : right);
             }
             return Expression.LessThanOrEqual(left, right);
         }
@@ -1807,6 +1915,11 @@ namespace System.Linq.Dynamic
                         NextChar();
                         t = TokenId.LessGreater;
                     }
+                    else if (_ch == '<')
+                    {
+                        this.NextChar();
+                        t = TokenId.DoubleLessThan;
+                    }
                     else
                     {
                         t = TokenId.LessThan;
@@ -1830,6 +1943,11 @@ namespace System.Linq.Dynamic
                     {
                         NextChar();
                         t = TokenId.GreaterThanEqual;
+                    }
+                    else if (_ch == '>')
+                    {
+                        this.NextChar();
+                        t = TokenId.DoubleGreaterThan;
                     }
                     else
                     {

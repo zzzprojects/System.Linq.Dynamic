@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq.Dynamic.Tests.Helpers;
 using System.Linq;
@@ -47,6 +48,19 @@ namespace System.Linq.Dynamic.Tests
                 realQry.Select(x => x.TotalIncome).ToArray(),
                 selectQry.AsEnumerable().Select(x => x.TotalIncome).ToArray());
 #endif
+        }
+
+
+
+        [TestMethod]
+        public void CompareWithGuidTest()
+        {
+            var lst = new List<Guid>() { new Guid("{1AF7AD2B-7651-4045-962A-3D44DEE71398}"), new Guid("{99610563-8F80-4497-9125-C96DEE23037D}"), new Guid("{0A191E77-E32D-4DE1-8F1C-A144C2B0424D}") };
+            var qry = lst.AsQueryable().Select(x => new { strValue = "str", gg = x }).AsQueryable();
+
+            var sel=qry.AsQueryable().Where("gg = \"0A191E77-E32D-4DE1-8F1C-A144C2B0424D\"");
+
+            Assert.AreEqual(sel.Count(), 1);
         }
 
     }
