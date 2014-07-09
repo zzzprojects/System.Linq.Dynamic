@@ -63,5 +63,48 @@ namespace System.Linq.Dynamic.Tests
             Assert.AreEqual(sel.Count(), 1);
         }
 
+
+        [TestMethod]
+        public void ShiftTest()
+        {
+            var lst = new List<int>() { 10 };
+            var qry = lst.AsQueryable().Select(x => new { strValue = "str", gg = x }).AsQueryable();
+
+            var sel = qry.AsQueryable().Select("new ((gg << 1) as aa)").Select("aa").Cast<int>().First();
+
+            Assert.AreEqual(sel, 20);
+        }
+
+        [TestMethod]
+        public void LogicalAndTest()
+        {
+            var lst = new List<int>() { 0x020, 0x021, 0x30, 0x31, 0x41 };
+            var qry = lst.AsQueryable().Select(x => new { strValue = "str", gg = x }).AsQueryable();
+
+            var sel = qry.AsQueryable().Where("(gg & 1) > 0");
+
+            Assert.AreEqual(sel.Count(), 3);
+        }
+
+        [TestMethod]
+        public void GroupByManyTest()
+        {
+            var lst = new List<Tuple<int, int, int>>()
+            {
+                new Tuple<int, int, int>(1, 1, 1),
+                new Tuple<int, int, int>(1, 1, 2),
+                new Tuple<int, int, int>(1, 1, 3),
+                new Tuple<int, int, int>(2, 2, 4),
+                new Tuple<int, int, int>(2, 2, 5),
+                new Tuple<int, int, int>(2, 2, 6),
+                new Tuple<int, int, int>(2, 3, 7)
+            };
+            
+            var sel = lst.AsQueryable().GroupByMany("Item1", "Item2");
+
+            Assert.AreEqual(sel.Count(), 2);
+            Assert.AreEqual(sel.First().SubGroups.Count(), 1);
+            Assert.AreEqual(sel.Skip(1).First().SubGroups.Count(), 2);
+        }
     }
 }
