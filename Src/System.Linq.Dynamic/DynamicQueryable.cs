@@ -295,47 +295,62 @@ namespace System.Linq.Dynamic
 
         #region GroupByMany
 
-        public class GroupResult
+        /// <summary>
+        /// Groups the elements of a sequence according to a multiple specified key string functions 
+        /// and creates a result value from each group (and subgroups) and its key.
+        /// </summary>
+        /// <typeparam name="TElement"></typeparam>
+        /// <param name="source">A <see cref="IEnumerable{T}"/> whose elements to group.</param>
+        /// <param name="keySelectors"><see cref="string"/> expressions to specify the keys for each element.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of type <see cref="GroupResult"/> where each element represents a projection over a group, its key, and its subgroups.s</returns>
+        public static IEnumerable<GroupResult> GroupByMany<TElement>(this IEnumerable<TElement> source, params string[] keySelectors)
         {
-            public object Key { get; set; }
-            public int Count { get; set; }
-            public IEnumerable Items { get; set; }
-            public IEnumerable<GroupResult> SubGroups { get; set; }
-            public override string ToString() { return string.Format("{0} ({1})", Key, Count); }
-        }
+            Validate.Argument(source, "elements").IsNotNull().Check()
+                    .Argument(keySelectors, "keySelectors").IsNotNull().IsNotEmpty().Check();
 
-        public static IEnumerable<GroupResult> GroupByMany<TElement>(
-            this IEnumerable<TElement> elements, params string[] groupSelectors)
-        {
-            var selectors = new List<Func<TElement, object>>(groupSelectors.Length);
-            foreach (var selector in groupSelectors)
+            var selectors = new List<Func<TElement, object>>(keySelectors.Length);
+
+            foreach (var selector in keySelectors)
             {
-                LambdaExpression l =
-                    DynamicExpression.ParseLambda(typeof(TElement), typeof(object), selector);
+                LambdaExpression l = DynamicExpression.ParseLambda(typeof(TElement), typeof(object), selector);
                 selectors.Add((Func<TElement, object>)l.Compile());
             }
-            return elements.GroupByMany(selectors.ToArray());
+
+            return GroupByManyInternal(source, selectors.ToArray(), 0);
         }
 
-        public static IEnumerable<GroupResult> GroupByMany<TElement>(
-            this IEnumerable<TElement> elements, params Func<TElement, object>[] groupSelectors)
+        /// <summary>
+        /// Groups the elements of a sequence according to a multiple specified key functions 
+        /// and creates a result value from each group (and subgroups) and its key.
+        /// </summary>
+        /// <typeparam name="TElement"></typeparam>
+        /// <param name="source">A <see cref="IEnumerable{T}"/> whose elements to group.</param>
+        /// <param name="keySelectors">Lambda expressions to specify the keys for each element.</param>
+        /// <returns></returns>
+        public static IEnumerable<GroupResult> GroupByMany<TElement>(this IEnumerable<TElement> source, params Func<TElement, object>[] keySelectors)
         {
-            if (groupSelectors.Length > 0)
-            {
-                var selector = groupSelectors.First();
-                var nextSelectors = groupSelectors.Skip(1).ToArray(); //reduce the list recursively until zero
-                return
-                    elements.GroupBy(selector).Select(
-                        g => new GroupResult
-                        {
-                            Key = g.Key,
-                            Count = g.Count(),
-                            Items = g,
-                            SubGroups = g.GroupByMany(nextSelectors)
-                        });
-            }
-            else
-                return null;
+            Validate.Argument(source, "elements").IsNotNull().Check()
+                    .Argument(keySelectors, "keySelectors").IsNotNull().IsNotEmpty().Check();
+
+            return GroupByManyInternal(source, keySelectors, 0);
+        }
+
+        static IEnumerable<GroupResult> GroupByManyInternal<TElement>(IEnumerable<TElement> source, Func<TElement, object>[] keySelectors, int currentSelector)
+        {
+            if (currentSelector >= keySelectors.Length) return null;
+
+            var selector = keySelectors[currentSelector];
+
+            var result = source.GroupBy(selector).Select(
+                g => new GroupResult
+                {
+                    Key = g.Key,
+                    Count = g.Count(),
+                    Items = g,
+                    Subgroups = GroupByManyInternal(g, keySelectors, currentSelector + 1)
+                });
+
+            return result;
         }
 
         #endregion
