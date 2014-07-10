@@ -48,9 +48,8 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net40\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="FluentValidation, Version=1.2.15.25765, Culture=neutral, PublicKeyToken=0950390b87309e14, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\FluentValidationNA.1.2.15\lib\net40\FluentValidation.dll</HintPath>
+    <Reference Include="FluentValidationNA">
+      <HintPath>..\packages\FluentValidationNA.1.2.16\lib\net40\FluentValidationNA.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
