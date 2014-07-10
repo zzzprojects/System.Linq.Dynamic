@@ -107,6 +107,8 @@ namespace System.Linq.Dynamic
             void F(Guid? x, Guid? y);
             void F(Guid x, string y);
             void F(Guid? x, string y);
+            void F(string x, Guid y);
+            void F(string x, Guid? y);
         }
 
         interface IAddSignatures : IArithmeticSignatures
@@ -321,7 +323,7 @@ namespace System.Linq.Dynamic
         Expression ParseExpression()
         {
             int errorPos = _token.pos;
-            Expression expr = ParseLogicalOr();
+            Expression expr = ParseConditionalOr();
             if (_token.id == TokenId.Question)
             {
                 NextToken();
@@ -335,14 +337,14 @@ namespace System.Linq.Dynamic
         }
 
         // ||, or operator
-        Expression ParseLogicalOr()
+        Expression ParseConditionalOr()
         {
-            Expression left = ParseLogicalAnd();
+            Expression left = ParseConditionalAnd();
             while (_token.id == TokenId.DoubleBar || TokenIdentifierIs("or"))
             {
                 Token op = _token;
                 NextToken();
-                Expression right = ParseLogicalAnd();
+                Expression right = ParseConditionalAnd();
                 CheckAndPromoteOperands(typeof(ILogicalSignatures), op.text, ref left, ref right, op.pos);
                 left = Expression.OrElse(left, right);
             }
@@ -350,7 +352,7 @@ namespace System.Linq.Dynamic
         }
 
         // &&, and operator
-        Expression ParseLogicalAnd()
+        Expression ParseConditionalAnd()
         {
             Expression left = ParseIn();
             while (_token.id == TokenId.DoubleAmphersand || TokenIdentifierIs("and"))
@@ -369,7 +371,7 @@ namespace System.Linq.Dynamic
         // Adapted from ticket submitted by github user mlewis9548 
         Expression ParseIn()
         {
-            Expression left = ParseLogical();
+            Expression left = ParseLogicalAndOr();
             Expression accumulate = left;
 
             while (TokenIdentifierIs("in"))
@@ -428,8 +430,8 @@ namespace System.Linq.Dynamic
             return accumulate;
         }
 
-        // &, | operators
-        Expression ParseLogical()
+        // &, | bitwise operators
+        Expression ParseLogicalAndOr()
         {
             Expression left = this.ParseComparison();
             while (_token.id == TokenId.Amphersand || _token.id == TokenId.Bar)
@@ -1709,6 +1711,11 @@ namespace System.Linq.Dynamic
             {
                 right = Expression.Call(typeof(Guid).GetMethod("Parse"), right);
             }
+            else if ((right.Type == typeof(Guid) || right.Type == typeof(Guid?)) && left.Type == typeof(string))
+            {
+                left = Expression.Call(typeof(Guid).GetMethod("Parse"), left);
+            }
+
             return Expression.Equal(left, right);
         }
 
