@@ -97,28 +97,6 @@ namespace System.Linq.Dynamic.Tests
             Assert.AreEqual(sel.Count(), 2);
         }
 
-        [DynamicLinqType]
-        public enum TestEnum
-        {
-            Var1 = 0,
-            Var2 = 1,
-            Var3 = 2,
-            Var4 = 4,
-            Var5 = 8,
-            Var6 = 16,
-        }
-
-        [TestMethod]
-        public void EnumTest()
-        {
-            var lst = new List<TestEnum>() { TestEnum.Var1, TestEnum.Var2, TestEnum.Var3, TestEnum.Var4, TestEnum.Var5, TestEnum.Var6 };
-            var qry = lst.AsQueryable().Select(x => new { strValue = "str", gg = x }).AsQueryable();
-
-            var sel = qry.AsQueryable().Where("gg < TestEnum.Var4");
-
-            Assert.AreEqual(sel.Count(), 3);
-        }
-
 #if !NET35
         [TestMethod]
         public void GroupByManyTest()

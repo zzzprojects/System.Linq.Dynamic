@@ -184,10 +184,8 @@ namespace System.Linq.Dynamic
             void First();
             void FirstOrDefault();
         }
-
-        static HashSet<Type> additionalTypes = new HashSet<Type>();
-
-        static readonly Type[] predefinedTypes = {
+        
+        static readonly HashSet<Type> _predefinedTypes = new HashSet<Type>() {
             typeof(Object),
             typeof(Boolean),
             typeof(Char),
@@ -234,11 +232,6 @@ namespace System.Linq.Dynamic
         int _textLen;
         char _ch;
         Token _token;
-
-        static ExpressionParser()
-        {
-            findAdditionalTypes();
-        }
 
         public ExpressionParser(ParameterExpression[] parameters, string expression, object[] values)
         {
@@ -505,6 +498,8 @@ namespace System.Linq.Dynamic
                 {
                     if (left.Type != right.Type)
                     {
+                        ConstantExpression constantExpr;
+
                         Expression e;
                         if ((e = PromoteExpression(right, left.Type, true)) != null)
                         {
@@ -514,14 +509,14 @@ namespace System.Linq.Dynamic
                         {
                             left = e;
                         }
-                        else if (IsEnumType(left.Type) && right is ConstantExpression)
+                        else if (IsEnumType(left.Type) && (constantExpr = right as ConstantExpression) != null)
                         {
-                            var wrt = Enum.ToObject(left.Type, ((ConstantExpression)right).Value);
+                            var wrt = Enum.ToObject(left.Type, constantExpr.Value);
                             right = Expression.Constant(wrt, left.Type);
                         }
-                        else if (IsEnumType(right.Type) && left is ConstantExpression)
+                        else if (IsEnumType(right.Type) && (constantExpr = left as ConstantExpression) != null)
                         {
-                            var wrt = Enum.ToObject(right.Type, ((ConstantExpression)left).Value);
+                            var wrt = Enum.ToObject(right.Type, constantExpr.Value);
                             left = Expression.Constant(wrt, right.Type);
                         }
                         else
@@ -1038,10 +1033,6 @@ namespace System.Linq.Dynamic
                 MemberInfo member = FindPropertyOrField(type, id, instance == null);
                 if (member == null)
                 {
-//#if !NET35
-//                    //only try to get the member dynamically if the instance type is an object.
-//                    if( type == typeof( object ) ) return GetDynamicMember(instance, id);
-//#endif
                     throw ParseError(errorPos, Res.UnknownPropertyOrField,
                         id, GetTypeName(type));
                 }
@@ -1185,21 +1176,12 @@ namespace System.Linq.Dynamic
 
         static bool IsPredefinedType(Type type)
         {
-            foreach (Type t in predefinedTypes) if (t == type) return true;
-            if (additionalTypes.Contains(type))
-                return true;
+            if (_predefinedTypes.Contains(type)) return true;
+            if (GlobalConfig.CustomTypeProvider.GetCustomTypes().Contains(type)) return true;
+
             return false;
         }
 
-        static void findAdditionalTypes()
-        {
-            var types = AppDomain.CurrentDomain.GetAssemblies().Where(x => x.FullName != "System.configuration.4.0.0.0.Fakes, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0ae41878053f6703").SelectMany(x => x.GetTypes().Where(p => p.IsEnum));
-            foreach (var type in types)
-            {
-                if (type.GetCustomAttributes(false).Any(x => x is DynamicLinqTypeAttribute))
-                    additionalTypes.Add(type);
-            }
-        }
 
 
         static bool IsNullableType(Type type)
@@ -2111,9 +2093,16 @@ namespace System.Linq.Dynamic
             d.Add(KEYWORD_IT, KEYWORD_IT);
             d.Add(KEYWORD_IIF, KEYWORD_IIF);
             d.Add(KEYWORD_NEW, KEYWORD_NEW);
-            foreach (Type type in predefinedTypes) d.Add(type.Name, type);
-            foreach (Type type in additionalTypes) d.Add(type.Name, type);
+
+            foreach (Type type in _predefinedTypes) d.Add(type.Name, type);
+            foreach (Type type in GlobalConfig.CustomTypeProvider.GetCustomTypes()) d.Add(type.Name, type);
+
             return d;
+        }
+
+        internal static void ResetDynamicLinqTypes()
+        {
+            _keywords = null;
         }
     }
 }
