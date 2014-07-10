@@ -185,6 +185,8 @@ namespace System.Linq.Dynamic
             void FirstOrDefault();
         }
 
+        static HashSet<Type> additionalTypes = new HashSet<Type>();
+
         static readonly Type[] predefinedTypes = {
             typeof(Object),
             typeof(Boolean),
@@ -232,6 +234,11 @@ namespace System.Linq.Dynamic
         int _textLen;
         char _ch;
         Token _token;
+
+        static ExpressionParser()
+        {
+            findAdditionalTypes();
+        }
 
         public ExpressionParser(ParameterExpression[] parameters, string expression, object[] values)
         {
@@ -473,7 +480,7 @@ namespace System.Linq.Dynamic
             {
                 Token op = _token;
                 NextToken();
-                Expression right = ParseAdditive();
+                Expression right = ParseShift();
                 bool isEquality = op.id == TokenId.Equal || op.id == TokenId.DoubleEqual ||
                     op.id == TokenId.ExclamationEqual || op.id == TokenId.LessGreater;
                 if (isEquality && ((!left.Type.IsValueType && !right.Type.IsValueType) || (left.Type == typeof(Guid) && right.Type == typeof(Guid))))
@@ -1179,8 +1186,21 @@ namespace System.Linq.Dynamic
         static bool IsPredefinedType(Type type)
         {
             foreach (Type t in predefinedTypes) if (t == type) return true;
+            if (additionalTypes.Contains(type))
+                return true;
             return false;
         }
+
+        static void findAdditionalTypes()
+        {
+            var types = AppDomain.CurrentDomain.GetAssemblies().Where(x => x.FullName != "System.configuration.4.0.0.0.Fakes, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0ae41878053f6703").SelectMany(x => x.GetTypes().Where(p => p.IsEnum));
+            foreach (var type in types)
+            {
+                if (type.GetCustomAttributes(false).Any(x => x is DynamicLinqTypeAttribute))
+                    additionalTypes.Add(type);
+            }
+        }
+
 
         static bool IsNullableType(Type type)
         {
@@ -2092,6 +2112,7 @@ namespace System.Linq.Dynamic
             d.Add(KEYWORD_IIF, KEYWORD_IIF);
             d.Add(KEYWORD_NEW, KEYWORD_NEW);
             foreach (Type type in predefinedTypes) d.Add(type.Name, type);
+            foreach (Type type in additionalTypes) d.Add(type.Name, type);
             return d;
         }
     }

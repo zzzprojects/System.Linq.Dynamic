@@ -60,6 +60,7 @@
     <Compile Include="ClassFactory.cs" />
     <Compile Include="DynamicClass.cs" />
     <Compile Include="DynamicExpression.cs" />
+    <Compile Include="DynamicLinqTypeAttribute.cs" />
     <Compile Include="DynamicQueryable.cs" />
     <Compile Include="DynamicOrdering.cs" />
     <Compile Include="DynamicProperty.cs" />

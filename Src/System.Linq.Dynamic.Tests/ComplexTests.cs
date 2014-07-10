@@ -87,6 +87,40 @@ namespace System.Linq.Dynamic.Tests
         }
 
         [TestMethod]
+        public void UriTest()
+        {
+            var lst = new List<Uri>() { new Uri("http://127.0.0.1"), new Uri("http://192.168.1.1"), new Uri("http://127.0.0.1") };
+            var qry = lst.AsQueryable().Select(x => new { strValue = "str", gg = x }).AsQueryable();
+
+            var sel = qry.AsQueryable().Where("gg = @0", new Uri("http://127.0.0.1"));
+
+            Assert.AreEqual(sel.Count(), 2);
+        }
+
+        [DynamicLinqType]
+        public enum TestEnum
+        {
+            Var1 = 0,
+            Var2 = 1,
+            Var3 = 2,
+            Var4 = 4,
+            Var5 = 8,
+            Var6 = 16,
+        }
+
+        [TestMethod]
+        public void EnumTest()
+        {
+            var lst = new List<TestEnum>() { TestEnum.Var1, TestEnum.Var2, TestEnum.Var3, TestEnum.Var4, TestEnum.Var5, TestEnum.Var6 };
+            var qry = lst.AsQueryable().Select(x => new { strValue = "str", gg = x }).AsQueryable();
+
+            var sel = qry.AsQueryable().Where("gg < TestEnum.Var4");
+
+            Assert.AreEqual(sel.Count(), 3);
+        }
+
+#if !NET35
+        [TestMethod]
         public void GroupByManyTest()
         {
             var lst = new List<Tuple<int, int, int>>()
@@ -106,5 +140,27 @@ namespace System.Linq.Dynamic.Tests
             Assert.AreEqual(sel.First().SubGroups.Count(), 1);
             Assert.AreEqual(sel.Skip(1).First().SubGroups.Count(), 2);
         }
+
+        [TestMethod]
+        public void GroupByManyTest2()
+        {
+            var lst = new List<Tuple<int, int, int>>()
+            {
+                new Tuple<int, int, int>(1, 1, 1),
+                new Tuple<int, int, int>(1, 1, 2),
+                new Tuple<int, int, int>(1, 1, 3),
+                new Tuple<int, int, int>(2, 2, 4),
+                new Tuple<int, int, int>(2, 2, 5),
+                new Tuple<int, int, int>(2, 2, 6),
+                new Tuple<int, int, int>(2, 3, 7)
+            };
+
+            var sel = lst.AsQueryable().GroupByMany(x => x.Item1, x => x.Item2);
+
+            Assert.AreEqual(sel.Count(), 2);
+            Assert.AreEqual(sel.First().SubGroups.Count(), 1);
+            Assert.AreEqual(sel.Skip(1).First().SubGroups.Count(), 2);
+        }
+#endif
     }
 }

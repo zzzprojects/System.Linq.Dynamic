@@ -68,6 +68,9 @@
     <Compile Include="..\System.Linq.Dynamic\DynamicExpression.cs">
       <Link>DynamicExpression.cs</Link>
     </Compile>
+    <Compile Include="..\System.Linq.Dynamic\DynamicLinqTypeAttribute.cs">
+      <Link>DynamicLinqTypeAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\System.Linq.Dynamic\DynamicOrdering.cs">
       <Link>DynamicOrdering.cs</Link>
     </Compile>
