@@ -8,8 +8,8 @@ using System.Web.Mvc;
 
 namespace DynamicLinqWebDocs.Controllers
 {
-    [RoutePrefix("Classes")]
-    public class ClassController : Controller
+    [RoutePrefix("Library")]
+    public class LibraryController : Controller
     {
         IDataRepo _repo = new RealDataRepo();
 
@@ -31,7 +31,9 @@ namespace DynamicLinqWebDocs.Controllers
                 Namespace = @class.Namespace,
                 Description = @class.Description,
                 Remarks = @class.Remarks,
-                Methods = @class.Methods
+                Methods = @class.Methods,
+                Properties = @class.Properties,
+                IsInterface = @class.IsInterface 
             };
 
             return View(viewModel);
@@ -64,6 +66,32 @@ namespace DynamicLinqWebDocs.Controllers
                 ReturnDescription = method.ReturnDescription,
                 Frameworks = method.Frameworks,
                 HasParamsArgument = method.HasParamsArgument
+            };
+
+            return View(viewModel);
+        }
+
+        [Route("{className}/Property-{propertyName}/{framework:Enum(DynamicLinqWebDocs.Models.Frameworks)?}")]
+        public ActionResult Property(string className, string propertyName, Models.Frameworks framework = Models.Frameworks.NotSet)
+        {
+            Models.Class @class;
+
+            var property = _repo.GetProperty(className, propertyName, framework, out @class);
+            if (property == null) return HttpNotFound();
+
+            var viewModel = new Property()
+            {
+                Namespace = @class.Namespace,
+                Class = @class.Name,
+                Name = property.Name,
+                IsStatic = property.IsStatic,
+                ValueType = property.ValueType,
+                Remarks = property.Remarks,
+                Description = property.Description,
+                Examples = property.Examples,
+                ValueTypeDescription = property.ValueTypeDescription,
+                Frameworks = property.Frameworks,
+                Accessors = property.Accessors
             };
 
             return View(viewModel);

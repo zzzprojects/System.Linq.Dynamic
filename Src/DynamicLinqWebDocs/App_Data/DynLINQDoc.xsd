@@ -42,11 +42,13 @@
     <xs:sequence>
       <xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1" />
       <xs:element name="Remarks" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Properties" type="Properties" minOccurs="0" maxOccurs="1" />
       <xs:element name="Methods" type="Methods" minOccurs="0" maxOccurs="1" />
     </xs:sequence>
     
     <xs:attribute name="name" type="xs:string" use="required" />
     <xs:attribute name="namespace" type="xs:string" use="required" />
+    <xs:attribute name="isInterface" type="xs:boolean" default="false" />
   </xs:complexType>
 
   <xs:complexType name="Expression">
@@ -77,9 +79,31 @@
 
     <xs:attribute name="name" type="xs:string" use="required" />
     <xs:attribute name="isExtensionMethod" type="xs:boolean" />
+    <xs:attribute name="isStatic" type="xs:boolean" default="false" />
     <xs:attribute name="returnType" type="xs:string" />
     <xs:attribute name="frameworks" type="Frameworks" default="NotSet" />
     <xs:attribute name="hasParamsArgument" type="xs:boolean" default="false" />
+  </xs:complexType>
+
+  <xs:complexType name="Properties">
+    <xs:sequence>
+      <xs:element name="Property" type="Property" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Property">
+    <xs:sequence>
+      <xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Remarks" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="ValueTypeDescription" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Examples" type="Examples" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+
+    <xs:attribute name="name" type="xs:string" use="required" />
+    <xs:attribute name="isStatic" type="xs:boolean" default="false" />
+    <xs:attribute name="valueType" type="xs:string" use="required" />
+    <xs:attribute name="frameworks" type="Frameworks" default="NotSet" />
+    <xs:attribute name="accessors" type="PropertyAccessors" use="required" />
   </xs:complexType>
 
   <xs:complexType name="Arguments">
@@ -124,6 +148,14 @@
       <xs:enumeration value="Net40" />
       <xs:enumeration value="Net45" />
       <xs:enumeration value="Net40Plus" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="PropertyAccessors">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="GetSet" />
+      <xs:enumeration value="Get" />
+      <xs:enumeration value="Set" />
     </xs:restriction>
   </xs:simpleType>
 

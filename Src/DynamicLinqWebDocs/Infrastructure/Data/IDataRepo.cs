@@ -15,6 +15,8 @@ namespace DynamicLinqWebDocs.Infrastructure.Data
 
         Method GetMethod(string className, string methodName, Frameworks framework, out Class @class, int overload = 0);
 
+        Property GetProperty(string className, string propertyName, Frameworks framework, out Class @class);
+
 
         IEnumerable<Expression> GetExpressions();
 

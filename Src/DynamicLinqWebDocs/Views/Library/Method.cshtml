@@ -8,7 +8,7 @@
     var remarks = String.IsNullOrEmpty(Model.Remarks) ? "No Remarks" : Model.Remarks;
 }
 
-<h2>@Html.ActionLink(Model.Class, "Class", "Class", new { className = Model.Class }, null)@title</h2>
+<h2>@Html.ActionLink(Model.Class, "Class", "Library", new { className = Model.Class }, null)@title</h2>
 
 @Html.FormatMarkdown(Model.Description)
 

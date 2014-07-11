@@ -13,10 +13,15 @@ namespace System.Linq.Dynamic
     /// </summary>
     public class GroupResult
     {
+
         /// <summary>
         /// The key value of the group.
         /// </summary>
+#if NET35
         public object Key { get; internal set; }
+#else
+        public dynamic Key { get; internal set; }
+#endif
 
         /// <summary>
         /// The number of resulting elements in the group.

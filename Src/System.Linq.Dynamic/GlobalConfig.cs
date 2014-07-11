@@ -13,7 +13,7 @@ namespace System.Linq.Dynamic
         static IDynamicLinkCustomTypeProvider _customTypeProvider;
 
         /// <summary>
-        /// Gets or Sets the <see cref="IDynamicLinkCustomTypeProvider"/>.  Defaults to <see cref="DefaultDynamicLinqCustomTypeProvider" />.
+        /// Gets or sets the <see cref="IDynamicLinkCustomTypeProvider"/>.  Defaults to <see cref="DefaultDynamicLinqCustomTypeProvider" />.
         /// </summary>
         public static IDynamicLinkCustomTypeProvider CustomTypeProvider
         {

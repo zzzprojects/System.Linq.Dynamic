@@ -16,7 +16,12 @@ namespace DynamicLinqWebDocs.Models
 
         public string Description { get; set; }
 
+        [XmlAttribute(AttributeName = "isInterface")]
+        public bool IsInterface { get; set; }
+
         public List<Method> Methods { get; set; }
+
+        public List<Property> Properties { get; set; }
 
         public string Remarks { get; set; }
     }
