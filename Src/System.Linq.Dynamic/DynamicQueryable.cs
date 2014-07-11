@@ -296,13 +296,13 @@ namespace System.Linq.Dynamic
         #region GroupByMany
 
         /// <summary>
-        /// Groups the elements of a sequence according to a multiple specified key string functions 
+        /// Groups the elements of a sequence according to multiple specified key string functions 
         /// and creates a result value from each group (and subgroups) and its key.
         /// </summary>
         /// <typeparam name="TElement"></typeparam>
         /// <param name="source">A <see cref="IEnumerable{T}"/> whose elements to group.</param>
         /// <param name="keySelectors"><see cref="string"/> expressions to specify the keys for each element.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of type <see cref="GroupResult"/> where each element represents a projection over a group, its key, and its subgroups.s</returns>
+        /// <returns>A <see cref="IEnumerable{T}"/> of type <see cref="GroupResult"/> where each element represents a projection over a group, its key, and its subgroups.</returns>
         public static IEnumerable<GroupResult> GroupByMany<TElement>(this IEnumerable<TElement> source, params string[] keySelectors)
         {
             Validate.Argument(source, "elements").IsNotNull().Check()
@@ -320,13 +320,13 @@ namespace System.Linq.Dynamic
         }
 
         /// <summary>
-        /// Groups the elements of a sequence according to a multiple specified key functions 
+        /// Groups the elements of a sequence according to multiple specified key functions 
         /// and creates a result value from each group (and subgroups) and its key.
         /// </summary>
         /// <typeparam name="TElement"></typeparam>
         /// <param name="source">A <see cref="IEnumerable{T}"/> whose elements to group.</param>
         /// <param name="keySelectors">Lambda expressions to specify the keys for each element.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="IEnumerable{T}"/> of type <see cref="GroupResult"/> where each element represents a projection over a group, its key, and its subgroups.</returns>
         public static IEnumerable<GroupResult> GroupByMany<TElement>(this IEnumerable<TElement> source, params Func<TElement, object>[] keySelectors)
         {
             Validate.Argument(source, "elements").IsNotNull().Check()
