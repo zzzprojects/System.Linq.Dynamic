@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Text;
 using System.Threading;
 
 namespace System.Linq.Dynamic
@@ -13,6 +14,8 @@ namespace System.Linq.Dynamic
     /// </summary>
     public static class DynamicQueryable
     {
+        #region IQueryable Extensions
+
         public static IQueryable<T> Where<T>(this IQueryable<T> source, string predicate, params object[] values)
         {
             return (IQueryable<T>)Where((IQueryable)source, predicate, values);
@@ -121,6 +124,89 @@ namespace System.Linq.Dynamic
                     typeof(Queryable), "Count",
                     new Type[] { source.ElementType }, source.Expression));
         }
+
+        public static IQueryable Distinct(this IQueryable source)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            return source.Provider.CreateQuery(
+                Expression.Call(
+                    typeof(Queryable), "Distinct",
+                    new Type[] { source.ElementType },
+                    source.Expression));
+        }
+
+        #endregion
+
+        #region IEnumerable Extensions
+
+        public static IEnumerable<T> Where<T>(this IEnumerable<T> source, string predicate, params object[] values)
+        {
+            if(source == null) throw new ArgumentNullException("source");
+            return source.AsQueryable().Where(predicate, values);
+        }
+
+        public static IEnumerable Where(this IEnumerable source, string predicate, params object[] values)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            return source.AsQueryable().Where(predicate, values);
+        }
+
+        public static IEnumerable Select(this IEnumerable source, string selector, params object[] values)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            return source.AsQueryable().Select(selector, values);
+        }
+
+        public static IEnumerable<T> OrderBy<T>(this IEnumerable<T> source, string ordering, params object[] values)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            return source.AsQueryable().OrderBy(ordering, values);
+        }
+
+        public static IEnumerable OrderBy(this IEnumerable source, string ordering, params object[] values)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            return source.AsQueryable().OrderBy(ordering, values);
+        }
+
+        public static IEnumerable Take(this IEnumerable source, int count)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            return source.AsQueryable().Take(count);
+        }
+
+        public static IEnumerable Skip(this IEnumerable source, int count)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            return source.AsQueryable().Skip(count);
+        }
+
+        public static IEnumerable GroupBy(this IEnumerable source, string keySelector, string elementSelector, params object[] values)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            return source.AsQueryable().GroupBy(keySelector, elementSelector, values);
+        }
+
+        public static bool Any(this IEnumerable source)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            return source.AsQueryable().Any();
+        }
+
+        public static int Count(this IEnumerable source)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            return source.AsQueryable().Count();
+        }
+
+        public static IEnumerable Distinct(this IEnumerable source)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            return source.AsQueryable().Distinct();
+        }
+
+
+        #endregion
     }
 
     public abstract class DynamicClass
