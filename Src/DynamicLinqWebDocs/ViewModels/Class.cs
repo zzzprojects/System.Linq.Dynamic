@@ -15,6 +15,10 @@ namespace DynamicLinqWebDocs.ViewModels
 
         public string Remarks { get; set; }
 
+        public bool IsInterface { get; set; }
+
         public IList<Models.Method> Methods { get; set; }
+
+        public IList<Models.Property> Properties { get; set; }
     }
 }

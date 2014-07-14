@@ -83,6 +83,27 @@ namespace DynamicLinqWebDocs.Infrastructure.Data
             return methodFinder.FirstOrDefault();
         }
 
+
+        public Property GetProperty(string className, string propertyName, Frameworks framework, out Class @class)
+        {
+            @class = GetClass(className);
+            if (@class == null) return null;
+
+            IEnumerable<Property> propertyFinder = @class.Properties
+                .Where(x => propertyName.Equals(x.Name, StringComparison.InvariantCultureIgnoreCase));
+
+            if (framework == Frameworks.NotSet)
+            {
+                propertyFinder = propertyFinder.OrderByDescending(x => x.Frameworks);
+            }
+            else
+            {
+                propertyFinder = propertyFinder.Where(x => x.Frameworks.HasFlag(framework));
+            }
+
+            return propertyFinder.FirstOrDefault();
+        }
+
         public Expression GetExpression(string expressionName)
         {
             return _doc.Expressions
@@ -94,5 +115,7 @@ namespace DynamicLinqWebDocs.Infrastructure.Data
         {
             return _doc.Expressions;
         }
+
+
     }
 }

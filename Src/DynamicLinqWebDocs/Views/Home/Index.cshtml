@@ -1,7 +1,7 @@
 ﻿@{
     ViewBag.MetaDescription = "This is a living branch of the Microsoft Dyamic LINQ library, allowing developers to construct LINQ queries using string expressions instead of lambda expressions.";
     
-    var classesRef = Url.Action("Index", "Class");
+    var libraryRef = Url.Action("Index", "Library");
     var expressionsRef = Url.Action("Index", "Expression");
     var samplesRef = Url.Action("Index", "Sample");
 }
@@ -33,9 +33,9 @@
 
 <div class="row">
     <div class="col-md-4 text-center">
-        <h2><a href="@classesRef">Classes</a></h2>
-        <p>Documentation on the classes defined in the Dynamic LINQ library, their methods, and their arguments. Includes examples and remarks.</p>
-        <p><a class="btn btn-default" href="@classesRef">Look at Classes &raquo;</a></p>
+        <h2><a href="@libraryRef">Library</a></h2>
+        <p>Documentation on the classes and interfaces defined in the Dynamic LINQ library, their methods, and their arguments. Includes examples and remarks.</p>
+        <p><a class="btn btn-default" href="@libraryRef">Look at Library &raquo;</a></p>
     </div>
     <div class="col-md-4 text-center">
         <h2><a href="@expressionsRef">Expressions</a></h2>

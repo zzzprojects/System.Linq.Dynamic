@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -292,6 +293,67 @@ namespace System.Linq.Dynamic
 
         #endregion
 
+        #region GroupByMany
+
+        /// <summary>
+        /// Groups the elements of a sequence according to multiple specified key string functions 
+        /// and creates a result value from each group (and subgroups) and its key.
+        /// </summary>
+        /// <typeparam name="TElement"></typeparam>
+        /// <param name="source">A <see cref="IEnumerable{T}"/> whose elements to group.</param>
+        /// <param name="keySelectors"><see cref="string"/> expressions to specify the keys for each element.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of type <see cref="GroupResult"/> where each element represents a projection over a group, its key, and its subgroups.</returns>
+        public static IEnumerable<GroupResult> GroupByMany<TElement>(this IEnumerable<TElement> source, params string[] keySelectors)
+        {
+            Validate.Argument(source, "elements").IsNotNull().Check()
+                    .Argument(keySelectors, "keySelectors").IsNotNull().IsNotEmpty().Check();
+
+            var selectors = new List<Func<TElement, object>>(keySelectors.Length);
+
+            foreach (var selector in keySelectors)
+            {
+                LambdaExpression l = DynamicExpression.ParseLambda(typeof(TElement), typeof(object), selector);
+                selectors.Add((Func<TElement, object>)l.Compile());
+            }
+
+            return GroupByManyInternal(source, selectors.ToArray(), 0);
+        }
+
+        /// <summary>
+        /// Groups the elements of a sequence according to multiple specified key functions 
+        /// and creates a result value from each group (and subgroups) and its key.
+        /// </summary>
+        /// <typeparam name="TElement"></typeparam>
+        /// <param name="source">A <see cref="IEnumerable{T}"/> whose elements to group.</param>
+        /// <param name="keySelectors">Lambda expressions to specify the keys for each element.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of type <see cref="GroupResult"/> where each element represents a projection over a group, its key, and its subgroups.</returns>
+        public static IEnumerable<GroupResult> GroupByMany<TElement>(this IEnumerable<TElement> source, params Func<TElement, object>[] keySelectors)
+        {
+            Validate.Argument(source, "elements").IsNotNull().Check()
+                    .Argument(keySelectors, "keySelectors").IsNotNull().IsNotEmpty().Check();
+
+            return GroupByManyInternal(source, keySelectors, 0);
+        }
+
+        static IEnumerable<GroupResult> GroupByManyInternal<TElement>(IEnumerable<TElement> source, Func<TElement, object>[] keySelectors, int currentSelector)
+        {
+            if (currentSelector >= keySelectors.Length) return null;
+
+            var selector = keySelectors[currentSelector];
+
+            var result = source.GroupBy(selector).Select(
+                g => new GroupResult
+                {
+                    Key = g.Key,
+                    Count = g.Count(),
+                    Items = g,
+                    Subgroups = GroupByManyInternal(g, keySelectors, currentSelector + 1)
+                });
+
+            return result;
+        }
+
+        #endregion
     }
 }
 

@@ -67,6 +67,9 @@
     <Compile Include="..\System.Linq.Dynamic\DynamicExpression.cs">
       <Link>DynamicExpression.cs</Link>
     </Compile>
+    <Compile Include="..\System.Linq.Dynamic\DynamicLinqTypeProvider.cs">
+      <Link>DynamicLinqTypeProvider.cs</Link>
+    </Compile>
     <Compile Include="..\System.Linq.Dynamic\DynamicOrdering.cs">
       <Link>DynamicOrdering.cs</Link>
     </Compile>
@@ -79,8 +82,17 @@
     <Compile Include="..\System.Linq.Dynamic\ExpressionParser.cs">
       <Link>ExpressionParser.cs</Link>
     </Compile>
+    <Compile Include="..\System.Linq.Dynamic\GlobalConfig.cs">
+      <Link>GlobalConfig.cs</Link>
+    </Compile>
     <Compile Include="..\System.Linq.Dynamic\GlobalSuppressions.cs">
       <Link>GlobalSuppressions.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Linq.Dynamic\GroupResult.cs">
+      <Link>GroupResult.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Linq.Dynamic\IDynamicLinkTypeProvider.cs">
+      <Link>IDynamicLinkTypeProvider.cs</Link>
     </Compile>
     <Compile Include="..\System.Linq.Dynamic\ParseException.cs">
       <Link>ParseException.cs</Link>

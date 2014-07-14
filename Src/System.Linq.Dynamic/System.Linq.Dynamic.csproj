@@ -59,11 +59,15 @@
     <Compile Include="ClassFactory.cs" />
     <Compile Include="DynamicClass.cs" />
     <Compile Include="DynamicExpression.cs" />
+    <Compile Include="DynamicLinqTypeProvider.cs" />
     <Compile Include="DynamicQueryable.cs" />
     <Compile Include="DynamicOrdering.cs" />
     <Compile Include="DynamicProperty.cs" />
     <Compile Include="ExpressionParser.cs" />
+    <Compile Include="GlobalConfig.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="GroupResult.cs" />
+    <Compile Include="IDynamicLinkTypeProvider.cs" />
     <Compile Include="ParseException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BasicQueryable.cs" />

@@ -116,7 +116,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\ClassController.cs" />
+    <Compile Include="Controllers\LibraryController.cs" />
     <Compile Include="Controllers\ExpressionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -134,8 +134,11 @@
     <Compile Include="Models\Class.cs" />
     <Compile Include="Models\Example.cs" />
     <Compile Include="Models\Expression.cs" />
+    <Compile Include="Models\Property.cs" />
     <Compile Include="Models\Method.cs" />
+    <Compile Include="Models\PropertyAccessors.cs" />
     <Compile Include="ViewModels\Class.cs" />
+    <Compile Include="ViewModels\Property.cs" />
     <Compile Include="ViewModels\Method.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -188,14 +191,15 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Info.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Class\Method.cshtml" />
+    <Content Include="Views\Library\Method.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Remarks.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Examples.cshtml" />
-    <Content Include="Views\Class\Class.cshtml" />
-    <Content Include="Views\Class\Index.cshtml" />
+    <Content Include="Views\Library\Class.cshtml" />
+    <Content Include="Views\Library\Index.cshtml" />
     <Content Include="Views\Expression\Index.cshtml" />
     <Content Include="Views\Expression\Expression.cshtml" />
     <Content Include="Scripts\jquery-1.11.1.min.map" />
+    <Content Include="Views\Library\Property.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

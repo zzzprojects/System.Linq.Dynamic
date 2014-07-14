@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq.Dynamic.Tests.Helpers;
 using System.Linq;
@@ -8,8 +9,6 @@ namespace System.Linq.Dynamic.Tests
     [TestClass]
     public class ComplexTests
     {
-
-
         /// <summary>
         /// The purpose of this test is to verify that after a group by of a dynamically created
         /// key, the Select clause can access the key's members
@@ -48,6 +47,5 @@ namespace System.Linq.Dynamic.Tests
                 selectQry.AsEnumerable().Select(x => x.TotalIncome).ToArray());
 #endif
         }
-
     }
 }

@@ -208,5 +208,48 @@ namespace System.Linq.Dynamic.Tests
             Helper.ExpectException<ArgumentException>(() => qry.GroupBy("Id", ""));
             Helper.ExpectException<ArgumentException>(() => qry.GroupBy("Id", " "));
         }
+
+        [TestMethod]
+        public void GroupByMany_StringExpressions()
+        {
+            var lst = new List<Tuple<int, int, int>>()
+            {
+                new Tuple<int, int, int>(1, 1, 1),
+                new Tuple<int, int, int>(1, 1, 2),
+                new Tuple<int, int, int>(1, 1, 3),
+                new Tuple<int, int, int>(2, 2, 4),
+                new Tuple<int, int, int>(2, 2, 5),
+                new Tuple<int, int, int>(2, 2, 6),
+                new Tuple<int, int, int>(2, 3, 7)
+            };
+
+            var sel = lst.AsQueryable().GroupByMany("Item1", "Item2");
+
+            Assert.AreEqual(sel.Count(), 2);
+            Assert.AreEqual(sel.First().Subgroups.Count(), 1);
+            Assert.AreEqual(sel.Skip(1).First().Subgroups.Count(), 2);
+        }
+
+        [TestMethod]
+        public void GroupByMany_LambdaExpressions()
+        {
+            var lst = new List<Tuple<int, int, int>>()
+            {
+                new Tuple<int, int, int>(1, 1, 1),
+                new Tuple<int, int, int>(1, 1, 2),
+                new Tuple<int, int, int>(1, 1, 3),
+                new Tuple<int, int, int>(2, 2, 4),
+                new Tuple<int, int, int>(2, 2, 5),
+                new Tuple<int, int, int>(2, 2, 6),
+                new Tuple<int, int, int>(2, 3, 7)
+            };
+
+            var sel = lst.AsQueryable().GroupByMany(x => x.Item1, x => x.Item2);
+
+            Assert.AreEqual(sel.Count(), 2);
+            Assert.AreEqual(sel.First().Subgroups.Count(), 1);
+            Assert.AreEqual(sel.Skip(1).First().Subgroups.Count(), 2);
+        }
+
     }
 }
