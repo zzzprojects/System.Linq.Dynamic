@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>System.Linq.Dynamic.Library</id>
-        <version>1.1.11</version>
+        <version>1.1.12</version>
         <title>Dynamic Linq Library</title>
         <authors>Nathan Arnott,Microsoft</authors>
         <owners>Nathan Arnott</owners>
@@ -13,10 +13,10 @@
 
 This package is more than a simple NuGet deployment of the Dynamic Linq Library. It is a living project, and contains XML documentation with examples.</description>
         <summary>Supports Framework 3.5 and 4.0+</summary>
-        <releaseNotes>1.1.11 Updated reference to FluentValidation library due to a recent renaming of the assembly to avoid clashes.
+        <releaseNotes>1.1.12 Added dynamic method for GroupByMany. Support for logical operators. Better Guid and Enum Support.  Added support for shift operators.
 		
-1.1.10 Fixed namespaces that changed due to a recent breaking change with the FluentValidation library.
-
+Added static GlobalConfig class, and IDynamicLinkCustomTypeProvider to allow developers to add custom understood types to Dynamic Linq without the need to recompile.
+		
 1.1.9 Added In operator for both static inline lists, as well as a single parameter list (similiar to contains).
 
 1.1.8 Added support for the use of Single(), SingleOrDefault(), First(), FirstOrDefault(), OrderBy(), OrderByDescending(), and Contains() in string expressions.
