@@ -38,8 +38,7 @@
                     <li class="disabled">@Html.ActionLink("Samples", "Index", "Sample")</li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li>@Html.ActionLink("Project Info", "Info", "Home")</li>
-                    <li><button onclick="location.href='@Settings.GIT_HUB_ISSUES'" class="btn btn-danger btn-xs navbar-btn">Report an issue</button></li>
+                    <li><gcse:search></gcse:search></li>
                 </ul>
             </div>
         </div>
@@ -54,7 +53,14 @@
 
     <div class="container body-footer">
         <footer>
-            <p>Dynamic LINQ Documentation</p>
+            <div class="row">
+                <div class="col-xs-6">
+                    @Html.ActionLink("Project Info", "Info", "Home")
+                </div>
+                <div class="col-xs-6 text-right">
+                    <button onclick="location.href='@Settings.GIT_HUB_ISSUES'" class="btn btn-danger btn-xs">Report an issue</button>
+                </div>
+            </div>
         </footer>
     </div>
 

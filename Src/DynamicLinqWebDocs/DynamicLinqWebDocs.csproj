@@ -200,6 +200,7 @@
     <Content Include="Views\Expression\Expression.cshtml" />
     <Content Include="Scripts\jquery-1.11.1.min.map" />
     <Content Include="Views\Library\Property.cshtml" />
+    <Content Include="Views\Shared\GoogleSearch.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

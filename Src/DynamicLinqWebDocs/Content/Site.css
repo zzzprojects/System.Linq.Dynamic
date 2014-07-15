@@ -36,3 +36,11 @@ pre {
 #jr_inner {
     background-color: #F5F5F5;
 }
+
+/*Correction for custom google search*/
+.gsc-control-cse {
+    width: 245px !important;
+    padding-bottom: 0 !important;
+    padding-right: 0 !important;
+}
+    
