@@ -172,6 +172,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\PublishProfiles\dynamiclinq - Web Deploy.pubxml" />
+    <Content Include="google7eb95bea483dc02b.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.11.1.intellisense.js" />
