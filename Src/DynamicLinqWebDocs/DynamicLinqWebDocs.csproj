@@ -51,6 +51,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="SimpleMvcSitemap">
+      <HintPath>..\packages\SimpleMvcSitemap.0.4.0\lib\net45\SimpleMvcSitemap.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -111,7 +114,9 @@
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Site\" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -119,6 +124,7 @@
     <Compile Include="Controllers\LibraryController.cs" />
     <Compile Include="Controllers\ExpressionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SiteController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -127,6 +133,7 @@
     <Compile Include="Infrastructure\EnumRouteConstraint.cs" />
     <Compile Include="Infrastructure\Helpers.cs" />
     <Compile Include="Infrastructure\Settings.cs" />
+    <Compile Include="Infrastructure\SitemapGenerator.cs" />
     <Compile Include="Models\Frameworks.cs" />
     <Compile Include="Infrastructure\Data\TestDataRepo.cs" />
     <Compile Include="Infrastructure\HtmlHelpers.cs" />
@@ -200,7 +207,6 @@
     <Content Include="Views\Expression\Expression.cshtml" />
     <Content Include="Scripts\jquery-1.11.1.min.map" />
     <Content Include="Views\Library\Property.cshtml" />
-    <Content Include="Views\Shared\GoogleSearch.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

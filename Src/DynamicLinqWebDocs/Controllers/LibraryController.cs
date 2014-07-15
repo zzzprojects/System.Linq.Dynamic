@@ -1,5 +1,7 @@
-﻿using DynamicLinqWebDocs.Infrastructure.Data;
+﻿using DynamicLinqWebDocs.Infrastructure;
+using DynamicLinqWebDocs.Infrastructure.Data;
 using DynamicLinqWebDocs.ViewModels;
+using SimpleMvcSitemap;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -95,6 +97,43 @@ namespace DynamicLinqWebDocs.Controllers
             };
 
             return View(viewModel);
+        }
+
+
+        class LibrarySitemap : SitemapContributor
+        {
+            protected internal override IEnumerable<SitemapNode> GetSitemapNodes(UrlHelper urlHelper, HttpContextBase httpContext)
+            {
+                yield return new SitemapNode(urlHelper.Action("Index", "Library")) { Priority = 0.8m };
+
+                var repo = new RealDataRepo();
+
+                foreach (var @class in repo.GetClasses())
+                {
+                    yield return new SitemapNode(urlHelper.Action("Class", "Library", new { className = @class.Name })) { Priority = 0.75m };
+
+                    foreach( var methodGrp in @class.Methods.GroupBy( x => new { x.Name, x.Frameworks } ) )
+                    {
+                        int methodCount = 0;
+
+                        foreach( var method in methodGrp )
+                        {
+                            Models.Frameworks? framework = null;
+
+                            if (method.Frameworks != Models.Frameworks.All)
+                            {
+                                framework = Enum.GetValues(typeof(Models.Frameworks)).Cast<Models.Frameworks>().Reverse().Where(x => method.Frameworks.HasFlag(x)).FirstOrDefault();
+                            }
+
+                            var methodUrl = urlHelper.Action("Method", "Library", new { className = @class.Name, methodName = method.Name.Replace('<', '(').Replace('>', ')'), framework = framework, o = methodCount > 0 ? (int?)methodCount : null }, null);
+
+                            yield return new SitemapNode(methodUrl) { Priority = .5m };
+
+                            methodCount++;
+                        }
+                    }
+                }
+            }
         }
 	}
 }
