@@ -1,14 +1,14 @@
 ﻿@model DynamicLinqWebDocs.ViewModels.Method
 
 @{
-    var title = "." + Model.Name + " Method (" + String.Join(", ", Model.Arguments.Select(x => x.Type)) + ")";
+    var title = "." + Model.Name + " (" + String.Join(", ", Model.Arguments.Select(x => x.Type)) + ")";
 
-    ViewBag.Title = Model.Class + @title;
+    ViewBag.Title = Model.Class + @title + " Method";
             
     var remarks = String.IsNullOrEmpty(Model.Remarks) ? "No Remarks" : Model.Remarks;
 }
 
-<h2>@Html.ActionLink(Model.Class, "Class", "Library", new { className = Model.Class }, null)@title</h2>
+<h2>@Html.ActionLink(Model.Class, "Class", "Library", new { className = Model.Class }, null)@title <small>Method</small></h2>
 
 @Html.FormatMarkdown(Model.Description)
 

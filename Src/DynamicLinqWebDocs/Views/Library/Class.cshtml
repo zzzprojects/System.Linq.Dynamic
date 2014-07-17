@@ -2,25 +2,25 @@
 @using DynamicLinqWebDocs.Models;
 
 @{
-    var title = Model.Name;
-
+    string entityName;
+    
     if (Model.IsInterface)
     {
-        title += " Interface";
+        entityName = "Interface";
     }
     else
     {
-        title += " Class";
+        entityName = "Class";
     }
 
-    ViewBag.Title = title + " (" + Model.Namespace + ")";
+    ViewBag.Title = Model.Name + " " + entityName + " (" + Model.Namespace + ")";
     
     int[] s;
 }
 
 <td>@Html.ActionLink("Back to Library", "Index", "Library", null, new { @class= "btn btn-xs btn-default" })</td>
 
-<h2>@title</h2>
+<h2>@Model.Name <small>@entityName</small></h2>
 
 @Html.FormatMarkdown(Model.Description)
 

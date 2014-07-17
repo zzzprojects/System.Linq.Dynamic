@@ -1,14 +1,14 @@
 ﻿@model DynamicLinqWebDocs.ViewModels.Property
 
 @{
-    var title = "." + Model.Name + " Property";
+    var title = "." + Model.Name;
 
-    ViewBag.Title = Model.Class + @title;
+    ViewBag.Title = Model.Class + @title + " Property";
             
     var remarks = String.IsNullOrEmpty(Model.Remarks) ? "No Remarks" : Model.Remarks;
 }
 
-<h2>@Html.ActionLink(Model.Class, "Class", "Library", new { className = Model.Class }, null)@title</h2>
+<h2>@Html.ActionLink(Model.Class, "Class", "Library", new { className = Model.Class }, null)@title <small>Property</small></h2>
 
 @Html.FormatMarkdown(Model.Description)
 
