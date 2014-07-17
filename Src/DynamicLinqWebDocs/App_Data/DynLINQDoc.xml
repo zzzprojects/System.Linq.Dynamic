@@ -463,19 +463,136 @@ var dynamicObject = qry.Select("new (StringProperty1, StringProperty2 as OtherSt
           </Examples>
         </Method>
 
-        <Method name="SelectMany" isExtensionMethod="true">
-          <Description>Placeholder</Description>
+        <Method name="SelectMany" isExtensionMethod="true" hasParamsArgument="true" returnType="IQueryable">
+          <Description>Projects each element of a sequence to an `IQueryable` and combines the resulting sequences into one sequence.</Description>
+          <ReturnDescription>An `IQueryable` whose elements are the result of invoking a one-to-many projection function on each element of the input sequence.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A sequence of values to project.</Description>
+            </Argument>
+            <Argument name="selector" type="string" typeNamespace="System">
+              <Description>A projection string expression to apply to each element.</Description>
+            </Argument>
+            <Argument name="args" type="object[]" typeNamespace="System">
+              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way `String.Format` formats strings.</Description>
+            </Argument>
+          </Arguments>
+          <Examples>
+            <Example>
+              <HeaderRemarks>The following code example demonstrates how to use `SelectMany` to perform a one-to-many projection over an array.</HeaderRemarks>
+              <ExampleCode>class PetOwner
+{
+    public string Name { get; set; }
+    public List&lt;String&gt; Pets { get; set; }
+}
+
+public static void SelectManyEx1()
+{
+    PetOwner[] petOwners =
+        { new PetOwner { Name="Higa, Sidney",
+              Pets = new List&lt;string&gt;{ "Scruffy", "Sam" } },
+          new PetOwner { Name="Ashkenazi, Ronen",
+              Pets = new List&lt;string&gt;{ "Walker", "Sugar" } },
+          new PetOwner { Name="Price, Vernette",
+              Pets = new List&lt;string&gt;{ "Scratches", "Diesel" } } };
+
+    // Query using SelectMany().
+    IEnumerable query1 =
+        petOwners.AsQueryable().SelectMany("Pets");
+
+    Console.WriteLine("Using SelectMany():");
+
+    // Only one foreach loop is required to iterate through the
+    // results because it is a one-dimensional collection.
+    foreach (string pet in query1)
+        Console.WriteLine(pet);
+
+    // This code shows how to use Select() instead of SelectMany().
+    IEnumerable query2 =
+        petOwners.AsQueryable().Select("Pets");
+
+    Console.WriteLine("\nUsing Select():");
+
+    // Notice that two foreach loops are required to iterate through
+    // the results because the query returns a collection of arrays.
+    foreach (IEnumerable petList in query2)
+    {
+        foreach (string pet in petList)
+        {
+            Console.WriteLine(pet);
+        }
+        Console.WriteLine();
+    }
+}
+
+/*
+    This code produces the following output:
+
+    Using SelectMany():
+    Scruffy
+    Sam
+    Walker
+    Sugar
+    Scratches
+    Diesel
+
+    Using Select():
+    Scruffy
+    Sam
+
+    Walker
+    Sugar
+
+    Scratches
+    Diesel
+*/</ExampleCode>
+            </Example>
+          </Examples>
         </Method>
 
-        <Method name="OrderBy&lt;TSource&gt;" isExtensionMethod="true">
-          <Description>Placeholder</Description>
+        <Method name="OrderBy&lt;TSource&gt;" isExtensionMethod="true" hasParamsArgument="true" returnType="IQueryable&lt;TSource&gt;">
+          <Description>Sorts the elements of a sequence in ascending order according to a key.</Description>
+          <ReturnDescription>A `IQueryable&lt;T&gt;` whose elements are sorted according to the specified **ordering**.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable&lt;TSource&gt;" typeNamespace="System.Linq">
+              <Description>A sequence of values to order.</Description>
+            </Argument>
+            <Argument name="ordering" type="string" typeNamespace="System">
+              <Description>An expression string to indicate values to order by.</Description>
+            </Argument>
+            <Argument name="args" type="object[]" typeNamespace="System">
+              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way `String.Format` formats strings.</Description>
+            </Argument>
+          </Arguments>
+          <Examples>
+            <Example>
+              <ExampleCode>var result = list.OrderBy("NumberProperty, StringProperty DESC");</ExampleCode>
+            </Example>
+          </Examples>
         </Method>
 
-        <Method name="OrderBy" isExtensionMethod="true">
-          <Description>Placeholder</Description>
+        <Method name="OrderBy" isExtensionMethod="true" hasParamsArgument="true" returnType="IQueryable">
+          <Description>Sorts the elements of a sequence in ascending order according to a key.</Description>
+          <ReturnDescription>A `IQueryable` whose elements are sorted according to the specified **ordering**.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A sequence of values to order.</Description>
+            </Argument>
+            <Argument name="ordering" type="string" typeNamespace="System">
+              <Description>An expression string to indicate values to order by.</Description>
+            </Argument>
+            <Argument name="args" type="object[]" typeNamespace="System">
+              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way `String.Format` formats strings.</Description>
+            </Argument>
+          </Arguments>
+          <Examples>
+            <Example>
+              <ExampleCode>var result = list.OrderBy("NumberProperty, StringProperty DESC");</ExampleCode>
+            </Example>
+          </Examples>
         </Method>
 
-        <Method name="GroupBy" isExtensionMethod="true" hasParamsArgument="true">
+        <Method name="GroupBy" isExtensionMethod="true">
           <Description>Groups the elements of a sequence according to a specified key string function and creates a result value from each group and its key.</Description>
           <ReturnDescription>A `IQueryable` where each element represents a projection over a group and its key.</ReturnDescription>
           <Arguments>
@@ -505,15 +622,78 @@ var dynamicObject = qry.Select("new (StringProperty1, StringProperty2 as OtherSt
         </Method>
 
         <Method name="GroupBy" isExtensionMethod="true">
-          <Description>Placeholder</Description>        
+          <Description>Groups the elements of a sequence according to a specified key string function and creates a result value from each group and its key.</Description>
+          <ReturnDescription>A `IQueryable` where each element represents a projection over a group and its key.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A `IQueryable` whose elements to group.</Description>
+            </Argument>
+            <Argument name="keySelector" type="string" typeNamespace="System">
+              <Description>A string expression to specify the key for each element.</Description>
+            </Argument>
+            <Argument name="resultSelector" type="string" typeNamespace="System">
+              <Description>A string expression to specify a result value from each group.</Description>
+            </Argument>
+          </Arguments>
+          <Examples>
+            <Example>
+              <HeaderRemarks>The following is an example of a simple `GroupBy`.</HeaderRemarks>
+              <ExampleCode>var groupResult = qry.GroupBy("NumberPropertyAsKey", "StringProperty");</ExampleCode>
+            </Example>
+            <Example>
+              <HeaderRemarks>The following is an example of a `GroupBy` using multiple key fields and multiple grouped fields.</HeaderRemarks>
+              <ExampleCode>var groupResult = qry.GroupBy("new (NumberPropertyAsKey, StringPropertyAsKey)", "new (StringProperty1, StringProperty2)");</ExampleCode>
+            </Example>
+          </Examples>
         </Method>
 
         <Method name="GroupBy" isExtensionMethod="true">
-          <Description>Placeholder</Description>
+          <Description>Groups the elements of a sequence according to a specified key string function and creates a result value from each group and its key.</Description>
+          <ReturnDescription>A `IQueryable` where each element represents a projection over a group and its key.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A `IQueryable` whose elements to group.</Description>
+            </Argument>
+            <Argument name="keySelector" type="string" typeNamespace="System">
+              <Description>A string expression to specify the key for each element.</Description>
+            </Argument>
+            <Argument name="args" type="object[]" typeNamespace="System">
+              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way String.Format formats strings.</Description>
+            </Argument>
+          </Arguments>
+          <Examples>
+            <Example>
+              <HeaderRemarks>The following is an example of a simple `GroupBy`.</HeaderRemarks>
+              <ExampleCode>var groupResult = qry.GroupBy("NumberPropertyAsKey", "StringProperty");</ExampleCode>
+            </Example>
+            <Example>
+              <HeaderRemarks>The following is an example of a `GroupBy` using multiple key fields and multiple grouped fields.</HeaderRemarks>
+              <ExampleCode>var groupResult = qry.GroupBy("new (NumberPropertyAsKey, StringPropertyAsKey)", "new (StringProperty1, StringProperty2)");</ExampleCode>
+            </Example>
+          </Examples>
         </Method>
 
         <Method name="GroupBy" isExtensionMethod="true">
-          <Description>Placeholder</Description>
+          <Description>Groups the elements of a sequence according to a specified key string function and creates a result value from each group and its key.</Description>
+          <ReturnDescription>A `IQueryable` where each element represents a projection over a group and its key.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A `IQueryable` whose elements to group.</Description>
+            </Argument>
+            <Argument name="keySelector" type="string" typeNamespace="System">
+              <Description>A string expression to specify the key for each element.</Description>
+            </Argument>
+          </Arguments>
+          <Examples>
+            <Example>
+              <HeaderRemarks>The following is an example of a simple `GroupBy`.</HeaderRemarks>
+              <ExampleCode>var groupResult = qry.GroupBy("NumberPropertyAsKey", "StringProperty");</ExampleCode>
+            </Example>
+            <Example>
+              <HeaderRemarks>The following is an example of a `GroupBy` using multiple key fields and multiple grouped fields.</HeaderRemarks>
+              <ExampleCode>var groupResult = qry.GroupBy("new (NumberPropertyAsKey, StringPropertyAsKey)", "new (StringProperty1, StringProperty2)");</ExampleCode>
+            </Example>
+          </Examples>
         </Method>
 
         <Method name="GroupByMany&lt;TElement&gt;" isExtensionMethod="true" hasParamsArgument="true">
@@ -612,7 +792,6 @@ var dynamicObject = qry.Select("new (StringProperty1, StringProperty2 as OtherSt
   <Expressions>
     <Expression name="Sum">
       <Description>Computes the sum of a sequence of values.</Description>
-      <Remarks>Remarks Placeholder</Remarks>
       <Examples>
         <Example>
           <HeaderRemarks>The following is an example of a `Sum` expression.</HeaderRemarks>
@@ -623,43 +802,70 @@ var dynamicObject = qry.Select("new (StringProperty1, StringProperty2 as OtherSt
     </Expression>
 
     <Expression name="Contains">
-      <Description>Placeholder</Description>
+      <Description>Determines whether a sequence contains a specified element.</Description>
+      <Remarks>Compare to [**In** Expression][0].
+      
+ [0]: /Expressions/In</Remarks>
+      <Examples>
+        <Example>
+          <HeaderRemarks>The following code example demonstrates how to use the `Contains` expression to determine whether a sequence contains a specific element.</HeaderRemarks>
+          <ExampleCode>var testQuery = baseQuery.Where("@0.Contains(UserName)", containsList).Select("Id");</ExampleCode>
+        </Example>
+      </Examples>
     </Expression>
 
     <Expression name="In">
-      <Description>Placeholder</Description>
+      <Description>Determines whether a sequence contains a specified element.</Description>
+      <Remarks>
+        Compare to [**Contains** Expression][0].
+
+ [0]: /Expressions/Contains
+      </Remarks>
+      <Examples>
+        <Example>
+          <HeaderRemarks>The following code example demonstrates how to use the `In` expression to determine whether a sequence contains a specific element.</HeaderRemarks>
+          <ExampleCode>var rangeOfNumbers = Enumerable.Range(1, 100).ToArray();
+
+//Use a fixed set of numbers to test for
+var result1 = rangeOfNumbers.AsQueryable().Where("it in (2,4,6,8)").ToArray();
+
+//Use a variable set of numbers to test for
+var values = new int[] { 2, 4, 6, 8 };
+var result2 = rangeOfNumbers.AsQueryable().Where("it in @0", testInExpression).ToArray();</ExampleCode>
+        </Example>
+      </Examples>
     </Expression>
 
     <Expression name="First">
-      <Description>Placeholder</Description>
+      <Description>Returns the first element of a sequence.</Description>
     </Expression>
 
     <Expression name="FirstOrDefault">
-      <Description>Placeholder</Description>
+      <Description>Returns the first element of a sequence, or a default value if the sequence contains no elements.</Description>
     </Expression>
 
     <Expression name="Single">
-      <Description>Placeholder</Description>
+      <Description>Returns the only element of a sequence, and throws an exception if there is not exactly one element in the sequence.</Description>
     </Expression>
 
     <Expression name="SingleOrDefault">
-      <Description>Placeholder</Description>
+      <Description>Returns the only element of a sequence, or a default value if the sequence is empty; this method throws an exception if there is more than one element in the sequence.</Description>
     </Expression>
 
     <Expression name="Select">
-      <Description>Placeholder</Description>
+      <Description>Projects each element of a sequence into a new form.</Description>
     </Expression>
 
     <Expression name="Where">
-      <Description>Placeholder</Description>
+      <Description>Filters a sequence of values based on a predicate.</Description>
     </Expression>
 
     <Expression name="OrderBy">
-      <Description>Placeholder</Description>
+      <Description>Sorts the elements of a sequence in ascending order according to a key.</Description>
     </Expression>
 
     <Expression name="OrderByDecending">
-      <Description>Placeholder</Description>
+      <Description>Sorts the elements of a sequence in decending order according to a key.</Description>
     </Expression>
 
   </Expressions>
