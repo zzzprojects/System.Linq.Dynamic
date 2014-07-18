@@ -17,6 +17,10 @@
     {
     <meta name="description" content="@ViewBag.MetaDescription" />
     }
+    @if (ViewBag.MetaKeywords != null)
+    {
+    <meta name="keywords" content="@String.Join(", ", (IEnumerable<string>)ViewBag.MetaKeywords)" />
+    }
     @Styles.Render("~/Content/css")
 </head>
 <body>

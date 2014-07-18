@@ -17,13 +17,22 @@ namespace DynamicLinqWebDocs.Controllers
         [Route]
         public ActionResult Index()
         {
+            this.SetMetaDescription("List of expression methods that can be used inside a Dynamic LINQ string expression.");
+            this.AddMetaKeywords("Expressions");
+
             return View(_repo.GetExpressions());
         }
 
         [Route("{expressionName}")]
         public ActionResult Expression(string expressionName) 
         {
-            return View(_repo.GetExpression(expressionName));
+            var expression = _repo.GetExpression(expressionName);
+            if (expression == null) return HttpNotFound();
+
+            this.SetMetaDescription("The syntax and description of the {0} expression.", expression.Name);
+            this.AddMetaKeywords("Expression", expression.Name);
+
+            return View(expression);
         }
 
         class ExpressionSitemap : SitemapContributor

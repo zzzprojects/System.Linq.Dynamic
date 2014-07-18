@@ -18,6 +18,9 @@ namespace DynamicLinqWebDocs.Controllers
         [Route]
         public ActionResult Index()
         {
+            this.SetMetaDescription("List of classes and interfaces inside the Dynamic LINQ Library.");
+            this.AddMetaKeywords("References");
+
             return View(_repo.GetClasses());
         }
 
@@ -26,6 +29,11 @@ namespace DynamicLinqWebDocs.Controllers
         {
             var @class = _repo.GetClass(className);
             if (@class == null) return HttpNotFound();
+
+            var entityName = @class.IsInterface ? "Interface" : "Class";
+
+            this.SetMetaDescription("A list of methods and properties defined in the {0} {1}.", @class.Name, entityName.ToLower());
+            this.AddMetaKeywords(entityName, @class.Name);
 
             var viewModel = new Class()
             {
@@ -52,6 +60,9 @@ namespace DynamicLinqWebDocs.Controllers
 
             var method = _repo.GetMethod(className, formattedMethodName, framework, out @class, o);
             if (method == null) return HttpNotFound();
+
+            this.SetMetaDescription("The syntax and description of the {0}.{1} method.", @class.Name, formattedMethodName);
+            this.AddMetaKeywords("Method", @class.Name, method.Name);
 
             var viewModel = new Method()
             {
@@ -80,6 +91,9 @@ namespace DynamicLinqWebDocs.Controllers
 
             var property = _repo.GetProperty(className, propertyName, framework, out @class);
             if (property == null) return HttpNotFound();
+
+            this.SetMetaDescription("The syntax and description of the {0}.{1} property.", @class.Name, property.Name);
+            this.AddMetaKeywords("Property", @class.Name, property.Name);
 
             var viewModel = new Property()
             {
