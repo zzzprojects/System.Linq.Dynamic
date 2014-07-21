@@ -17,7 +17,6 @@ namespace System.Linq.Dynamic
     /// </summary>
     public static class DynamicQueryable
     {
-
         #region Where
 
         /// <summary>
@@ -105,13 +104,13 @@ namespace System.Linq.Dynamic
         /// <param name="selector">A projection string expression to apply to each element.</param>
         /// <param name="args">An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way String.Format formats strings.</param>
         /// <returns>An <see cref="IQueryable"/> whose elements are the result of invoking a one-to-many projection function on each element of the input sequence.</returns>
-        public static IQueryable SelectMany( this IQueryable source, string selector, params object[] args)
+        public static IQueryable SelectMany(this IQueryable source, string selector, params object[] args)
         {
             Validate.Argument(source, "source").IsNotNull().Check()
                     .Argument(selector, "selector").IsNotNull().IsNotEmpty().IsNotWhiteSpace().Check();
 
             LambdaExpression lambda = DynamicExpression.ParseLambda(source.ElementType, null, selector, args);
-         
+
             //Extra help to get SelectMany to work from StackOverflow Answer
             //http://stackoverflow.com/a/3001674/2465182
 
@@ -129,13 +128,12 @@ namespace System.Linq.Dynamic
                     source.Expression, Expression.Quote(lambda)));
         }
 
-
         #endregion
         
         #region OrderBy
 
         /// <summary>
-        /// Sorts the elements of a sequence in ascending order according to a key.
+        /// Sorts the elements of a sequence in ascending or decending order according to a key.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">A sequence of values to order.</param>
@@ -153,7 +151,7 @@ namespace System.Linq.Dynamic
         }
 
         /// <summary>
-        /// Sorts the elements of a sequence in ascending order according to a key.
+        /// Sorts the elements of a sequence in ascending or decending order according to a key.
         /// </summary>
         /// <param name="source">A sequence of values to order.</param>
         /// <param name="ordering">An expression string to indicate values to order by.</param>
@@ -351,6 +349,64 @@ namespace System.Linq.Dynamic
                 });
 
             return result;
+        }
+
+        #endregion
+
+        #region Join
+
+        /// <summary>
+        /// Correlates the elements of two sequences based on matching keys. The default equality comparer is used to compare keys.
+        /// </summary>
+        /// <param name="outer">The first sequence to join.</param>
+        /// <param name="inner">The sequence to join to the first sequence.</param>
+        /// <param name="outerKeySelector">A dynamic function to extract the join key from each element of the first sequence.</param>
+        /// <param name="innerKeySelector">A dynamic function to extract the join key from each element of the second sequence.</param>
+        /// <param name="resultSelector">A dynamic function to create a result element from two matching elements.</param>
+        /// <param name="args">An object array that contains zero or more objects to insert into the predicates as parameters.  Similiar to the way String.Format formats strings.</param>
+        /// <returns>An <see cref="IQueryable"/> obtained by performing an inner join on two sequences.</returns>
+        public static IQueryable Join(this IQueryable outer, IEnumerable inner, string outerKeySelector, string innerKeySelector, string resultSelector, params object[] args)
+        {
+            //http://stackoverflow.com/questions/389094/how-to-create-a-dynamic-linq-join-extension-method
+
+            Validate.Argument(outer, "outer").IsNotNull().Check()
+                    .Argument(inner, "inner").IsNotNull().Check()
+                    .Argument(outerKeySelector, "outerKeySelector").IsNotNull().IsNotEmpty().IsNotWhiteSpace().Check()
+                    .Argument(innerKeySelector, "innerKeySelector").IsNotNull().IsNotEmpty().IsNotWhiteSpace().Check()
+                    .Argument(resultSelector, "resultSelector").IsNotNull().IsNotEmpty().IsNotWhiteSpace().Check();
+
+            LambdaExpression outerSelectorLambda = DynamicExpression.ParseLambda(outer.ElementType, null, outerKeySelector, args);
+            LambdaExpression innerSelectorLambda = DynamicExpression.ParseLambda(inner.AsQueryable().ElementType, null, innerKeySelector, args);
+
+            ParameterExpression[] parameters = new ParameterExpression[] 
+            {
+                Expression.Parameter(outer.ElementType, "outer"), Expression.Parameter(inner.AsQueryable().ElementType, "inner") 
+            };
+
+            LambdaExpression resultsSelectorLambda = DynamicExpression.ParseLambda(parameters, null, resultSelector, args);
+
+            return outer.Provider.CreateQuery(
+                Expression.Call(
+                    typeof(Queryable), "Join",
+                    new Type[] { outer.ElementType, inner.AsQueryable().ElementType, outerSelectorLambda.Body.Type, resultsSelectorLambda.Body.Type },
+                    outer.Expression, inner.AsQueryable().Expression, Expression.Quote(outerSelectorLambda), Expression.Quote(innerSelectorLambda), Expression.Quote(resultsSelectorLambda)));
+        }
+
+        /// <summary>
+        /// Correlates the elements of two sequences based on matching keys. The default equality comparer is used to compare keys.
+        /// </summary>
+        /// <typeparam name="TElement">The type of the elements of both sequences, and the result.</typeparam>
+        /// <param name="outer">The first sequence to join.</param>
+        /// <param name="inner">The sequence to join to the first sequence.</param>
+        /// <param name="outerKeySelector">A dynamic function to extract the join key from each element of the first sequence.</param>
+        /// <param name="innerKeySelector">A dynamic function to extract the join key from each element of the second sequence.</param>
+        /// <param name="resultSelector">A dynamic function to create a result element from two matching elements.</param>
+        /// <param name="args">An object array that contains zero or more objects to insert into the predicates as parameters.  Similiar to the way String.Format formats strings.</param>
+        /// <remarks>This overload only works on elements where both sequences and the resulting element match.</remarks>
+        /// <returns>An <see cref="IQueryable{T}"/> that has elements of type TResult obtained by performing an inner join on two sequences.</returns>
+        public static IQueryable<TElement> Join<TElement>(this IQueryable<TElement> outer, IEnumerable<TElement> inner, string outerKeySelector, string innerKeySelector, string resultSelector, params object[] args)
+        {
+            return (IQueryable<TElement>)Join((IQueryable)outer, (IEnumerable)inner, outerKeySelector, innerKeySelector, resultSelector, args);
         }
 
         #endregion

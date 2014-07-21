@@ -592,7 +592,7 @@ public static void SelectManyEx1()
           </Examples>
         </Method>
 
-        <Method name="GroupBy" isExtensionMethod="true">
+        <Method name="GroupBy" isExtensionMethod="true" returnType="IQueryable">
           <Description>Groups the elements of a sequence according to a specified key string function and creates a result value from each group and its key.</Description>
           <ReturnDescription>A `IQueryable` where each element represents a projection over a group and its key.</ReturnDescription>
           <Arguments>
@@ -621,7 +621,7 @@ public static void SelectManyEx1()
           </Examples>
         </Method>
 
-        <Method name="GroupBy" isExtensionMethod="true">
+        <Method name="GroupBy" isExtensionMethod="true" returnType="IQueryable">
           <Description>Groups the elements of a sequence according to a specified key string function and creates a result value from each group and its key.</Description>
           <ReturnDescription>A `IQueryable` where each element represents a projection over a group and its key.</ReturnDescription>
           <Arguments>
@@ -647,7 +647,7 @@ public static void SelectManyEx1()
           </Examples>
         </Method>
 
-        <Method name="GroupBy" isExtensionMethod="true">
+        <Method name="GroupBy" isExtensionMethod="true" returnType="IQueryable">
           <Description>Groups the elements of a sequence according to a specified key string function and creates a result value from each group and its key.</Description>
           <ReturnDescription>A `IQueryable` where each element represents a projection over a group and its key.</ReturnDescription>
           <Arguments>
@@ -673,7 +673,7 @@ public static void SelectManyEx1()
           </Examples>
         </Method>
 
-        <Method name="GroupBy" isExtensionMethod="true">
+        <Method name="GroupBy" isExtensionMethod="true" returnType="IQueryable">
           <Description>Groups the elements of a sequence according to a specified key string function and creates a result value from each group and its key.</Description>
           <ReturnDescription>A `IQueryable` where each element represents a projection over a group and its key.</ReturnDescription>
           <Arguments>
@@ -696,7 +696,7 @@ public static void SelectManyEx1()
           </Examples>
         </Method>
 
-        <Method name="GroupByMany&lt;TElement&gt;" isExtensionMethod="true" hasParamsArgument="true">
+        <Method name="GroupByMany&lt;TElement&gt;" isExtensionMethod="true" hasParamsArgument="true" returnType="IEnumerable&lt;GroupResult&gt;">
           <Description>Groups the elements of a sequence according to multiple specified key string functions and creates a result value from each group (and subgroups) and its key.</Description>
           <ReturnDescription>A `IEnumerable&lt;GroupResult&gt;` where each element represents a projection over a group, its key, and its subgroups.</ReturnDescription>
           <Arguments>
@@ -709,7 +709,7 @@ public static void SelectManyEx1()
           </Arguments>
         </Method>
 
-        <Method name="GroupByMany&lt;TElement&gt;" isExtensionMethod="true" hasParamsArgument="true">
+        <Method name="GroupByMany&lt;TElement&gt;" isExtensionMethod="true" hasParamsArgument="true" returnType="IEnumerable&lt;GroupResult&gt;">
           <Description>Groups the elements of a sequence according to multiple specified key string functions and creates a result value from each group (and subgroups) and its key.</Description>
           <ReturnDescription>A `IEnumerable&lt;GroupResult&gt;` where each element represents a projection over a group, its key, and its subgroups.</ReturnDescription>
           <Arguments>
@@ -720,6 +720,279 @@ public static void SelectManyEx1()
               <Description>Lambda expressions to specify the keys for each element.</Description>
             </Argument>
           </Arguments>
+        </Method>
+
+        <Method name="Join" returnType="IQueryable" isExtensionMethod="true" hasParamsArgument="true">
+          <Description>Correlates the elements of two sequences based on matching keys. The default equality comparer is used to compare keys.</Description>
+          <ReturnDescription>An `IQueryable` obtained by performing an inner join on two sequences.</ReturnDescription>
+          <Arguments>
+            <Argument name="outer" type="IQueryable" typeNamespace="System.Linq">
+              <Description>The first sequence to join.</Description>
+            </Argument>
+            <Argument name="inner" type="IEnumerable" typeNamespace="System.Collections">
+              <Description>The sequence to join to the first sequence.</Description>
+            </Argument>
+            <Argument name="outerKeySelector" type="string" typeNamespace="System">
+              <Description>A dynamic function to extract the join key from each element of the first sequence.</Description>
+            </Argument>
+            <Argument name="innerKeySelector" type="string" typeNamespace="System">
+              <Description>A dynamic function to extract the join key from each element of the second sequence.</Description>
+            </Argument>
+            <Argument name="resultSelector" type="string" typeNamespace="System">
+              <Description>A dynamic function to create a result element from two matching elements.</Description>
+            </Argument>
+            <Argument name="args" type="object[]" typeNamespace="System">
+              <Description>An object array that contains zero or more objects to insert into the predicates as parameters.  Similiar to the way String.Format formats strings.</Description>
+            </Argument>
+          </Arguments>
+          <Examples>
+            <Example>
+              <HeaderRemarks>The following code example demonstrates how to use `Join` to perform an inner join of two sequences based on a common key using Dynamic LINQ.</HeaderRemarks>
+              <ExampleCode>class Person
+{
+    public string Name { get; set; }
+}
+
+class Pet
+{
+    public string Name { get; set; }
+    public Person Owner { get; set; }
+}
+
+public static void JoinEx1()
+{
+    Person magnus = new Person { Name = "Hedlund, Magnus" };
+    Person terry = new Person { Name = "Adams, Terry" };
+    Person charlotte = new Person { Name = "Weiss, Charlotte" };
+
+    Pet barley = new Pet { Name = "Barley", Owner = terry };
+    Pet boots = new Pet { Name = "Boots", Owner = terry };
+    Pet whiskers = new Pet { Name = "Whiskers", Owner = charlotte };
+    Pet daisy = new Pet { Name = "Daisy", Owner = magnus };
+
+    List&lt;Person&gt; people = new List&lt;Person&gt; { magnus, terry, charlotte };
+    List&lt;Pet&gt; pets = new List&lt;Pet&gt; { barley, boots, whiskers, daisy };
+
+    // Join the list of Person objects and the list of Pet objects 
+    // to create a list of person-pet pairs where each element is 
+    // an anonymous type that contains the name of pet and the name
+    // of the person that owns the pet.
+    var query = people.AsQueryable().Join(
+        pets,
+        "it",
+        "Owner",
+        "new(outer.Name as OwnerName, inner.Name as Pet)";
+      
+
+    foreach (var obj in query)
+    {
+        Console.WriteLine(
+            "{0} - {1}",
+            obj.OwnerName,
+            obj.Pet);
+    }
+}
+
+/*
+    This code produces the following output:
+
+    Hedlund, Magnus - Daisy
+    Adams, Terry - Barley
+    Adams, Terry - Boots
+    Weiss, Charlotte - Whiskers
+*/</ExampleCode>
+              <EquivalentCode>class Person
+{
+    public string Name { get; set; }
+}
+
+class Pet
+{
+    public string Name { get; set; }
+    public Person Owner { get; set; }
+}
+
+public static void JoinEx1()
+{
+    Person magnus = new Person { Name = "Hedlund, Magnus" };
+    Person terry = new Person { Name = "Adams, Terry" };
+    Person charlotte = new Person { Name = "Weiss, Charlotte" };
+
+    Pet barley = new Pet { Name = "Barley", Owner = terry };
+    Pet boots = new Pet { Name = "Boots", Owner = terry };
+    Pet whiskers = new Pet { Name = "Whiskers", Owner = charlotte };
+    Pet daisy = new Pet { Name = "Daisy", Owner = magnus };
+
+    List&lt;Person&gt; people = new List&lt;Person&gt; { magnus, terry, charlotte };
+    List&lt;Pet&gt; pets = new List&lt;Pet&gt; { barley, boots, whiskers, daisy };
+
+    // Join the list of Person objects and the list of Pet objects 
+    // to create a list of person-pet pairs where each element is 
+    // an anonymous type that contains the name of pet and the name
+    // of the person that owns the pet.
+    var query = people.AsQueryable().Join(
+        pets,
+        person => person,
+        pet => pet.Owner,
+        (person, pet) =>
+            new { OwnerName = person.Name, Pet = pet.Name });
+
+    foreach (var obj in query)
+    {
+        Console.WriteLine(
+            "{0} - {1}",
+            obj.OwnerName,
+            obj.Pet);
+    }
+}
+
+/*
+    This code produces the following output:
+
+    Hedlund, Magnus - Daisy
+    Adams, Terry - Barley
+    Adams, Terry - Boots
+    Weiss, Charlotte - Whiskers
+*/</EquivalentCode>
+            </Example>
+          </Examples>
+        </Method>
+         
+        <Method name="Join&lt;TElement&gt;" returnType="IQueryable&lt;TElement&gt;" isExtensionMethod="true" hasParamsArgument="true">
+          <Description>Correlates the elements of two sequences based on matching keys. The default equality comparer is used to compare keys.</Description>
+          <Remarks>This `Join` overload only works on elements where both sequences and the resulting element match.</Remarks>
+          <ReturnDescription>An `IQueryable&lt;TElement&gt;` obtained by performing an inner join on two sequences.</ReturnDescription>
+          <Arguments>
+            <Argument name="outer" type="IQueryable&lt;TElement&gt;" typeNamespace="System.Linq">
+              <Description>The first sequence to join.</Description>
+            </Argument>
+            <Argument name="inner" type="IEnumerable&lt;TElement&gt;" typeNamespace="System.Collections">
+              <Description>The sequence to join to the first sequence.</Description>
+            </Argument>
+            <Argument name="outerKeySelector" type="string" typeNamespace="System">
+              <Description>A dynamic function to extract the join key from each element of the first sequence.</Description>
+            </Argument>
+            <Argument name="innerKeySelector" type="string" typeNamespace="System">
+              <Description>A dynamic function to extract the join key from each element of the second sequence.</Description>
+            </Argument>
+            <Argument name="resultSelector" type="string" typeNamespace="System">
+              <Description>A dynamic function to create a result element from two matching elements.</Description>
+            </Argument>
+            <Argument name="args" type="object[]" typeNamespace="System">
+              <Description>An object array that contains zero or more objects to insert into the predicates as parameters.  Similiar to the way String.Format formats strings.</Description>
+            </Argument>
+          </Arguments>
+          <Examples>
+            <Example>
+              <HeaderRemarks>The following code example demonstrates how to use `Join` to perform an inner join of two sequences based on a common key using Dynamic LINQ.</HeaderRemarks>
+              <ExampleCode>class Person
+{
+    public string Name { get; set; }
+}
+
+class Pet
+{
+    public string Name { get; set; }
+    public Person Owner { get; set; }
+}
+
+public static void JoinEx1()
+{
+    Person magnus = new Person { Name = "Hedlund, Magnus" };
+    Person terry = new Person { Name = "Adams, Terry" };
+    Person charlotte = new Person { Name = "Weiss, Charlotte" };
+
+    Pet barley = new Pet { Name = "Barley", Owner = terry };
+    Pet boots = new Pet { Name = "Boots", Owner = terry };
+    Pet whiskers = new Pet { Name = "Whiskers", Owner = charlotte };
+    Pet daisy = new Pet { Name = "Daisy", Owner = magnus };
+
+    List&lt;Person&gt; people = new List&lt;Person&gt; { magnus, terry, charlotte };
+    List&lt;Pet&gt; pets = new List&lt;Pet&gt; { barley, boots, whiskers, daisy };
+
+    // Join the list of Person objects and the list of Pet objects 
+    // to create a list of person-pet pairs where each element is 
+    // an anonymous type that contains the name of pet and the name
+    // of the person that owns the pet.
+    var query = people.AsQueryable().Join(
+        pets,
+        "it",
+        "Owner",
+        "new(outer.Name as OwnerName, inner.Name as Pet)";
+      
+
+    foreach (var obj in query)
+    {
+        Console.WriteLine(
+            "{0} - {1}",
+            obj.OwnerName,
+            obj.Pet);
+    }
+}
+
+/*
+    This code produces the following output:
+
+    Hedlund, Magnus - Daisy
+    Adams, Terry - Barley
+    Adams, Terry - Boots
+    Weiss, Charlotte - Whiskers
+*/</ExampleCode>
+              <EquivalentCode>class Person
+{
+    public string Name { get; set; }
+}
+
+class Pet
+{
+    public string Name { get; set; }
+    public Person Owner { get; set; }
+}
+
+public static void JoinEx1()
+{
+    Person magnus = new Person { Name = "Hedlund, Magnus" };
+    Person terry = new Person { Name = "Adams, Terry" };
+    Person charlotte = new Person { Name = "Weiss, Charlotte" };
+
+    Pet barley = new Pet { Name = "Barley", Owner = terry };
+    Pet boots = new Pet { Name = "Boots", Owner = terry };
+    Pet whiskers = new Pet { Name = "Whiskers", Owner = charlotte };
+    Pet daisy = new Pet { Name = "Daisy", Owner = magnus };
+
+    List&lt;Person&gt; people = new List&lt;Person&gt; { magnus, terry, charlotte };
+    List&lt;Pet&gt; pets = new List&lt;Pet&gt; { barley, boots, whiskers, daisy };
+
+    // Join the list of Person objects and the list of Pet objects 
+    // to create a list of person-pet pairs where each element is 
+    // an anonymous type that contains the name of pet and the name
+    // of the person that owns the pet.
+    var query = people.AsQueryable().Join(
+        pets,
+        person => person,
+        pet => pet.Owner,
+        (person, pet) =>
+            new { OwnerName = person.Name, Pet = pet.Name });
+
+    foreach (var obj in query)
+    {
+        Console.WriteLine(
+            "{0} - {1}",
+            obj.OwnerName,
+            obj.Pet);
+    }
+}
+
+/*
+    This code produces the following output:
+
+    Hedlund, Magnus - Daisy
+    Adams, Terry - Barley
+    Adams, Terry - Boots
+    Weiss, Charlotte - Whiskers
+*/</EquivalentCode>
+            </Example>
+          </Examples>
         </Method>
       </Methods>
     </Class>
