@@ -165,5 +165,29 @@ namespace System.Linq.Dynamic.Tests
             //Assert
             Assert.AreEqual(result1.Count(), 2);
         }
+
+        [TestMethod]
+        public void DistinctByTest()
+        {
+            //Makes a Distinct By Tuple.Item1 but returns a full Tuple
+            var lst = new List<Tuple<int, int, int>>()
+            {
+                new Tuple<int, int, int>(1, 1, 1),
+                new Tuple<int, int, int>(1, 1, 2),
+                new Tuple<int, int, int>(1, 1, 3),
+                new Tuple<int, int, int>(2, 2, 4),
+                new Tuple<int, int, int>(2, 2, 5),
+                new Tuple<int, int, int>(2, 2, 6),
+                new Tuple<int, int, int>(2, 3, 7)
+            };
+
+            var p = lst.AsQueryable() as IQueryable;
+            var qry = p.GroupBy("Item1", "it").Select("it.Max(it.Item3)");
+
+            qry = p.Where("@0.Any(it == parent.Item3)", qry);
+
+            Assert.AreEqual(qry.Count(), 2);
+
+        }
     }
 }

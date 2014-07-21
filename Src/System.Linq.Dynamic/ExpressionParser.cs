@@ -220,6 +220,8 @@ namespace System.Linq.Dynamic
         static readonly Expression _nullLiteral = Expression.Constant(null);
 
         const string KEYWORD_IT = "it";
+        const string KEYWORD_PARENT = "parent";
+        const string KEYWORD_ROOT = "root";
         const string KEYWORD_IIF = "iif";
         const string KEYWORD_NEW = "new";
 
@@ -229,6 +231,8 @@ namespace System.Linq.Dynamic
         IDictionary<string, object> _externals;
         Dictionary<Expression, string> _literals;
         ParameterExpression _it;
+        ParameterExpression _parent;
+        ParameterExpression _root;
         string _text;
         int _textPos;
         int _textLen;
@@ -254,7 +258,12 @@ namespace System.Linq.Dynamic
                 if (!String.IsNullOrEmpty(pe.Name))
                     AddSymbol(pe.Name, pe);
             if (parameters.Length == 1 && String.IsNullOrEmpty(parameters[0].Name))
+            {
+                _parent = _it;
                 _it = parameters[0];
+                if (_root == null)
+                    _root = _it;
+            }
         }
 
         void ProcessValues(object[] values)
@@ -814,6 +823,8 @@ namespace System.Linq.Dynamic
                 if (typeValue != null) return ParseTypeAccess(typeValue);
 
                 if (value == (object)KEYWORD_IT) return ParseIt();
+                if (value == (object)KEYWORD_PARENT) return ParseParent();
+                if (value == (object)KEYWORD_ROOT) return ParseRoot();
                 if (value == (object)KEYWORD_IIF) return ParseIif();
                 if (value == (object)KEYWORD_NEW) return ParseNew();
                 NextToken();
@@ -845,6 +856,22 @@ namespace System.Linq.Dynamic
                 throw ParseError(Res.NoItInScope);
             NextToken();
             return _it;
+        }
+
+        Expression ParseParent()
+        {
+            if (_it == null)
+                throw ParseError(Res.NoItInScope);
+            NextToken();
+            return _parent;
+        }
+
+        Expression ParseRoot()
+        {
+            if (_it == null)
+                throw ParseError(Res.NoItInScope);
+            NextToken();
+            return _root;
         }
 
         Expression ParseIif()
@@ -1068,8 +1095,12 @@ namespace System.Linq.Dynamic
 
         Expression ParseAggregate(Expression instance, Type elementType, string methodName, int errorPos)
         {
+            var oldParent = _parent;
+
             ParameterExpression outerIt = _it;
             ParameterExpression innerIt = Expression.Parameter(elementType, "");
+
+            _parent = _it;
 
             if (methodName == "Contains")
             {
@@ -1084,6 +1115,7 @@ namespace System.Linq.Dynamic
             Expression[] args = ParseArgumentList();
 
             _it = outerIt;
+            _parent = oldParent;
 
             MethodBase signature;
             if (FindMethod(typeof(IEnumerableSignatures), methodName, false, args, out signature) != 1)
@@ -2098,6 +2130,8 @@ namespace System.Linq.Dynamic
             d.Add("false", _falseLiteral);
             d.Add("null", _nullLiteral);
             d.Add(KEYWORD_IT, KEYWORD_IT);
+            d.Add(KEYWORD_PARENT, KEYWORD_PARENT);
+            d.Add(KEYWORD_ROOT, KEYWORD_ROOT);
             d.Add(KEYWORD_IIF, KEYWORD_IIF);
             d.Add(KEYWORD_NEW, KEYWORD_NEW);
 
