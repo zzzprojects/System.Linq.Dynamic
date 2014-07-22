@@ -46,6 +46,21 @@ namespace System.Linq.Dynamic.Tests
         }
 
         [TestMethod]
+        public void FirstOrDefaultT()
+        {
+            //Arrange
+            var baseQuery = User.GenerateSampleModels(100).AsQueryable();
+           
+
+            //Act
+            var realQuery = baseQuery.Where(x => x.Roles.FirstOrDefault(y => y.Name == "Admin").Name == "Admin");
+            var testQuery = baseQuery.Where("it.Roles.FirstOrDefault(it.Name = @0).Name = @0", "Admin");
+           
+            //Assert
+            CollectionAssert.AreEqual(realQuery.ToArray(), testQuery.ToArray());
+        }
+
+        [TestMethod]
         public void Count()
         {
             //Arrange

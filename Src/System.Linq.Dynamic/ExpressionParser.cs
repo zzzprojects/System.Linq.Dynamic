@@ -150,6 +150,12 @@ namespace System.Linq.Dynamic
             void Where(bool predicate);
             void Any();
             void Any(bool predicate);
+            void First(bool predicate);
+            void FirstOrDefault(bool predicate);
+            void Single(bool predicate);
+            void SingleOrDefault(bool predicate);
+            void Last(bool predicate);
+            void LastOrDefault(bool predicate);
             void All(bool predicate);
             void Count();
             void Count(bool predicate);
@@ -185,6 +191,8 @@ namespace System.Linq.Dynamic
             void SingleOrDefault();
             void First();
             void FirstOrDefault();
+            void Last();
+            void LastOrDefault();
         }
         
         static readonly HashSet<Type> _predefinedTypes = new HashSet<Type>() {
@@ -1132,7 +1140,7 @@ namespace System.Linq.Dynamic
                 signature.Name == "Max" || 
                 signature.Name == "Select" ||
                 signature.Name == "OrderBy" ||
-                signature.Name == "OrderByDescending"
+                signature.Name == "OrderByDescending" 
                 )
             {
                 typeArgs = new Type[] { elementType, args[0].Type };
