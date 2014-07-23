@@ -866,16 +866,16 @@ namespace System.Linq.Dynamic
 
         Expression ParseParent()
         {
-            if (_it == null)
-                throw ParseError(Res.NoItInScope);
+            if (_parent == null)
+                throw ParseError(Res.NoParentInScope);
             NextToken();
             return _parent;
         }
 
         Expression ParseRoot()
         {
-            if (_it == null)
-                throw ParseError(Res.NoItInScope);
+            if (_root == null)
+                throw ParseError(Res.NoRootInScope);
             NextToken();
             return _root;
         }

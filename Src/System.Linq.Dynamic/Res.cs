@@ -16,6 +16,8 @@ namespace System.Linq.Dynamic
         public const string InvalidRealLiteral = "Invalid real literal '{0}'";
         public const string UnknownIdentifier = "Unknown identifier '{0}'";
         public const string NoItInScope = "No 'it' is in scope";
+        public const string NoParentInScope = "No 'parent' is in scope";
+        public const string NoRootInScope = "No 'root' is in scope";
         public const string IifRequiresThreeArgs = "The 'iif' function requires three arguments";
         public const string FirstExprMustBeBool = "The first expression must be of type 'Boolean'";
         public const string BothTypesConvertToOther = "Both of the types '{0}' and '{1}' convert to the other";

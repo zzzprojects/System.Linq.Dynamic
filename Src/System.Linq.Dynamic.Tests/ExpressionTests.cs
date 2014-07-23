@@ -210,7 +210,7 @@ namespace System.Linq.Dynamic.Tests
                 Helper.ExpectException<ParseException>(() => values.AsQueryable().Where("it = 2"));
                 Helper.ExpectException<ParseException>(() => values.AsQueryable().Where("root = 2"));
                 values.AsQueryable().Where("$ = 2");
-                values.AsQueryable().Where("^ = 2");
+                values.AsQueryable().Where("~ = 2");
                 GlobalConfig.AreContextKeywordsEnabled = true;
 
                 var qry1 = values.AsQueryable().Where("it = 2");
