@@ -28,8 +28,8 @@ namespace DynamicLinqWebDocs.Controllers
             var expression = _repo.GetExpression(expressionName);
             if (expression == null) return HttpNotFound();
 
-            this.SetMetaDescription("The syntax and description of the {0} expression.", expression.Name);
-            this.AddMetaKeywords("Expression", expression.Name);
+            this.SetMetaDescription("The syntax and description of the {0} expression method.", expression.Name);
+            this.AddMetaKeywords("Expression Method", expression.Name);
 
             return View(expression);
         }
