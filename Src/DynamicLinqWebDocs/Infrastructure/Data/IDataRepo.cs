@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DynamicLinqWebDocs.Infrastructure.Data
 {
-    interface IDataRepo
+    public interface IDataRepo
     {
         IEnumerable<Class> GetClasses();
 
@@ -21,5 +21,10 @@ namespace DynamicLinqWebDocs.Infrastructure.Data
         IEnumerable<Expression> GetExpressions();
 
         Expression GetExpression(string expressionName);
+
+
+        IEnumerable<Keyword> GetKeywords();
+
+        Keyword GetKeyword(string keywordName);
     }
 }

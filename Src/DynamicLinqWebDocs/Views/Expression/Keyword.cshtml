@@ -1,12 +1,12 @@
-﻿@model DynamicLinqWebDocs.Models.Expression
+﻿@model DynamicLinqWebDocs.Models.Keyword
 
 @{
-    ViewBag.Title = Model.Name + " Expression";
+    ViewBag.Title = Model.Name + " Keyword";
 }
 
 @Html.ActionLink("Back to Expressions", "Index", "Expression", null, new { @class = "btn btn-xs btn-default" })
 
-<h2>@Model.Name <small>Expression</small></h2>
+<h2>@Model.Name <small>Keyword</small></h2>
 
 @Html.FormatMarkdown(Model.Description)
 

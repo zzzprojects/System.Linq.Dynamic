@@ -18,6 +18,7 @@
       <xs:sequence>
         <xs:element name="Classes" type="Classes" minOccurs="0" maxOccurs="1" />
         <xs:element name="Expressions" type="Expressions" minOccurs="0" maxOccurs="1" />
+        <xs:element name="Keywords" type="Keywords" minOccurs="0" maxOccurs="1" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -35,6 +36,12 @@
   <xs:complexType name="Expressions">
     <xs:sequence>
       <xs:element name="Expression" type="Expression" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Keywords">
+    <xs:sequence>
+      <xs:element name="Keyword" type="Expression" minOccurs="1" maxOccurs="unbounded" />
     </xs:sequence>
   </xs:complexType>
 
@@ -61,6 +68,15 @@
     <xs:attribute name="name" type="xs:string" use="required" />
   </xs:complexType>
 
+  <xs:complexType name="Keyword">
+    <xs:sequence>
+      <xs:element name="Description" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Remarks" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Examples" type="Examples" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+
+    <xs:attribute name="name" type="xs:string" use="required" />
+  </xs:complexType>
 
   <xs:complexType name="Methods">
     <xs:sequence>

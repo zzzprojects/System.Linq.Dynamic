@@ -15,6 +15,8 @@ namespace DynamicLinqWebDocs.Infrastructure.Data
         public List<Class> Classes { get; set; }
 
         public List<Expression> Expressions { get; set; }
+
+        public List<Keyword> Keywords { get; set; }
     }
 
 
@@ -117,5 +119,16 @@ namespace DynamicLinqWebDocs.Infrastructure.Data
         }
 
 
+        public IEnumerable<Keyword> GetKeywords()
+        {
+            return _doc.Keywords;
+        }
+
+        public Keyword GetKeyword(string keywordName)
+        {
+            return _doc.Keywords
+               .Where(x => keywordName.Equals(x.Name, StringComparison.InvariantCultureIgnoreCase))
+               .FirstOrDefault();
+        }
     }
 }

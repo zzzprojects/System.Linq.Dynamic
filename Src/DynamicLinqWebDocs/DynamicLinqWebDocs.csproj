@@ -136,6 +136,7 @@
     <Compile Include="Infrastructure\Helpers.cs" />
     <Compile Include="Infrastructure\Settings.cs" />
     <Compile Include="Infrastructure\SitemapGenerator.cs" />
+    <Compile Include="Models\Keyword.cs" />
     <Compile Include="Models\Frameworks.cs" />
     <Compile Include="Infrastructure\Data\TestDataRepo.cs" />
     <Compile Include="Infrastructure\HtmlHelpers.cs" />
@@ -210,6 +211,7 @@
     <Content Include="Views\Expression\Expression.cshtml" />
     <Content Include="Scripts\jquery-1.11.1.min.map" />
     <Content Include="Views\Library\Property.cshtml" />
+    <Content Include="Views\Expression\Keyword.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

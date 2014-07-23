@@ -9,21 +9,20 @@ using System.Web.Mvc;
 
 namespace DynamicLinqWebDocs.Controllers
 {
-    [RoutePrefix("Expressions")]
     public class ExpressionController : Controller
     {
         IDataRepo _repo = new RealDataRepo();
 
-        [Route]
+        [Route("Expressions")]
         public ActionResult Index()
         {
             this.SetMetaDescription("List of expression methods that can be used inside a Dynamic LINQ string expression.");
             this.AddMetaKeywords("Expressions");
 
-            return View(_repo.GetExpressions());
+            return View(_repo);
         }
 
-        [Route("{expressionName}")]
+        [Route("Expressions/{expressionName}")]
         public ActionResult Expression(string expressionName) 
         {
             var expression = _repo.GetExpression(expressionName);
@@ -35,6 +34,18 @@ namespace DynamicLinqWebDocs.Controllers
             return View(expression);
         }
 
+        [Route("Keywords/{keywordName}")]
+        public ActionResult Keyword(string keywordName)
+        {
+            var keyword = _repo.GetKeyword(keywordName);
+            if (keyword == null) return HttpNotFound();
+
+            this.SetMetaDescription("The description of the {0} keyword.", keyword.Name);
+            this.AddMetaKeywords("Keyword", keyword.Name);
+
+            return View(keyword);
+        }
+
         class ExpressionSitemap : SitemapContributor
         {
             protected internal override IEnumerable<SitemapNode> GetSitemapNodes(UrlHelper urlHelper, HttpContextBase httpContext)
@@ -43,9 +54,14 @@ namespace DynamicLinqWebDocs.Controllers
 
                 var repo = new RealDataRepo();
 
-                foreach( var expression in repo.GetExpressions())
+                foreach (var expression in repo.GetExpressions())
                 {
                     yield return new SitemapNode(urlHelper.Action("Expression", "Expression", new { expressionName = expression.Name })) { Priority = 0.50m };
+                }
+
+                foreach (var keyword in repo.GetKeywords())
+                {
+                    yield return new SitemapNode(urlHelper.Action("Keyword", "Expression", new { keywordName = keyword.Name })) { Priority = 0.50m };
                 }
             }
         }
