@@ -34,6 +34,24 @@ namespace System.Linq.Dynamic
             }
         }
 
+        static bool _contextKeywordsEnabled = true;
 
+        /// <summary>
+        /// Determines if the context keywords (it, parent, and root) are valid and usable inside a Dynamic Linq string expression.  
+        /// Does not affect the usability of the equivalent context symbols ($, ^ and ~).
+        /// </summary>
+        public static bool AreContextKeywordsEnabled
+        {
+            get { return _contextKeywordsEnabled; }
+            set
+            {
+                if( value != _contextKeywordsEnabled )
+                {
+                    _contextKeywordsEnabled = value;
+
+                    ExpressionParser.ResetDynamicLinqTypes();
+                }
+            }
+        }
     }
 }

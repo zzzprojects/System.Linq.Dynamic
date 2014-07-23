@@ -222,6 +222,9 @@ namespace System.Linq.Dynamic
         const string KEYWORD_IT = "it";
         const string KEYWORD_PARENT = "parent";
         const string KEYWORD_ROOT = "root";
+        const string SYMBOL_IT = "$";
+        const string SYMBOL_PARENT = "^";
+        const string SYMBOL_ROOT = "~";
         const string KEYWORD_IIF = "iif";
         const string KEYWORD_NEW = "new";
 
@@ -825,6 +828,9 @@ namespace System.Linq.Dynamic
                 if (value == (object)KEYWORD_IT) return ParseIt();
                 if (value == (object)KEYWORD_PARENT) return ParseParent();
                 if (value == (object)KEYWORD_ROOT) return ParseRoot();
+                if (value == (object)SYMBOL_IT) return ParseIt();
+                if (value == (object)SYMBOL_PARENT) return ParseParent();
+                if (value == (object)SYMBOL_ROOT) return ParseRoot();
                 if (value == (object)KEYWORD_IIF) return ParseIif();
                 if (value == (object)KEYWORD_NEW) return ParseNew();
                 NextToken();
@@ -2033,7 +2039,7 @@ namespace System.Linq.Dynamic
                     t = TokenId.StringLiteral;
                     break;
                 default:
-                    if (Char.IsLetter(_ch) || _ch == '@' || _ch == '_')
+                    if (Char.IsLetter(_ch) || _ch == '@' || _ch == '_' || _ch == '$' || _ch == '^' || _ch == '~')
                     {
                         do
                         {
@@ -2129,9 +2135,15 @@ namespace System.Linq.Dynamic
             d.Add("true", _trueLiteral);
             d.Add("false", _falseLiteral);
             d.Add("null", _nullLiteral);
-            d.Add(KEYWORD_IT, KEYWORD_IT);
-            d.Add(KEYWORD_PARENT, KEYWORD_PARENT);
-            d.Add(KEYWORD_ROOT, KEYWORD_ROOT);
+            if (GlobalConfig.AreContextKeywordsEnabled)
+            {
+                d.Add(KEYWORD_IT, KEYWORD_IT);
+                d.Add(KEYWORD_PARENT, KEYWORD_PARENT);
+                d.Add(KEYWORD_ROOT, KEYWORD_ROOT);
+            }
+            d.Add(SYMBOL_IT, SYMBOL_IT);
+            d.Add(SYMBOL_PARENT, SYMBOL_PARENT);
+            d.Add(SYMBOL_ROOT, SYMBOL_ROOT);
             d.Add(KEYWORD_IIF, KEYWORD_IIF);
             d.Add(KEYWORD_NEW, KEYWORD_NEW);
 

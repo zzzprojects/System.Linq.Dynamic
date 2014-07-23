@@ -167,8 +167,9 @@ namespace System.Linq.Dynamic.Tests
         }
 
         [TestMethod]
-        public void DistinctByTest()
+        public void ExpressionTests_DistinctBy()
         {
+            //Arrange
             //Makes a Distinct By Tuple.Item1 but returns a full Tuple
             var lst = new List<Tuple<int, int, int>>()
             {
@@ -184,10 +185,45 @@ namespace System.Linq.Dynamic.Tests
             var p = lst.AsQueryable() as IQueryable;
             var qry = p.GroupBy("Item1", "it").Select("it.Max(it.Item3)");
 
-            qry = p.Where("@0.Any(it == parent.Item3)", qry);
 
-            Assert.AreEqual(qry.Count(), 2);
+            //Act
+            var qry1 = p.Where("@0.Any(it == parent.Item3)", qry);
+            var qry2 = p.Where("@0.Any($ == ^.Item3)", qry);
+            var qry3 = p.Where("@0.Any($ == ~.Item3)", qry);
 
+            //Assert
+            Assert.AreEqual(qry1.Count(), 2);
+            Assert.AreEqual(qry2.Count(), 2);
+            Assert.AreEqual(qry3.Count(), 2);
+        }
+
+        [TestMethod]
+        public void ExpressionTests_ContextKeywordsAndSymbols()
+        {
+            try
+            {
+                //Arrange
+                int[] values = new int[] { 1, 2, 3, 4, 5 };
+
+                //Act
+                GlobalConfig.AreContextKeywordsEnabled = false;
+                Helper.ExpectException<ParseException>(() => values.AsQueryable().Where("it = 2"));
+                Helper.ExpectException<ParseException>(() => values.AsQueryable().Where("root = 2"));
+                values.AsQueryable().Where("$ = 2");
+                values.AsQueryable().Where("^ = 2");
+                GlobalConfig.AreContextKeywordsEnabled = true;
+
+                var qry1 = values.AsQueryable().Where("it = 2");
+                var qry2 = values.AsQueryable().Where("$ = 2");
+
+                //Assert
+                Assert.AreEqual(2, qry1.Single());
+                Assert.AreEqual(2, qry2.Single());
+            }
+            finally
+            {
+                GlobalConfig.AreContextKeywordsEnabled = true;
+            }
         }
     }
 }
