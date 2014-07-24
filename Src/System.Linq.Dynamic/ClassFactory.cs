@@ -18,7 +18,11 @@ namespace System.Linq.Dynamic
         ModuleBuilder _module;
         Dictionary<Signature, Type> _classes;
         int _classCount;
+#if SILVERLIGHT
+        ReaderWriterLock _rwLock;
+#else
         ReaderWriterLockSlim _rwLock;
+#endif
 
         private ClassFactory()
         {
@@ -38,15 +42,23 @@ namespace System.Linq.Dynamic
 #endif
             }
             _classes = new Dictionary<Signature, Type>();
+#if SILVERLIGHT
+            _rwLock = new ReaderWriterLock();
+#else
             _rwLock = new ReaderWriterLockSlim();
+#endif
         }
 
         public Type GetDynamicClass(IEnumerable<DynamicProperty> properties)
         {
             Signature signature = new Signature(properties);
 
+#if SILVERLIGHT
+            _rwLock.AcquireReaderLock(Timeout.Infinite);
+#else
             _rwLock.EnterReadLock();
-            
+#endif
+       
             try
             {
                 Type type;
@@ -55,7 +67,11 @@ namespace System.Linq.Dynamic
             }
             finally
             {
-                _rwLock.ExitReadLock();
+#if SILVERLIGHT
+                 _rwLock.ReleaseReaderLock();
+#else
+                 _rwLock.ExitReadLock();
+#endif
             }
 
             return CreateDynamicClass(signature);
@@ -63,7 +79,11 @@ namespace System.Linq.Dynamic
 
         Type CreateDynamicClass(Signature signature)
         {
+#if SILVERLIGHT
+            _rwLock.UpgradeToWriterLock(Timeout.Infinite);
+#else
             _rwLock.EnterWriteLock();
+#endif
 
             try
             {
@@ -101,7 +121,11 @@ namespace System.Linq.Dynamic
             }
             finally
             {
+#if SILVERLIGHT
+                _rwLock.DowngradeToReaderLock();
+#else
                 _rwLock.ExitWriteLock();
+#endif
             }
         }
 
