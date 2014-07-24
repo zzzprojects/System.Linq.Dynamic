@@ -126,11 +126,11 @@ namespace DynamicLinqWebDocs.Controllers
                 {
                     yield return new SitemapNode(urlHelper.Action("Class", "Library", new { className = @class.Name })) { Priority = 0.75m };
 
-                    foreach( var methodGrp in @class.Methods.GroupBy( x => new { x.Name, x.Frameworks } ) )
+                    foreach (var methodGrp in @class.Methods.GroupBy(x => new { x.Name, x.Frameworks }))
                     {
                         int methodCount = 0;
 
-                        foreach( var method in methodGrp )
+                        foreach (var method in methodGrp)
                         {
                             Models.Frameworks? framework = null;
 
@@ -145,6 +145,20 @@ namespace DynamicLinqWebDocs.Controllers
 
                             methodCount++;
                         }
+                    }
+
+                    foreach (var property in @class.Properties)
+                    {
+                        Models.Frameworks? framework = null;
+
+                        if (property.Frameworks != Models.Frameworks.All)
+                        {
+                            framework = Enum.GetValues(typeof(Models.Frameworks)).Cast<Models.Frameworks>().Reverse().Where(x => property.Frameworks.HasFlag(x)).FirstOrDefault();
+                        }
+
+                        var propertyUrl = urlHelper.Action("Property", "Library", new { className = @class.Name, propertyName = property.Name, framework = framework });
+
+                        yield return new SitemapNode(propertyUrl) { Priority = .5m };
                     }
                 }
             }
