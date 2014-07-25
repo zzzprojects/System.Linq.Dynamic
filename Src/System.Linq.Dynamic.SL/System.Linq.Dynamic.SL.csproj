@@ -44,6 +44,13 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>Bin\Release\System.Linq.Dynamic.SL.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\System.Linq.Dynamic\Properties\key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FluentValidationNA">
@@ -103,13 +110,18 @@
     <Compile Include="..\System.Linq.Dynamic\ParseException.cs">
       <Link>ParseException.cs</Link>
     </Compile>
+    <Compile Include="..\System.Linq.Dynamic\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="..\System.Linq.Dynamic\Res.cs">
       <Link>Res.cs</Link>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReaderWriterLock.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\System.Linq.Dynamic\Properties\key.snk">
+      <Link>Properties\key.snk</Link>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />

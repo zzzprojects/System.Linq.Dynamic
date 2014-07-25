@@ -19,7 +19,7 @@ namespace System.Linq.Dynamic
     /// Taken from - http://blogs.msdn.com/vancem/archive/2006/03/28/563180.aspx
     /// Code at - http://blogs.msdn.com/vancem/attachment/563180.ashx
     /// </remarks>
-    public class ReaderWriterLock
+    internal class ReaderWriterLock
     {
         // Lock specifiation for myLock:  This lock protects exactly the local fields associted
         // instance of MyReaderWriterLock.  It does NOT protect the memory associted with the

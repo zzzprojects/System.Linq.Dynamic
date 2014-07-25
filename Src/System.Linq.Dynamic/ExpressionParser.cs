@@ -7,11 +7,6 @@ using System.Reflection;
 using System.Text;
 using System.Collections;
 
-#if !NET35 && !SILVERLIGHT
-using System.Dynamic;
-using CSharp = Microsoft.CSharp.RuntimeBinder;
-#endif
-
 namespace System.Linq.Dynamic
 {
 
@@ -1355,23 +1350,7 @@ namespace System.Linq.Dynamic
             }
             return null;
         }
-
-//#if !NET35
-//        static Expression GetDynamicMember(Expression instance, string memberName)
-//        {
-//            var binder = CSharp.Binder.GetMember(
-//                CSharp.CSharpBinderFlags.None,
-//                memberName,
-//                typeof(ExpressionParser),
-//                new CSharp.CSharpArgumentInfo[] { CSharp.CSharpArgumentInfo.Create(CSharp.CSharpArgumentInfoFlags.None, null) }
-//                );
-
-//            var e = Expression.Dynamic(binder, typeof(object), instance);
-
-//            return e;
-//        }
-//#endif
-
+        
         int FindMethod(Type type, string methodName, bool staticAccess, Expression[] args, out MethodBase method)
         {
             BindingFlags flags = BindingFlags.Public | BindingFlags.DeclaredOnly |

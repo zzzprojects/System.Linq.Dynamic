@@ -52,5 +52,7 @@ Bug Fix when using Select Method to select multiple values.</releaseNotes>
         <file src="..\Src\System.Linq.Dynamic.For35\bin\Release\System.Linq.Dynamic.XML" target="lib\net35\System.Linq.Dynamic.XML" />
         <file src="..\Src\System.Linq.Dynamic\bin\Release\System.Linq.Dynamic.dll" target="lib\net40\System.Linq.Dynamic.dll" />
         <file src="..\Src\System.Linq.Dynamic\bin\Release\System.Linq.Dynamic.XML" target="lib\net40\System.Linq.Dynamic.XML" />
+        <file src="..\Src\System.Linq.Dynamic.SL\Bin\Release\System.Linq.Dynamic.SL.dll" target="lib\sl50\System.Linq.Dynamic.SL.dll" />
+        <file src="..\Src\System.Linq.Dynamic.SL\Bin\Release\System.Linq.Dynamic.SL.XML" target="lib\sl50\System.Linq.Dynamic.SL.XML" />
     </files>
 </package>
