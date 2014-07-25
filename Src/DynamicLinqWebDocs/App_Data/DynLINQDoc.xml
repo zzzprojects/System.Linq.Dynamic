@@ -246,6 +246,46 @@ Console.WriteLine(
           </Arguments>
         </Method>
 
+        <Method name="Last" frameworks="Net35" isExtensionMethod="true" returnType="object">
+          <Description>Returns the last element of a sequence.</Description>
+          <ReturnDescription>The last element in source.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A `IQueryable` to return the last element of.</Description>
+            </Argument>
+          </Arguments>
+        </Method>
+
+        <Method name="Last" frameworks="Net40Plus" isExtensionMethod="true" returnType="dynamic">
+          <Description>Returns the last element of a sequence.</Description>
+          <ReturnDescription>The last element in source.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A `IQueryable` to return the last element of.</Description>
+            </Argument>
+          </Arguments>
+        </Method>
+
+        <Method name="LastOrDefault" frameworks="Net35" isExtensionMethod="true" returnType="object">
+          <Description>Returns the last element of a sequence, or a default value if the sequence contains no elements.</Description>
+          <ReturnDescription>`null` if source is empty; otherwise, the last element in *source*.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A `IQueryable` to return the last element of.</Description>
+            </Argument>
+          </Arguments>
+        </Method>
+
+        <Method name="LastOrDefault" frameworks="Net40Plus" isExtensionMethod="true" returnType="dynamic">
+          <Description>Returns the last element of a sequence, or a default value if the sequence contains no elements.</Description>
+          <ReturnDescription>`null` if source is empty; otherwise, the last element in *source*.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A `IQueryable` to return the last element of.</Description>
+            </Argument>
+          </Arguments>
+        </Method>
+
         <Method name="AsEnumerable" frameworks="Net35" isExtensionMethod="true" returnType="IEnumerable&lt;object&gt;">
           <Description>Returns the input typed as `IEnumerable&lt;T&gt;` of `object`.</Description>
           <ReturnDescription>The input typed as `IEnumerable&lt;T&gt;` of `object`.</ReturnDescription>
@@ -1096,6 +1136,14 @@ public static void JoinEx1()
 
     <Expression name="FirstOrDefault">
       <Description>Returns the first element of a sequence, or a default value if the sequence contains no elements.</Description>
+    </Expression>
+
+    <Expression name="Last">
+      <Description>Returns the last element of a sequence.</Description>
+    </Expression>
+
+    <Expression name="LastOrDefault">
+      <Description>Returns the last element of a sequence, or a default value if the sequence contains no elements.</Description>
     </Expression>
 
     <Expression name="Single">

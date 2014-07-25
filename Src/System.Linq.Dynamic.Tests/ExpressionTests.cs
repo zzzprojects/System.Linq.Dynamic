@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq.Dynamic;
 using System.Collections.Generic;
 using System.Linq.Dynamic.Tests.Helpers;
+using System.Linq;
 
 namespace System.Linq.Dynamic.Tests
 {
@@ -224,6 +225,33 @@ namespace System.Linq.Dynamic.Tests
             {
                 GlobalConfig.AreContextKeywordsEnabled = true;
             }
+        }
+
+
+
+        [TestMethod]
+        public void ExpressionTests_FirstOrDefault()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(2);
+            testList[0].Roles.Clear();
+
+            var testListQry = testList.AsQueryable();
+
+
+            //Act
+
+            //find first user that has the role of admin
+            var realSingleResult = testListQry.Where(x => x.Roles.FirstOrDefault(y => y.Name == "Admin") != null).FirstOrDefault();
+            var testSingleResult = testListQry.Where("Roles.FirstOrDefault(Name = \"Admin\") != null").FirstOrDefault();
+
+            testList[1].Roles.Clear(); //remove roles so the next set fails
+            var realSingleFailResult = testListQry.Where(x => x.Roles.FirstOrDefault(y => y.Name == "Admin") != null).FirstOrDefault();
+            var testSingleFailResult = testListQry.Where("Roles.FirstOrDefault(Name = \"Admin\") != null").FirstOrDefault();
+            
+            //Assert
+            Assert.AreEqual(realSingleResult, testSingleResult);
+            Assert.AreEqual(realSingleFailResult, testSingleFailResult);
         }
     }
 }
