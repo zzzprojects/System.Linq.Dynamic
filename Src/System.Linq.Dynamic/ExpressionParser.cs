@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Collections;
 
-#if !NET35
+#if !NET35 && !SILVERLIGHT
 using System.Dynamic;
 using CSharp = Microsoft.CSharp.RuntimeBinder;
 #endif
@@ -218,7 +218,7 @@ namespace System.Linq.Dynamic
             typeof(Math),
             typeof(Convert),
             typeof(Uri),
-#if !NET35
+#if !NET35 && !SILVERLIGHT
 			typeof(System.Data.Objects.EntityFunctions)
 #endif
         };

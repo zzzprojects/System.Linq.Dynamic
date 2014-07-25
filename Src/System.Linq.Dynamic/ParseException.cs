@@ -13,7 +13,9 @@ namespace System.Linq.Dynamic
     /// Represents errors that occur while parsing dynamic linq string expressions.
     /// </summary>
     [SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors")]
+#if !SILVERLIGHT
     [Serializable]
+#endif
     public sealed class ParseException : Exception
     {
         int _position;
@@ -46,6 +48,7 @@ namespace System.Linq.Dynamic
             return string.Format(CultureInfo.CurrentCulture, Res.ParseExceptionFormat, Message, _position);
         }
 
+#if !SILVERLIGHT
         ParseException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
@@ -61,6 +64,6 @@ namespace System.Linq.Dynamic
 
             info.AddValue("position", _position);
         }
-
+#endif
     }
 }
