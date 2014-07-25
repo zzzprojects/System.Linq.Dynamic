@@ -187,6 +187,44 @@ namespace System.Linq.Dynamic
 
 
 
+        /// <summary>
+        /// Returns the last element of a sequence.
+        /// </summary>
+        /// <param name="source">The <see cref="IQueryable"/> to return the last element of.</param>
+        /// <returns>The last element in source.</returns>
+#if NET35
+        public static object Last(this IQueryable source)
+#else
+        public static dynamic Last(this IQueryable source)
+#endif
+        {
+            Validate.Argument(source, "source").IsNotNull().Check();
+
+            return source.Provider.Execute(Expression.Call(
+                typeof(Queryable), "Last",
+                new Type[] { source.ElementType }, source.Expression));
+        }
+
+
+
+        /// <summary>
+        /// Returns the last element of a sequence, or a default value if the sequence contains no elements.
+        /// </summary>
+        /// <param name="source">The <see cref="IQueryable"/> to return the last element of.</param>
+        /// <returns>default(TSource) if source is empty; otherwise, the last element in source.</returns>
+#if NET35
+        public static object LastOrDefault(this IQueryable source)
+#else
+        public static dynamic LastOrDefault(this IQueryable source)
+#endif
+        {
+            Validate.Argument(source, "source").IsNotNull().Check();
+
+            return source.Provider.Execute(Expression.Call(
+                typeof(Queryable), "LastOrDefault",
+                new Type[] { source.ElementType }, source.Expression));
+        }
+
 #if NET35
         /// <summary>
         /// Returns the input typed as <see cref="IEnumerable{T}"/> of <see cref="object"/>./>
