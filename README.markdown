@@ -14,4 +14,4 @@ Documentation and Samples
 You can find sample code and documentation on usage from this link, just Accept the terms and you will download a Visual Studio file with C# code and HTML documentation.
 
 http://msdn.microsoft.com/en-US/vstudio/bb894665.aspx
-
+(Special thanks dradovic)
