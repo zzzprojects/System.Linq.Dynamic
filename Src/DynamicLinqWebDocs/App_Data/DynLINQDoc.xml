@@ -1039,6 +1039,11 @@ public static void JoinEx1()
 
     <Class name="ParseException" namespace="System.Linq.Dynamic">
       <Description>Represents errors that occur while parsing dynamic linq string expressions.</Description>
+      <Properties>
+        <Property name="Position" valueType="int" accessors="Get">
+          <Description>Gives the character index in the expression string at which the parsing error occurred.</Description>
+        </Property>
+      </Properties>
     </Class>
 
     <Class name="GroupResult" namespace="System.Linq.Dynamic">

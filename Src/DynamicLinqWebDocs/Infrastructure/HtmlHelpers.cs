@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -41,6 +42,46 @@ namespace DynamicLinqWebDocs.Infrastructure
             var result = md.Transform(value);
 
             return new HtmlString(result);
+        }
+
+        public static HtmlString InlineCodeList(this HtmlHelper helper, params string[] items)
+        {
+            var ul = new TagBuilder("ul");
+            ul.AddCssClass("list-inline");
+
+            var sb = new StringBuilder();
+
+            foreach(var item in items)
+            {
+                sb.AppendFormat("<li><code>{0}</code></li>", item);
+            }
+
+            ul.InnerHtml = sb.ToString();
+
+            return new HtmlString(ul.ToString());
+        }
+
+
+        public static IDisposable BeginNote(this HtmlHelper helper)
+        {
+            return new HtmlBootstrapNote(helper.ViewContext);
+        }
+
+        class HtmlBootstrapNote : IDisposable
+        {
+            TextWriter _writer;
+
+            public HtmlBootstrapNote(ViewContext context)
+            {
+                _writer = context.Writer;
+
+                _writer.WriteLine("<div class=\"panel panel-default\"><div class=\"panel-heading\">Note</div><div class=\"panel-body\">");
+            }
+
+            public void Dispose()
+            {
+                _writer.WriteLine("</div></div>");
+            }
         }
 
         //static string ConvertToCode(string value)

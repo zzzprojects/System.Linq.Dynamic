@@ -23,3 +23,22 @@ $.reject({
     var s = document.getElementsByTagName('script')[0];
     s.parentNode.insertBefore(gcse, s);
 })();
+
+//Smooth Anchor Scrolling
+$('a[href*=#]:not([href=#])').click(function () {
+    if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+        var hash = this.hash;
+        var target = $(hash);
+        target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+        if (target.length) {
+            $('html,body').animate({
+                scrollTop: target.offset().top
+            },
+            500,
+            function () {
+                location.hash = hash;
+            });
+            return false;
+        }
+    }
+});

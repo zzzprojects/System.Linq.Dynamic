@@ -28,12 +28,22 @@ namespace DynamicLinqWebDocs.Controllers
             return View();
         }
 
+        [Route("GettingStarted")]
+        public ActionResult GettingStarted()
+        {
+            this.SetMetaDescription("Information for developers who want to get started using Dynamic Linq.");
+            this.AddMetaKeywords("Getting Started");
+
+            return View();
+        }
+
         class HomeSitemap : SitemapContributor
         {
             protected internal override IEnumerable<SitemapNode> GetSitemapNodes(UrlHelper urlHelper, HttpContextBase httpContext)
             {
                 yield return new SitemapNode(urlHelper.Action("Index", "Home")) { Priority = 1 };
-                yield return new SitemapNode(urlHelper.Action("Info", "Home")) { Priority = 1 };
+                yield return new SitemapNode(urlHelper.Action("Info", "Home")) { Priority = .25m };
+                yield return new SitemapNode(urlHelper.Action("GettingStarted", "Home")) { Priority = 1 };
             }
         }
     }

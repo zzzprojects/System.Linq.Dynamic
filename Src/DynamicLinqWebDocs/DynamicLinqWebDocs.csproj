@@ -212,6 +212,7 @@
     <Content Include="Scripts\jquery-1.11.1.min.map" />
     <Content Include="Views\Library\Property.cshtml" />
     <Content Include="Views\Expression\Keyword.cshtml" />
+    <Content Include="Views\Home\GettingStarted.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
