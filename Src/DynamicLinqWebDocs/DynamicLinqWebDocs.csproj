@@ -155,6 +155,7 @@
     <Content Include="App_Data\DynLINQDoc.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\Browsers\browser_chrome.gif" />
     <Content Include="Content\Browsers\browser_firefox.gif" />

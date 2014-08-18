@@ -18,6 +18,7 @@ namespace DynamicLinqWebDocs
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/bootstrap-theme.css",
                       "~/Content/sunlight.default-{version}.css",
                       "~/Content/jquery.reject.css",
                       "~/Content/site.css"));

@@ -54,6 +54,8 @@ pre {
     width: 245px !important;
     padding-bottom: 0 !important;
     padding-right: 0 !important;
+    background-color: transparent !important;
+    border: none !important;
 }
     
 section {
