@@ -1171,8 +1171,8 @@ public static void JoinEx1()
       <Description>Sorts the elements of a sequence in ascending order according to a key.</Description>
     </Expression>
 
-    <Expression name="OrderByDecending">
-      <Description>Sorts the elements of a sequence in decending order according to a key.</Description>
+    <Expression name="OrderByDescending">
+      <Description>Sorts the elements of a sequence in descending order according to a key.</Description>
     </Expression>
 
   </Expressions>

@@ -133,7 +133,7 @@ namespace System.Linq.Dynamic
         #region OrderBy
 
         /// <summary>
-        /// Sorts the elements of a sequence in ascending or decending order according to a key.
+        /// Sorts the elements of a sequence in ascending or descending order according to a key.
         /// </summary>
         /// <typeparam name="TSource">The type of the elements of source.</typeparam>
         /// <param name="source">A sequence of values to order.</param>
@@ -151,7 +151,7 @@ namespace System.Linq.Dynamic
         }
 
         /// <summary>
-        /// Sorts the elements of a sequence in ascending or decending order according to a key.
+        /// Sorts the elements of a sequence in ascending or decsending order according to a key.
         /// </summary>
         /// <param name="source">A sequence of values to order.</param>
         /// <param name="ordering">An expression string to indicate values to order by.</param>
