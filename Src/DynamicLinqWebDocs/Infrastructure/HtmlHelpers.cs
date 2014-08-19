@@ -84,6 +84,29 @@ namespace DynamicLinqWebDocs.Infrastructure
             }
         }
 
+        public static HtmlString IsActive(this HtmlHelper html, string url)
+        {
+            return IsActive(html, url, false);
+        }
+
+        public static HtmlString IsActive(this HtmlHelper html, string url, bool startsWith)
+        {
+            var request = html.ViewContext.RequestContext.HttpContext.Request.Url;
+
+            bool isActive;
+
+            if (startsWith)
+            {
+                isActive = request.AbsolutePath.StartsWith(url, StringComparison.InvariantCultureIgnoreCase);
+            }
+            else
+            {
+                isActive = request.AbsolutePath.Equals(url, StringComparison.InvariantCultureIgnoreCase);
+            }
+
+            return isActive ? new HtmlString("active") : null;
+        }
+
         //static string ConvertToCode(string value)
         //{
         //    var sb = new StringBuilder();

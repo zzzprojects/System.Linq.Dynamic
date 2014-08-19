@@ -5,6 +5,10 @@
     {
         title = ViewBag.Title + " - " + title;
     }
+
+    var urlHome = Url.Action("Index", "Home");
+    var urlLibrary = Url.Action("Index", "Library");
+    var urlExpressions = Url.Action("Index", "Expression");
 }
 
 <!DOCTYPE html>
@@ -36,10 +40,10 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Library", "Index", "Library")</li>
-                    <li>@Html.ActionLink("Expressions", "Index", "Expression")</li>
-                    <li class="disabled">@Html.ActionLink("Samples", "Index", "Sample")</li>
+                    <li class="@Html.IsActive(urlHome)"><a href="@urlHome">Home</a></li>
+                    <li class="@Html.IsActive(urlLibrary, true)"><a href="@urlLibrary">Library</a></li>
+                    <li class="@Html.IsActive(urlExpressions, true)"><a href="@urlExpressions">Expressions</a></li>
+                    <li class="disabled">Samples</li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><gcse:search linktarget="_parent"></gcse:search></li>
