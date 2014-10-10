@@ -141,7 +141,7 @@ namespace System.Linq.Dynamic
 
         public static IEnumerable<T> Where<T>(this IEnumerable<T> source, string predicate, params object[] values)
         {
-            if(source == null) throw new ArgumentNullException("source");
+            if (source == null) throw new ArgumentNullException("source");
             return source.AsQueryable().Where(predicate, values);
         }
 
@@ -651,6 +651,7 @@ namespace System.Linq.Dynamic
 
         interface IEnumerableSignatures
         {
+            bool Contains(object selector);
             void Where(bool predicate);
             void Any();
             void Any(bool predicate);
@@ -713,6 +714,7 @@ namespace System.Linq.Dynamic
         static readonly string keywordIt = "it";
         static readonly string keywordIif = "iif";
         static readonly string keywordNew = "new";
+        static readonly string keywordOuterIt = "outerIt";
 
         static Dictionary<string, object> keywords;
 
@@ -720,6 +722,8 @@ namespace System.Linq.Dynamic
         IDictionary<string, object> externals;
         Dictionary<Expression, string> literals;
         ParameterExpression it;
+        ParameterExpression outerIt;
+
         string text;
         int textPos;
         int textLen;
@@ -1179,6 +1183,7 @@ namespace System.Linq.Dynamic
             {
                 if (value is Type) return ParseTypeAccess((Type)value);
                 if (value == (object)keywordIt) return ParseIt();
+                if (value == (object)keywordOuterIt) return ParseOuterIt();
                 if (value == (object)keywordIif) return ParseIif();
                 if (value == (object)keywordNew) return ParseNew();
                 NextToken();
@@ -1210,6 +1215,14 @@ namespace System.Linq.Dynamic
                 throw ParseError(Res.NoItInScope);
             NextToken();
             return it;
+        }
+
+        Expression ParseOuterIt()
+        {
+            if (outerIt == null)
+                throw ParseError(Res.NoItInScope);
+            NextToken();
+            return outerIt;
         }
 
         Expression ParseIif()
@@ -1420,7 +1433,7 @@ namespace System.Linq.Dynamic
 
         Expression ParseAggregate(Expression instance, Type elementType, string methodName, int errorPos)
         {
-            ParameterExpression outerIt = it;
+            outerIt = it;
             ParameterExpression innerIt = Expression.Parameter(elementType, "");
             it = innerIt;
             Expression[] args = ParseArgumentList();
@@ -1441,10 +1454,16 @@ namespace System.Linq.Dynamic
             {
                 args = new Expression[] { instance };
             }
+            
+
             else
             {
-                args = new Expression[] { instance, Expression.Lambda(args[0], innerIt) };
+                if (signature.Name == "Contains")
+                    args = new Expression[] { instance, args[0] };
+                else
+                    args = new Expression[] { instance, Expression.Lambda(args[0], innerIt) };
             }
+
             return Expression.Call(typeof(Enumerable), signature.Name, typeArgs, args);
         }
 
@@ -2350,6 +2369,7 @@ namespace System.Linq.Dynamic
             d.Add("false", falseLiteral);
             d.Add("null", nullLiteral);
             d.Add(keywordIt, keywordIt);
+            d.Add(keywordOuterIt, keywordOuterIt);
             d.Add(keywordIif, keywordIif);
             d.Add(keywordNew, keywordNew);
             foreach (Type type in predefinedTypes) d.Add(type.Name, type);
@@ -2405,4 +2425,3 @@ namespace System.Linq.Dynamic
         public const string IdentifierExpected = "Identifier expected";
     }
 }
-
