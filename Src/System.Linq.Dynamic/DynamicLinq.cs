@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -890,7 +890,20 @@ namespace System.Linq.Dynamic
                 }
                 else if (IsEnumType(left.Type) || IsEnumType(right.Type))
                 {
-                    if (left.Type != right.Type)
+                    if (left.Type == right.Type)
+                    {
+                        // Convert both enums to integer
+                        Expression e;
+                        if ((e = PromoteExpression(right, typeof(Int32), true)) != null)
+                        {
+                            right = e;
+                        }
+                        if ((e = PromoteExpression(left, typeof(Int32), true)) != null)
+                        {
+                            left = e;
+                        }
+                    }
+                    else
                     {
                         Expression e;
                         if ((e = PromoteExpression(right, left.Type, true)) != null)
@@ -1830,6 +1843,18 @@ namespace System.Linq.Dynamic
             if (st != source && tt == target) return false;
             TypeCode sc = st.IsEnum ? TypeCode.Object : Type.GetTypeCode(st);
             TypeCode tc = tt.IsEnum ? TypeCode.Object : Type.GetTypeCode(tt);
+
+            if (st.IsEnum & !tt.IsEnum) // If the source is an enum and the target is numeric 
+            {
+                switch (tc)
+                {
+                    case TypeCode.Int16:
+                    case TypeCode.Int32:
+                    case TypeCode.Int64:
+                        return true;
+                }
+            }
+
             switch (sc)
             {
                 case TypeCode.SByte:
