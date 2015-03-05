@@ -596,6 +596,7 @@ namespace System.Linq.Dynamic
             Exclamation,
             Percent,
             Ampersand,
+            AmpersandB,
             OpenParen,
             CloseParen,
             Asterisk,
@@ -946,7 +947,7 @@ namespace System.Linq.Dynamic
         Expression ParseLogicalAnd()
         {
             Expression left = ParseComparison();
-            while (token.id == TokenId.Ampersand)//token.id == TokenId.BAmpersand)
+            while (token.id == TokenId.AmpersandB)//token.id == TokenId.BAmpersand)
             {
                 Token op = token;
                 NextToken();
@@ -1057,7 +1058,7 @@ namespace System.Linq.Dynamic
         Expression ParseAdditive()
         {
             Expression left = ParseMultiplicative();
-            while (token.id == TokenId.Plus || token.id == TokenId.Minus)
+            while (token.id == TokenId.Plus || token.id == TokenId.Minus || token.id == TokenId.Ampersand)
             {
                 Token op = token;
                 NextToken();
@@ -1066,7 +1067,7 @@ namespace System.Linq.Dynamic
                 {
                     case TokenId.Plus:
                         if (left.Type == typeof(string) || right.Type == typeof(string))
-                            goto case TokenId.Unknown;
+                            goto case TokenId.Ampersand;
                         CheckAndPromoteOperands(typeof(IAddSignatures), op.text, ref left, ref right, op.pos);
                         left = GenerateAdd(left, right);
                         break;
@@ -1074,7 +1075,7 @@ namespace System.Linq.Dynamic
                         CheckAndPromoteOperands(typeof(ISubtractSignatures), op.text, ref left, ref right, op.pos);
                         left = GenerateSubtract(left, right);
                         break;
-                    case TokenId.Unknown:
+                    case TokenId.Ampersand:
                         left = GenerateStringConcat(left, right);
                         break;
                 }
@@ -2247,6 +2248,10 @@ namespace System.Linq.Dynamic
                     {
                         NextChar();
                         t = TokenId.DoubleAmpersand;
+                    } else if (ch == 'b')
+                    {
+                        NextChar();
+                        t = TokenId.AmpersandB;
                     }
                     else
                     {
