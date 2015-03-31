@@ -104,6 +104,22 @@ namespace System.Linq.Dynamic
                     new Type[] { source.ElementType }, source.Expression));
         }
 
+        /// <summary>
+        /// Computes the sum of a sequence of numeric values.
+        /// </summary>
+        /// <param name="source">A sequence of numeric values to calculate the sum of.</param>
+        /// <returns>The sum of the values in the sequence.</returns>
+        public static object Sum(this IQueryable source)
+        {
+            Validate.Argument(source, "source").IsNotNull().Check();
+
+            return source.Provider.Execute(
+                Expression.Call(
+                typeof(Queryable), "Sum",
+                null,
+                source.Expression));
+        }
+
         #endregion
 
         #region Executors

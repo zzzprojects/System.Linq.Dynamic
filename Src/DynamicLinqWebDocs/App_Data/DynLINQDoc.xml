@@ -139,6 +139,16 @@ Console.WriteLine("The list {0} empty.",
           </Examples>
         </Method>
 
+        <Method name="Sum" isExtensionMethod="true" returnType="object">
+          <Description>Computes the sum of a sequence of numeric values.</Description>
+          <ReturnDescription>The sum of the values in the sequence.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A sequence of numeric values to calculate the sum of.</Description>
+            </Argument>
+          </Arguments>
+        </Method>
+
         <Method name="Count" isExtensionMethod="true" returnType="int">
           <Description>Returns the number of elements in a sequence.</Description>
           <ReturnDescription>The number of elements in the input sequence.</ReturnDescription>

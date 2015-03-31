@@ -25,6 +25,28 @@ namespace System.Linq.Dynamic.Tests
         }
 
         [TestMethod]
+        public void ExpressionTests_Sum2()
+        {
+            //Arrange
+            var initValues = new SimpleValuesModel[] 
+            {
+                new SimpleValuesModel() { FloatValue = 1 },
+                new SimpleValuesModel() { FloatValue = 2 },
+                new SimpleValuesModel() { FloatValue = 3 },
+            };
+
+            var qry = initValues.AsQueryable();
+
+            //Act
+            var result = qry.Select("FloatValue").Sum();
+            var result2 = ((IQueryable<float>)qry.Select("FloatValue")).Sum();
+
+            //Assert
+            Assert.AreEqual(6.0f, result);
+            Assert.AreEqual(6.0f, result2);
+        }
+
+        [TestMethod]
         public void ExpressionTests_ContainsGuid()
         {
             //Arrange
