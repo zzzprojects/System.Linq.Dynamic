@@ -1175,6 +1175,53 @@ public static void JoinEx1()
       <Description>Sorts the elements of a sequence in descending order according to a key.</Description>
     </Expression>
 
+    <Expression name="Type(expr)">
+      <Description>The expression language permits explicit conversions (or type casting) using the syntax `type(expr)`, where *type* is a type name optionally followed by `?` and *expr* is an expression.</Description>
+      <Remarks>This syntax may be used to perform the following conversions:
+
+- Between two types provided `Type.IsAssignableFrom` is true in one or both directions.
+- Between two types provided one or both are interface types.
+- Between the nullable and non-nullable forms of any value type.
+- Between any two types belonging to the set consisting of `SByte`, `Byte`, `Int16`, `UInt16`, `Int32`, `UInt32`, `Int64`, `UInt64`, `Decimal`, `Single`, `Double`, `Char`, any *enum* type, as well as the *nullable* forms of those types.</Remarks>
+      <Examples>
+        <Example>
+          <HeaderRemarks>The following is an example of a *Conversion* expression.</HeaderRemarks>
+          <ExampleCode>public class SimpleValuesModel
+{
+    public float FloatValue { get; set; }
+    
+    public decimal DecimalValue { get; set; }
+}
+
+var models = new SimpleValuesModel[] { 
+    new SimpleValuesModel() { 
+        FloatValue = 2, 
+        DecimalValue = 3 
+        } 
+    }.AsQueryable();
+
+var result = models
+    .Select("Decimal(FloatValue) * DecimalValue").First();</ExampleCode>
+          <EquivalentCode>public class SimpleValuesModel
+{
+    public float FloatValue { get; set; }
+    
+    public decimal DecimalValue { get; set; }
+}
+
+var models = new SimpleValuesModel[] { 
+    new SimpleValuesModel() { 
+        FloatValue = 2, 
+        DecimalValue = 3 
+        } 
+    }.AsQueryable();
+
+var result = models
+    .Select(x => (Decimal)x.FloatValue * DecimalValue).First();</EquivalentCode>
+        </Example>
+      </Examples>
+    </Expression>
+
   </Expressions>
 
   <Keywords>

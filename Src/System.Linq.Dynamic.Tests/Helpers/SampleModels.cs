@@ -81,4 +81,11 @@ namespace System.Linq.Dynamic.Tests.Helpers
 
         public string Name { get; set; }
     }
+
+    public class SimpleValuesModel
+    {
+        public float FloatValue { get; set; }
+
+        public decimal DecimalValue { get; set; }
+    }
 }
