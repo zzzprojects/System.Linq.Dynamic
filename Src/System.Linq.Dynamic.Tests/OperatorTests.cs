@@ -28,7 +28,7 @@ namespace System.Linq.Dynamic.Tests
             var result = models.Select("Decimal(FloatValue) * DecimalValue").First();
 
             //Assert
-            Assert.AreEqual(6, result);
+            Assert.AreEqual(6.0m, result);
         }
     }
 }
