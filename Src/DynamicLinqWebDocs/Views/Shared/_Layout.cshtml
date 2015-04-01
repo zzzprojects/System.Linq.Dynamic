@@ -26,7 +26,10 @@
     <meta name="keywords" content="@String.Join(", ", (IEnumerable<string>)ViewBag.MetaKeywords)" />
     }
     @Styles.Render("~/Content/css")
-    @Html.Partial("_PartialGoogleAnalytics")
+    @if (!Request.Url.IsLoopback)
+    {
+        @Html.Partial("_PartialGoogleAnalytics")
+    }
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
