@@ -149,9 +149,18 @@
     <Compile Include="ViewModels\Method.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\DynLINQDoc.xml">
+    <Content Include="App_Data\Classes\BasicQueryable.xml" />
+    <Content Include="App_Data\Classes\DefaultDynamicLinqCustomTypeProvider.xml" />
+    <Content Include="App_Data\Classes\DynamicLinqType.xml" />
+    <Content Include="App_Data\Classes\DynamicQueryable.xml" />
+    <Content Include="App_Data\Classes\GroupResult.xml" />
+    <Content Include="App_Data\Classes\IDynamicLinkCustomTypeProvider.xml" />
+    <Content Include="App_Data\Classes\ParseException.xml" />
+    <Content Include="App_Data\Classes\GlobalConfig.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="App_Data\Expressions.xml" />
+    <Content Include="App_Data\Keywords.xml" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\Browsers\browser_chrome.gif" />

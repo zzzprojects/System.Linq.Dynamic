@@ -41,11 +41,30 @@ namespace DynamicLinqWebDocs.Infrastructure.Data
         {
             var serializer = new XmlSerializer(typeof(DynLINQDoc), "http://schemas.plainlogic.net/dynamiclinqdocs/2014");
 
-            var filePath = HostingEnvironment.MapPath(@"~/App_Data/DynLINQDoc.xml");
+            var docFolder = HostingEnvironment.MapPath(@"~/App_Data/");
+            var docFolderInfo = new DirectoryInfo(docFolder);
 
-            using (var file = File.Open(filePath, FileMode.Open))
+            var docFiles = docFolderInfo.GetFiles("*.xml", SearchOption.AllDirectories);
+
+            //var filePath = HostingEnvironment.MapPath(@"~/App_Data/DynLINQDoc.xml");
+
+            _doc = new DynLINQDoc()
             {
-                _doc = (DynLINQDoc)serializer.Deserialize(file);
+                Classes = new List<Class>(),
+                Expressions = new List<Expression>(),
+                Keywords = new List<Keyword>()
+            };
+
+            foreach (var docFile in docFiles)
+            {
+                using (var file = File.Open(docFile.FullName, FileMode.Open))
+                {
+                    var tempDoc = (DynLINQDoc)serializer.Deserialize(file);
+
+                    if (tempDoc.Classes != null) _doc.Classes.AddRange(tempDoc.Classes);
+                    if (tempDoc.Expressions != null) _doc.Expressions.AddRange(tempDoc.Expressions);
+                    if (tempDoc.Keywords != null) _doc.Keywords.AddRange(tempDoc.Keywords);
+                }
             }
         }
 
