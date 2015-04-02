@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>System.Linq.Dynamic.Library</id>
-        <version>1.1.13</version>
+        <version>1.1.14</version>
         <title>Dynamic Linq Library</title>
         <authors>Nathan Arnott,Microsoft</authors>
         <owners>Nathan Arnott</owners>
@@ -13,7 +13,11 @@
 
 This package is more than a simple NuGet deployment of the Dynamic Linq Library. It is a living project, and contains XML documentation with examples.</description>
         <summary>Supports Framework 3.5 and 4.0+</summary>
-        <releaseNotes>1.1.13 Added Dynamic Join Method.
+        <releaseNotes>1.1.14 Added support for Silverlight 5. A special thanks to jkuehner for providing this.
+		
+Added several new helper methods, including First, FirstOrDefault, Last, LastOrDefault, Single, SingleOrDefault, and Sum.
+
+1.1.13 Added Dynamic Join Method.
 		
 Added dynamic context keywords "parent" and "root", to the existing keyword "it".  Also added symbol equivalents to those keywords ($ - it, ^ - parent, and ~ - root). Added ability to GlobalConfig to disable the context keywords.
 		
