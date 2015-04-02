@@ -181,7 +181,6 @@
     <None Include="App_Data\DynLINQDoc.xsd">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="google7eb95bea483dc02b.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Properties\PublishProfiles\dynamiclinq.pubxml" />
