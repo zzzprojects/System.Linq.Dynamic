@@ -221,6 +221,7 @@
     <Content Include="Views\Expression\Keyword.cshtml" />
     <Content Include="Views\Home\GettingStarted.cshtml" />
     <Content Include="Views\Shared\_PartialGoogleAnalytics.cshtml" />
+    <Content Include="Views\Home\Downloads.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

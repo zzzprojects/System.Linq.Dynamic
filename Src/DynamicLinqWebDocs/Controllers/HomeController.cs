@@ -37,6 +37,12 @@ namespace DynamicLinqWebDocs.Controllers
             return View();
         }
 
+        [Route("Downloads")]
+        public ActionResult Downloads()
+        {
+            return View();
+        }
+
         class HomeSitemap : SitemapContributor
         {
             protected internal override IEnumerable<SitemapNode> GetSitemapNodes(UrlHelper urlHelper, HttpContextBase httpContext)
@@ -44,6 +50,7 @@ namespace DynamicLinqWebDocs.Controllers
                 yield return new SitemapNode(urlHelper.Action("Index", "Home")) { Priority = 1 };
                 yield return new SitemapNode(urlHelper.Action("Info", "Home")) { Priority = .25m };
                 yield return new SitemapNode(urlHelper.Action("GettingStarted", "Home")) { Priority = 1 };
+                yield return new SitemapNode(urlHelper.Action("Downloads", "Home")) { Priority = .25m };
             }
         }
     }

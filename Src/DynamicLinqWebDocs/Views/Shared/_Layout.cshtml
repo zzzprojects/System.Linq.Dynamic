@@ -9,6 +9,7 @@
     var urlHome = Url.Action("Index", "Home");
     var urlLibrary = Url.Action("Index", "Library");
     var urlExpressions = Url.Action("Index", "Expression");
+    var urlDownloads = Url.Action("Downloads", "Home");
 }
 
 <!DOCTYPE html>
@@ -47,6 +48,7 @@
                     <li class="@Html.IsActive(urlHome)"><a href="@urlHome">Home</a></li>
                     <li class="@Html.IsActive(urlLibrary, true)"><a href="@urlLibrary">Library</a></li>
                     <li class="@Html.IsActive(urlExpressions, true)"><a href="@urlExpressions">Expressions</a></li>
+                    <li class="@Html.IsActive(urlDownloads, true)"><a href="@urlDownloads">Downloads</a></li>
                     @*<li class="disabled">Samples</li>*@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
