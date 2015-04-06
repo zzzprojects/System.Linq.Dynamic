@@ -23,7 +23,7 @@ namespace System.Linq.Dynamic
         /// <summary>
         /// Returns a list of custom types that Dynamic Linq will understand.
         /// </summary>
-        public HashSet<Type> GetCustomTypes()
+        public virtual HashSet<Type> GetCustomTypes()
         {
             if (_customTypes == null) _customTypes = new HashSet<Type>(FindTypesMarkedWithAttribute());
 
