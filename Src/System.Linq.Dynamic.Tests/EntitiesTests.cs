@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq.Dynamic.Tests.Helpers.Entities;
+using System.Data.Entity;
+using System.Linq.Dynamic.Tests.Helpers;
 
 namespace System.Linq.Dynamic.Tests
 {
@@ -331,6 +333,52 @@ namespace System.Linq.Dynamic.Tests
 
             //Assert
             CollectionAssert.AreEqual(firstExpected.ToArray(), firstTest.ToDynamicArray());
+        }
+
+        #endregion
+
+        #region Entitites Helper Function Tests
+
+        [TestMethod]
+        public void Entities_Helper_Function_Tests()
+        {
+            System.Linq.Dynamic.GlobalConfig.CustomTypeProvider = new CustomTypeProvider();
+
+            //Arrange
+            PopulateTestData(5, 0);
+
+            var expected = _context.Blogs.Select(x => DbFunctions.Reverse(x.Name)).ToArray();
+
+            //Act
+            var test = _context.Blogs.Select("DbFunctions.Reverse(Name)").ToDynamicArray();
+
+            //Assert
+            CollectionAssert.AreEqual(expected, test);
+        }
+
+        [TestMethod]
+        public void Entities_Helper_Function_Exceptions()
+        {
+            System.Linq.Dynamic.GlobalConfig.CustomTypeProvider = null;
+
+            //Arrange
+            PopulateTestData(5, 0);
+
+            //Act
+            Helper.ExpectException<ParseException>(() => _context.Blogs.Select("DbFunctions.Reverse(Name)").ToDynamicArray());
+        }
+
+        class CustomTypeProvider : DefaultDynamicLinqCustomTypeProvider
+        {
+
+            public override HashSet<Type> GetCustomTypes()
+            {
+                var result = base.GetCustomTypes();
+
+                result.Add(typeof(DbFunctions));
+
+                return result;
+            }
         }
 
         #endregion
