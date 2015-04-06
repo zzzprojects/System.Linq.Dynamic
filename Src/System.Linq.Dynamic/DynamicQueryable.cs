@@ -145,9 +145,9 @@ namespace System.Linq.Dynamic
         /// var result = list.OrderBy("NumberProperty, StringProperty DESC");
         /// </code>
         /// </example>
-        public static IQueryable<TSource> OrderBy<TSource>(this IQueryable<TSource> source, string ordering, params object[] args)
+        public static IOrderedQueryable<TSource> OrderBy<TSource>(this IQueryable<TSource> source, string ordering, params object[] args)
         {
-            return (IQueryable<TSource>)OrderBy((IQueryable)source, ordering, args);
+            return (IOrderedQueryable<TSource>)OrderBy((IQueryable)source, ordering, args);
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace System.Linq.Dynamic
         /// var result = list.OrderBy("NumberProperty, StringProperty DESC");
         /// </code>
         /// </example>
-        public static IQueryable OrderBy(this IQueryable source, string ordering, params object[] args)
+        public static IOrderedQueryable OrderBy(this IQueryable source, string ordering, params object[] args)
         {
             Validate.Argument(source, "source").IsNotNull().Check()
                     .Argument(ordering, "ordering").IsNotNull().IsNotEmpty().IsNotWhiteSpace().Check();
@@ -184,7 +184,7 @@ namespace System.Linq.Dynamic
                 methodAsc = "ThenBy";
                 methodDesc = "ThenByDescending";
             }
-            return source.Provider.CreateQuery(queryExpr);
+            return (IOrderedQueryable)source.Provider.CreateQuery(queryExpr);
         }
 
         #endregion
