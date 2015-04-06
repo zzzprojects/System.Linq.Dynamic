@@ -120,6 +120,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ClassController.cs" />
+    <Compile Include="Controllers\HowTosController.cs" />
     <Compile Include="Controllers\LibraryController.cs" />
     <Compile Include="Controllers\ExpressionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -221,6 +222,8 @@
     <Content Include="Views\Home\GettingStarted.cshtml" />
     <Content Include="Views\Shared\_PartialGoogleAnalytics.cshtml" />
     <Content Include="Views\Home\Downloads.cshtml" />
+    <Content Include="Views\HowTos\EF6.cshtml" />
+    <Content Include="Views\HowTos\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

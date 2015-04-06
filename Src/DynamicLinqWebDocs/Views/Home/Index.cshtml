@@ -1,7 +1,7 @@
 ﻿@{
     var libraryRef = Url.Action("Index", "Library");
     var expressionsRef = Url.Action("Index", "Expression");
-    var samplesRef = Url.Action("Index", "Sample");
+    var howTos = Url.Action("Index", "HowTos");
 }
 
 <div class="jumbotron">
@@ -41,9 +41,9 @@
         <p>Documentation on the expressions defined in the Dynamic LINQ library. Includes examples and remarks.</p>
         <p><a class="btn btn-default" href="@expressionsRef">Look at Expressions &raquo;</a></p>
     </div>
-    @*<div class="col-md-4 text-center">
-        <h2><a href="@samplesRef">Samples</a></h2>
-        <p>No samples have been developed yet. Please refer to the examples provided for methods and expressions.</p>
-        <p><a class="btn btn-default disabled" href="@samplesRef">Look at Samples &raquo;</a></p>
-    </div>*@
+    <div class="col-md-4 text-center">
+        <h2><a href="@howTos">How Tos</a></h2>
+        <p>Various examples and how tos.</p>
+        <p><a class="btn btn-default" href="@howTos">Look at How Tos &raquo;</a></p>
+    </div>
 </div>
