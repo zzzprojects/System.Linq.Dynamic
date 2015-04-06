@@ -33,7 +33,9 @@ namespace System.Linq.Dynamic
         static IEnumerable<Type> FindTypesMarkedWithAttribute()
         {
             return AppDomain.CurrentDomain.GetAssemblies()
+#if !NET35
                 .Where(x => !x.IsDynamic)
+#endif
                 .SelectMany(x => x.GetTypes())
                 .Where(x => x.GetCustomAttributes(typeof(DynamicLinqTypeAttribute), false).Any());
         }
