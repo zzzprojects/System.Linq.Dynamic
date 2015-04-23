@@ -396,31 +396,31 @@ namespace System.Linq.Dynamic
                 NextToken();
                 if (_token.id == TokenId.OpenParen) //literals (or other inline list)
                 {
-                    Expression identitifer = left;
+                    Expression identifier = left;
                     while (_token.id != TokenId.CloseParen)
                     {
                         NextToken();
                         Expression right = ParsePrimary();
 
                         //check for direct type match
-                        if (identitifer.Type != right.Type) 
+                        if (identifier.Type != right.Type) 
                         {
                             //check for nullable type match
-                            if (!identitifer.Type.IsGenericType || identitifer.Type.GetGenericTypeDefinition() != typeof(Nullable<>) || identitifer.Type.GetGenericArguments()[0] != right.Type)
+                            if (!identifier.Type.IsGenericType || identifier.Type.GetGenericTypeDefinition() != typeof(Nullable<>) || identifier.Type.GetGenericArguments()[0] != right.Type)
                             {
-                                throw ParseError(op.pos, Res.ExpressionTypeMismatch, identitifer.Type);
+                                throw ParseError(op.pos, Res.ExpressionTypeMismatch, identifier.Type);
                             }
                         }
 
-                        CheckAndPromoteOperands(typeof(IEqualitySignatures), "==", ref identitifer, ref right, op.pos);
+                        CheckAndPromoteOperands(typeof(IEqualitySignatures), "==", ref identifier, ref right, op.pos);
 
                         if (accumulate.Type != typeof(bool))
                         {
-                            accumulate = GenerateEqual(identitifer, right);
+                            accumulate = GenerateEqual(identifier, right);
                         }
                         else
                         {
-                            accumulate = Expression.OrElse(accumulate, GenerateEqual(identitifer, right));
+                            accumulate = Expression.OrElse(accumulate, GenerateEqual(identifier, right));
                         }
 
                         if (_token.id == TokenId.End) throw ParseError(op.pos, Res.CloseParenOrCommaExpected);
