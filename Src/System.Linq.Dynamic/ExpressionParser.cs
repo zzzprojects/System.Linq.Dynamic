@@ -402,7 +402,15 @@ namespace System.Linq.Dynamic
                         NextToken();
                         Expression right = ParsePrimary();
 
-                        if (identitifer.Type != right.Type) throw ParseError(op.pos, Res.ExpressionTypeMismatch, identitifer.Type);
+                        //check for direct type match
+                        if (identitifer.Type != right.Type) 
+                        {
+                            //check for nullable type match
+                            if (!identitifer.Type.IsGenericType || identitifer.Type.GetGenericTypeDefinition() != typeof(Nullable<>) || identitifer.Type.GetGenericArguments()[0] != right.Type)
+                            {
+                                throw ParseError(op.pos, Res.ExpressionTypeMismatch, identitifer.Type);
+                            }
+                        }
 
                         CheckAndPromoteOperands(typeof(IEqualitySignatures), "==", ref identitifer, ref right, op.pos);
 

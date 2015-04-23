@@ -14,6 +14,8 @@ namespace System.Linq.Dynamic.Tests.Helpers
 
         public int Income { get; set; }
 
+        public int? NullableAge { get; set; }
+
         public UserProfile Profile { get; set; }
 
         public List<Role> Roles { get; set; }
@@ -32,6 +34,8 @@ namespace System.Linq.Dynamic.Tests.Helpers
                     UserName = "User" + i.ToString(),
                     Income = ((i) % 15) * 100
                 };
+
+                if (i % 3 > 0) user.NullableAge = i % 50;
 
                 if (!allowNullableProfiles || (i % 8) != 5)
                 {
