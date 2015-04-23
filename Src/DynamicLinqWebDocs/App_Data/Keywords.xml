@@ -85,7 +85,7 @@ var result1 = rangeOfNumbers.AsQueryable().Where("it in (2,4,6,8)").ToArray();
 
 //Use a variable set of numbers to test for
 var values = new int[] { 2, 4, 6, 8 };
-var result2 = rangeOfNumbers.AsQueryable().Where("it in @0", testInExpression).ToArray();</ExampleCode>
+var result2 = rangeOfNumbers.AsQueryable().Where("it in @0", values).ToArray();</ExampleCode>
         </Example>
       </Examples>
     </Keyword>
