@@ -32,6 +32,22 @@ namespace System.Linq.Dynamic.Tests
         }
 
         [TestMethod]
+        public void Operator_Equal_With_Explicit_Convertion_From_String_To_Int32()
+        {
+            //Arrange
+            var models = new SimpleValuesModel[] { new SimpleValuesModel() { FloatValue = 2, DecimalValue = 3 } };
+            var query = models.AsQueryable();
+
+            //Act
+            var result1 = query.Where("FloatValue == int\"2\"").First();
+            var result2 = query.Where("FloatValue == Int32\"2\"").First();
+
+            //Assert
+            Assert.AreEqual(models[0], result1);
+            Assert.AreEqual(models[0], result2);
+        }
+
+        [TestMethod]
         public void Operator_Equal()
         {
             //Arrange

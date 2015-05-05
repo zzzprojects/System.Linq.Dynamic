@@ -194,7 +194,20 @@ namespace System.Linq.Dynamic
             void Last();
             void LastOrDefault();
         }
-        
+
+        // These shorthands have different name than actual type and therefore not recognized by default from the _predefinedTypes
+        //
+        static readonly Dictionary<string, Type> _predefinedTypesShorthands = new Dictionary<string, Type>()
+        {
+            { "int", typeof(Int32) },
+            { "uint", typeof(UInt32) },
+            { "short", typeof(Int16) },
+            { "ushort", typeof(UInt16) },
+            { "long", typeof(Int64) },
+            { "ulong", typeof(UInt64) },
+            { "bool", typeof(Boolean) },
+            { "float", typeof(Single) },
+        };
         static readonly HashSet<Type> _predefinedTypes = new HashSet<Type>() {
             typeof(Object),
             typeof(Boolean),
@@ -228,10 +241,14 @@ namespace System.Linq.Dynamic
         //
         static readonly Dictionary<string, TokenId> _predefinedAliases = new Dictionary<string, TokenId>()
         {
-            { "eq", TokenId.Equal }, { "ne", TokenId.ExclamationEqual },
-            { "lt", TokenId.LessThan }, { "le", TokenId.LessThanEqual },
-            { "gt", TokenId.GreaterThan }, { "ge", TokenId.GreaterThanEqual },
-            { "and", TokenId.DoubleAmphersand }, { "or", TokenId.DoubleBar },
+            { "eq", TokenId.Equal }, 
+            { "ne", TokenId.ExclamationEqual },
+            { "lt", TokenId.LessThan }, 
+            { "le", TokenId.LessThanEqual },
+            { "gt", TokenId.GreaterThan }, 
+            { "ge", TokenId.GreaterThanEqual },
+            { "and", TokenId.DoubleAmphersand }, 
+            { "or", TokenId.DoubleBar },
             { "not", TokenId.Exclamation },
             { "mod", TokenId.Percent }
         };
@@ -2211,6 +2228,7 @@ namespace System.Linq.Dynamic
             d.Add(KEYWORD_NEW, KEYWORD_NEW);
 
             foreach (Type type in _predefinedTypes) d.Add(type.Name, type);
+            foreach (KeyValuePair<string, Type> pair in _predefinedTypesShorthands) d.Add(pair.Key, pair.Value);
             foreach (Type type in GlobalConfig.CustomTypeProvider.GetCustomTypes()) d.Add(type.Name, type);
 
             return d;
