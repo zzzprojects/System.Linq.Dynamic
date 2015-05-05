@@ -231,11 +231,12 @@
                         <li>@Html.FormatMarkdown("From a non-nullable value type to the nullable form of that value type.")</li>
                         <li>@Html.FormatMarkdown("From a numeric type to another numeric type with greater range.")</li>
                     </ul>
-                    @Html.FormatMarkdown("The expression language permits explicit conversions using the syntax `type(expr)`, where *type* is a type name optionally followed by `?` and *expr* is an expression. This syntax may be used to perform the following conversions:")
+                    @Html.FormatMarkdown("The expression language permits explicit conversions using the syntax `type(expr)` or `type\"string\"`, where *type* is a type name optionally followed by `?` and *expr* is an expression or *string* is a string literal. This syntax may be used to perform the following conversions:")
                     <ul>
                         <li>@Html.FormatMarkdown("Between two types provided `Type.IsAssignableFrom` is true in one or both directions.")</li>
                         <li>@Html.FormatMarkdown("Between two types provided one or both are interface types.")</li>
                         <li>@Html.FormatMarkdown("Between the nullable and non-nullable forms of any value type.")</li>
+                        <li>@Html.FormatMarkdown("Between string and any type that have static TryParse method.")</li>
                         <li>@Html.FormatMarkdown("Between any two types belonging to the set consisting of `SByte`, `Byte`, `Int16`, `UInt16`, `Int32`, `UInt32`, `Int64`, `UInt64`, `Decimal`, `Single`, `Double`, `Char`, any *enum* type, as well as the *nullable* forms of those types.")</li>
                     </ul>
                 </div>
@@ -246,7 +247,7 @@
             <h4>Operators</h4>
             <div class="row">
                 <div class="col-md-9">
-                    <p>The table below shows the operators supported by the expression language in order of precedence from highest to lowest. Operators in the same category have equal precedence. In the table, x, y, and z denote expressions, T denotes a <a href="#types">type</a>, and m denotes a member.</p>
+                    <p>The table below shows the operators supported by the expression language in order of precedence from highest to lowest. Operators in the same category have equal precedence. In the table, x, y, and z denote expressions, s denotes a <a href="#types">String</a>, T denotes a <a href="#types">type</a>, and m denotes a member.</p>
 
                     <table class="table table-responsive">
                         <thead>
@@ -281,6 +282,10 @@
                             <tr>
                                 <td><code>T(…)</code></td>
                                 <td><a href="#conversions">Explicit conversion</a> or <a href="#invocations">constructor invocation</a>. Note that new is not required in front of a constructor invocation.</td>
+                            </tr>
+                            <tr>
+                                <td><code>T"s"</code></td>
+                                <td><a href="#conversions">Explicit conversion</a> from string (using Parse, Convert or <a href="#invocations">constructor invocation</a> with string parameter). Note that new is not required in front of a constructor invocation.</td>
                             </tr>
                             <tr>
                                 <td><code>new(…)</code></td>
@@ -343,27 +348,27 @@
 
                             <tr>
                                 <td rowspan="6">Relational</td>
-                                <td><code>x = y</code><br /><code>x == y</code></td>
+                                <td><code>x = y</code><br /><code>x == y</code><br /><code>x eq y</code></td>
                                 <td>Equal. Supported for reference types and the primitive types. Assignment is not supported.</td>
                             </tr>
                             <tr>
-                                <td><code>x != y</code><br /><code>x <> y</code></td>
+                                <td><code>x != y</code><br /><code>x <> y</code><br /><code>x ne y</code></td>
                                 <td>Not equal. Supported for reference types and the primitive types.</td>
                             </tr>
                             <tr>
-                                <td><code>x &lt; y</code></td>
+                                <td><code>x &lt; y</code><br /><code>x lt y</code></td>
                                 <td>Less than.</td>
                             </tr>
                             <tr>
-                                <td><code>x &gt; y</code></td>
+                                <td><code>x &gt; y</code><br /><code>x gt y</code></td>
                                 <td>Greater than.</td>
                             </tr>
                             <tr>
-                                <td><code>x &lt;= y</code></td>
+                                <td><code>x &lt;= y</code><br /><code>x le y</code></td>
                                 <td>Less than or equal.</td>
                             </tr>
                             <tr>
-                                <td><code>x &gt;= y</code></td>
+                                <td><code>x &gt;= y</code><br /><code>x ge y</code></td>
                                 <td>Greater than or equal</td>
                             </tr>
 

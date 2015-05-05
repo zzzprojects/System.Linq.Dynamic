@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Collections;
+using System.Globalization;
 
 namespace System.Linq.Dynamic
 {
@@ -98,6 +99,10 @@ namespace System.Linq.Dynamic
         {
             void F(bool x, bool y);
             void F(bool? x, bool? y);
+            void F(DateTime x, string y);
+            void F(DateTime? x, string y);
+            void F(string x, DateTime y);
+            void F(string x, DateTime? y);
             void F(Guid x, Guid y);
             void F(Guid? x, Guid? y);
             void F(Guid x, string y);
@@ -216,6 +221,19 @@ namespace System.Linq.Dynamic
 #if !NET35 && !SILVERLIGHT
 			typeof(System.Data.Objects.EntityFunctions)
 #endif
+        };
+
+        // These aliases are supposed to simply the where clause and make it more human readable
+        // As an addition it is compatible with the OData.Filter specification
+        //
+        static readonly Dictionary<string, TokenId> _predefinedAliases = new Dictionary<string, TokenId>()
+        {
+            { "eq", TokenId.Equal }, { "ne", TokenId.ExclamationEqual },
+            { "lt", TokenId.LessThan }, { "le", TokenId.LessThanEqual },
+            { "gt", TokenId.GreaterThan }, { "ge", TokenId.GreaterThanEqual },
+            { "and", TokenId.DoubleAmphersand }, { "or", TokenId.DoubleBar },
+            { "not", TokenId.Exclamation },
+            { "mod", TokenId.Percent }
         };
 
         static readonly Expression _trueLiteral = Expression.Constant(true);
@@ -355,7 +373,7 @@ namespace System.Linq.Dynamic
         Expression ParseConditionalOr()
         {
             Expression left = ParseConditionalAnd();
-            while (_token.id == TokenId.DoubleBar || TokenIdentifierIs("or"))
+            while (_token.id == TokenId.DoubleBar)
             {
                 Token op = _token;
                 NextToken();
@@ -370,7 +388,7 @@ namespace System.Linq.Dynamic
         Expression ParseConditionalAnd()
         {
             Expression left = ParseIn();
-            while (_token.id == TokenId.DoubleAmphersand || TokenIdentifierIs("and"))
+            while (_token.id == TokenId.DoubleAmphersand)
             {
                 Token op = _token;
                 NextToken();
@@ -492,16 +510,16 @@ namespace System.Linq.Dynamic
         {
             Expression left = ParseShift();
             while (_token.id == TokenId.Equal || _token.id == TokenId.DoubleEqual ||
-                _token.id == TokenId.ExclamationEqual || _token.id == TokenId.LessGreater ||
-                _token.id == TokenId.GreaterThan || _token.id == TokenId.GreaterThanEqual ||
-                _token.id == TokenId.LessThan || _token.id == TokenId.LessThanEqual)
+                   _token.id == TokenId.ExclamationEqual || _token.id == TokenId.LessGreater ||
+                   _token.id == TokenId.GreaterThan || _token.id == TokenId.GreaterThanEqual ||
+                   _token.id == TokenId.LessThan || _token.id == TokenId.LessThanEqual)
             {
                 Token op = _token;
                 NextToken();
                 Expression right = ParseShift();
                 bool isEquality = op.id == TokenId.Equal || op.id == TokenId.DoubleEqual ||
-                    op.id == TokenId.ExclamationEqual || op.id == TokenId.LessGreater;
-                if (isEquality && ((!left.Type.IsValueType && !right.Type.IsValueType) || (left.Type == typeof(Guid) && right.Type == typeof(Guid))))
+                                  op.id == TokenId.ExclamationEqual || op.id == TokenId.LessGreater;
+                if (isEquality && (!left.Type.IsValueType && !right.Type.IsValueType))
                 {
                     if (left.Type != right.Type)
                     {
@@ -641,8 +659,7 @@ namespace System.Linq.Dynamic
         Expression ParseMultiplicative()
         {
             Expression left = ParseUnary();
-            while (_token.id == TokenId.Asterisk || _token.id == TokenId.Slash ||
-                _token.id == TokenId.Percent || TokenIdentifierIs("mod"))
+            while (_token.id == TokenId.Asterisk || _token.id == TokenId.Slash || _token.id == TokenId.Percent)
             {
                 Token op = _token;
                 NextToken();
@@ -668,8 +685,7 @@ namespace System.Linq.Dynamic
         // -, !, not unary operators
         Expression ParseUnary()
         {
-            if (_token.id == TokenId.Minus || _token.id == TokenId.Exclamation ||
-                TokenIdentifierIs("not"))
+            if (_token.id == TokenId.Minus || _token.id == TokenId.Exclamation)
             {
                 Token op = _token;
                 NextToken();
@@ -989,9 +1005,16 @@ namespace System.Linq.Dynamic
                 type = typeof(Nullable<>).MakeGenericType(type);
                 NextToken();
             }
-            if (_token.id == TokenId.OpenParen)
+
+            // This is a shorthand for explicitely converting a string to something
+            //
+            bool shorthand = _token.id == TokenId.StringLiteral;
+            if (_token.id == TokenId.OpenParen || shorthand)
             {
-                Expression[] args = ParseArgumentList();
+                Expression[] args = shorthand 
+                    ? new Expression[] { ParseStringLiteral() }
+                    : ParseArgumentList();
+
                 MethodBase method;
                 switch (FindBestMethod(type.GetConstructors(), args, out method))
                 {
@@ -1005,7 +1028,7 @@ namespace System.Linq.Dynamic
                         throw ParseError(errorPos, Res.AmbiguousConstructorInvocation, GetTypeName(type));
                 }
             }
-            ValidateToken(TokenId.Dot, Res.DotOrOpenParenExpected);
+            ValidateToken(TokenId.Dot, Res.DotOrOpenParenOrStringLiteralExpected);
             NextToken();
             return ParseMemberAccess(type, null);
         }
@@ -1026,8 +1049,26 @@ namespace System.Linq.Dynamic
             if (exprType.IsAssignableFrom(type) || type.IsAssignableFrom(exprType) ||
                 exprType.IsInterface || type.IsInterface)
                 return Expression.Convert(expr, type);
-            throw ParseError(errorPos, Res.CannotConvertValue,
-                GetTypeName(exprType), GetTypeName(type));
+
+            // Try to Parse the string rather that just generate the convert statement
+            //
+            if (expr.NodeType == ExpressionType.Constant && exprType == typeof(string))
+            {
+                string text = (string)((ConstantExpression)expr).Value;
+
+                // DateTime is parsed as UTC time.
+                //
+                DateTime dateTime;
+                if (type == typeof(DateTime) && DateTime.TryParse(text, CultureInfo.InvariantCulture, DateTimeStyles.None, out dateTime))
+                    return Expression.Constant(dateTime, type);
+
+                object[] arguments = { text, null };
+                MethodInfo method = type.GetMethod("TryParse", BindingFlags.Public | BindingFlags.Static, null, new Type[] { typeof(string), type.MakeByRefType() }, null);
+                if (method != null && (bool)method.Invoke(null, arguments))
+                    return Expression.Constant(arguments[1], type);
+            }
+            
+            throw ParseError(errorPos, Res.CannotConvertValue, GetTypeName(exprType), GetTypeName(type));
         }
 
         Expression ParseMemberAccess(Type type, Expression instance)
@@ -1232,8 +1273,6 @@ namespace System.Linq.Dynamic
 
             return false;
         }
-
-
 
         static bool IsNullableType(Type type)
         {
@@ -1740,24 +1779,13 @@ namespace System.Linq.Dynamic
 
         static Expression GenerateEqual(Expression left, Expression right)
         {
-            if ((left.Type == typeof(Guid) || left.Type == typeof(Guid?)) && right.Type == typeof(string))
-            {
-                right = Expression.Call(typeof(Guid).GetMethod("Parse"), right);
-            }
-            else if ((right.Type == typeof(Guid) || right.Type == typeof(Guid?)) && left.Type == typeof(string))
-            {
-                left = Expression.Call(typeof(Guid).GetMethod("Parse"), left);
-            }
-
+            OptimizeForEqualityIfPossible(ref left, ref right);
             return Expression.Equal(left, right);
         }
 
         static Expression GenerateNotEqual(Expression left, Expression right)
         {
-            if ((left.Type == typeof(Guid) || left.Type == typeof(Guid?)) && right.Type == typeof(string))
-            {
-                right = Expression.Call(typeof(Guid).GetMethod("Parse"), right);
-            }
+            OptimizeForEqualityIfPossible(ref left, ref right);
             return Expression.NotEqual(left, right);
         }
 
@@ -1859,6 +1887,46 @@ namespace System.Linq.Dynamic
         static Expression GenerateStaticMethodCall(string methodName, Expression left, Expression right)
         {
             return Expression.Call(null, GetStaticMethod(methodName, left, right), new[] { left, right });
+        }
+
+        
+        static void OptimizeForEqualityIfPossible(ref Expression left, ref Expression right)
+        {
+            // The goal here is to provide the way to convert some types from the string form in a way that is compatible with Linq-to-Entities.
+            //
+            // The Expression.Call(typeof(Guid).GetMethod("Parse"), right); does the job only for Linq to Object but Linq to Entities.
+            //
+            Type leftType = left.Type, rightType = right.Type;
+            if (rightType == typeof(string) && right.NodeType == ExpressionType.Constant)
+            {
+                right = OptimizeStringForEqualityIfPossible((string)((ConstantExpression)right).Value, leftType) ?? right;
+            }
+            if (leftType == typeof(string) && left.NodeType == ExpressionType.Constant)
+            {
+                left = OptimizeStringForEqualityIfPossible((string)((ConstantExpression)left).Value, rightType) ?? left;
+            }
+        }
+        static Expression OptimizeStringForEqualityIfPossible(string text, Type type)
+        {
+            DateTime dateTime;
+            if (type == typeof(DateTime) &&
+                DateTime.TryParse(text, CultureInfo.InvariantCulture, DateTimeStyles.None, out dateTime))
+                return Expression.Constant(dateTime, typeof(DateTime));
+#if !NET35
+            Guid guid;
+            if (type == typeof(Guid) && Guid.TryParse(text, out guid))
+                return Expression.Constant(guid, typeof(Guid));
+#else
+                try
+                {
+                    return Expression.Constant(new Guid(text));
+                }
+                catch
+                {
+                    //Doing it in old fashion way when no TryParse interface was provided by .NET
+                }
+#endif
+            return null;
         }
 
         void SetTextPos(int pos)
@@ -2081,9 +2149,9 @@ namespace System.Linq.Dynamic
                     }
                     throw ParseError(_textPos, Res.InvalidCharacter, _ch);
             }
-            _token.id = t;
-            _token.text = _text.Substring(tokenPos, _textPos - tokenPos);
             _token.pos = tokenPos;
+            _token.text = _text.Substring(tokenPos, _textPos - tokenPos);
+            _token.id = GetAliasedTokenId(t, _token.text);
         }
 
         bool TokenIdentifierIs(string id)
@@ -2146,6 +2214,12 @@ namespace System.Linq.Dynamic
             foreach (Type type in GlobalConfig.CustomTypeProvider.GetCustomTypes()) d.Add(type.Name, type);
 
             return d;
+        }
+
+        static TokenId GetAliasedTokenId(TokenId t, string alias)
+        {
+            TokenId id;
+            return t == TokenId.Identifier && _predefinedAliases.TryGetValue(alias, out id) ? id : t;
         }
 
         internal static void ResetDynamicLinqTypes()

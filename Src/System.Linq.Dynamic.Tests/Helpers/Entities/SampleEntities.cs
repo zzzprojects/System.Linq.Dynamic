@@ -37,6 +37,7 @@ namespace System.Linq.Dynamic.Tests.Helpers.Entities
         public virtual Blog Blog { get; set; }
 
         public DateTime PostDate { get; set; }
+        public Guid PostGlobalId { get; set; }
 
         public int NumberOfReads { get; set; }
 
