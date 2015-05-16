@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Linq.Dynamic", "System.Linq.Dynamic\System.Linq.Dynamic.csproj", "{B6EDF157-6153-4684-A577-DE33896DBAA8}"
 EndProject
@@ -20,6 +20,17 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Linq.Dynamic.SL", "System.Linq.Dynamic.SL\System.Linq.Dynamic.SL.csproj", "{D884F2FA-4C3B-4B5F-82FB-4F1F08EE54FF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ForSL", "ForSL", "{D659EBC1-17AA-424B-BD74-91657C731B85}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7CB0622D-580A-46ED-8631-6F85EA46EA1E}"
+	ProjectSection(SolutionItems) = preProject
+		..\licence.txt = ..\licence.txt
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{7E2EAE3D-74C1-427E-896E-2F21F4BCDE18}"
+	ProjectSection(SolutionItems) = preProject
+		..\NuGet\System.Linq.Dynamic.nuspec = ..\NuGet\System.Linq.Dynamic.nuspec
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
