@@ -243,6 +243,7 @@ namespace System.Linq.Dynamic
         {
             { "eq", TokenId.Equal }, 
             { "ne", TokenId.ExclamationEqual },
+            { "neq", TokenId.ExclamationEqual },
             { "lt", TokenId.LessThan }, 
             { "le", TokenId.LessThanEqual },
             { "gt", TokenId.GreaterThan }, 
