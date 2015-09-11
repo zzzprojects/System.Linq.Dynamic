@@ -570,9 +570,9 @@ namespace System.Linq.Dynamic
             get { return position; }
         }
 
-        public override string ToString()
+        public override string Message
         {
-            return string.Format(Res.ParseExceptionFormat, Message, position);
+            get { return string.Format(Res.ParseExceptionFormat, Message, position); }
         }
     }
 
