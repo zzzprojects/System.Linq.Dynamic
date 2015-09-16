@@ -1441,8 +1441,6 @@ namespace System.Linq.Dynamic
                             id, GetTypeName(type));
                     case 1:
                         MethodInfo method = (MethodInfo)mb;
-                        if (!IsPredefinedType(method.DeclaringType))
-                            throw ParseError(errorPos, Res.MethodsAreInaccessible, GetTypeName(method.DeclaringType));
                         if (method.ReturnType == typeof(void))
                             throw ParseError(errorPos, Res.MethodIsVoid,
                                 id, GetTypeName(method.DeclaringType));
@@ -1572,12 +1570,6 @@ namespace System.Linq.Dynamic
                             GetTypeName(expr.Type));
                 }
             }
-        }
-
-        static bool IsPredefinedType(Type type)
-        {
-            foreach (Type t in predefinedTypes) if (t == type) return true;
-            return false;
         }
 
         static bool IsNullableType(Type type)
