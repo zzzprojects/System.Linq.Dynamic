@@ -12,8 +12,8 @@ Run the project, and select the type of LINQ sample that you want to explore. Dr
 
 See the [Connectivity](../../ReadMe.html#Connectivity) note found in the main ReadMe if you are have trouble running the database samples.
 
-![](Images\RunningXmlQuery.jpg)  
+![](Images/RunningXmlQuery.jpg)  
 **Figure 01: The user has drilled down into "XQuery Use Cases" samples and selected a particular type of sample, a "String Search" to run. The code in the sample is shown near the top of the form on the right. The output is shown at the bottom right.**  
 
-![](Images\RunningSqlQuery.jpg)  
+![](Images/RunningSqlQuery.jpg)  
 **Figure 02: Running a database sample. Here the user has chosen a LINQ to SQL sample. The code for the sample is shown near the top right of the form, and the output at the bottom right. Push the Run Sample button to execute each individual sample included in the project.**
