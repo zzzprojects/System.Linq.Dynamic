@@ -111,6 +111,29 @@ namespace System.Linq.Dynamic.Tests
             Assert.AreEqual(TestEnum.Var5, result4.Single());
             Assert.AreEqual(TestEnum.Var5, result5.Single());
         }
+        [TestMethod]
+        public void ExpressionTests_CompareWithDateTime()
+        {
+            //Arrange
+            var lst = new List<DateTime>() { 
+                new DateTime(2015, 5, 5), 
+                new DateTime(2016, 5, 5), 
+                new DateTime(2017, 5, 5) 
+            };
+            var qry = lst.AsQueryable();
+
+            //Act
+            var result1 = qry.Where("it = \"05/05/2016\"");
+            var result2 = qry.Where("\"05/05/2016\" = it");
+            var result3 = qry.Where("it = @0", "05/05/2016");
+            var result4 = qry.Where("it = @0", lst[1]);
+
+            //Assert
+            Assert.AreEqual(lst[1], result1.Single());
+            Assert.AreEqual(lst[1], result2.Single());
+            Assert.AreEqual(lst[1], result3.Single());
+            Assert.AreEqual(lst[1], result4.Single());
+        }
 
         [TestMethod]
         public void ExpressionTests_CompareWithGuid()

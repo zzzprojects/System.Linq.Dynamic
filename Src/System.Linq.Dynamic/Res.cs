@@ -51,6 +51,7 @@ namespace System.Linq.Dynamic
         public const string CloseParenOrOperatorExpected = "')' or operator expected";
         public const string CloseParenOrCommaExpected = "')' or ',' expected";
         public const string DotOrOpenParenExpected = "'.' or '(' expected";
+        public const string DotOrOpenParenOrStringLiteralExpected = "'.' or '(' or string literal expected";
         public const string OpenBracketExpected = "'[' expected";
         public const string CloseBracketOrCommaExpected = "']' or ',' expected";
         public const string IdentifierExpected = "Identifier expected";
