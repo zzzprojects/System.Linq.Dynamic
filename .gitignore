@@ -17,6 +17,7 @@ TestResults
 [Dd]ebug/
 [Rr]elease/
 x64/
+*.ide
 *_i.c
 *_p.c
 *.ilk
@@ -99,6 +100,7 @@ ClientBin
 [Ss]tyle[Cc]op.*
 ~$*
 *.dbmdl
+.vs/
 Generated_Code #added for RIA/Silverlight projects
 
 #Telerik JustMock Config
