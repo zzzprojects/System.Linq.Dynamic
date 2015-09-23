@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>System.Linq.Dynamic.Library</id>
-        <version>1.1.14</version>
+        <version>1.1.15</version>
         <title>Dynamic Linq Library</title>
         <authors>Nathan Arnott,Microsoft</authors>
         <owners>Nathan Arnott</owners>
@@ -13,7 +13,31 @@
 
 This package is more than a simple NuGet deployment of the Dynamic Linq Library. It is a living project, and contains XML documentation with examples.</description>
         <summary>Supports Framework 3.5 and 4.0+</summary>
-        <releaseNotes>1.1.14 Added support for Silverlight 5. A special thanks to jkuehner for providing this.
+        <releaseNotes>1.1.15 Several changes by meatGUY. 
+        
+Support for Text Aliases for the Logical and Relation operations
+  "eq" for ==
+  "ne" for !=
+  .. and so on
+  
+Support for Short naming for primitive types of .NET
+  int for Int32
+  float for Single
+  .. and so on, full list can be found on MSDN (https://msdn.microsoft.com/en-us/library/ms228360(v=vs.90).aspx)
+
+Support for Equality check with DateTime object in string form:
+
+DateTime == "string datetime"
+
+Support for TryParse usage during explicit cast.
+
+Shorthand for explicit cast from string, now it can be done using T"..".
+
+Updated documentation accordingly to changes.
+
+Equality check for Guid (the explanation is placed in code as comment)
+  
+1.1.14 Added support for Silverlight 5. A special thanks to jkuehner for providing this.
     
 Added several new helper methods, including First, FirstOrDefault, Last, LastOrDefault, Single, SingleOrDefault, and Sum.
 
