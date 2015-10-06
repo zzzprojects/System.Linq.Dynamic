@@ -1486,7 +1486,18 @@ namespace System.Linq.Dynamic
         {
             outerIt = it;
             ParameterExpression innerIt = Expression.Parameter(elementType, "");
-            it = innerIt;
+
+            if (methodName == "Contains")
+            {
+                //for any method that acts on the parent element type, we need to specify the outerIt as scope.
+                it = outerIt;
+            }
+            else
+            {
+                it = innerIt;
+            }
+
+
             Expression[] args = ParseArgumentList();
             it = outerIt;
             MethodBase signature;
@@ -1505,8 +1516,6 @@ namespace System.Linq.Dynamic
             {
                 args = new Expression[] { instance };
             }
-            
-
             else
             {
                 if (signature.Name == "Contains")
