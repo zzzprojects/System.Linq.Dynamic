@@ -18,14 +18,14 @@ namespace System.Linq.Dynamic.Test
         public void Parse_DoubleLiteral_ReturnsDoubleExpression()
         {
             var expression = DynamicExpression.Parse(typeof(double), "1.0");
-            Assert.AreEqual(expression.Type, typeof(double));
+            Assert.AreEqual(typeof(double), expression.Type);
         }
 
         [TestMethod]
         public void Parse_FloatLiteral_ReturnsFloatExpression()
         {
             var expression = DynamicExpression.Parse(typeof(float), "1.0f");
-            Assert.AreEqual(expression.Type, typeof(float));
+            Assert.AreEqual(typeof(float), expression.Type);
         }
     }
 }
