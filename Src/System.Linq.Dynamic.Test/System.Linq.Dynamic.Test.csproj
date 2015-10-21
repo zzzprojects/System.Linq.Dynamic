@@ -46,6 +46,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DynamicExpressionTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\System.Linq.Dynamic\System.Linq.Dynamic.csproj">
+      <Project>{b6edf157-6153-4684-a577-de33896dbaa8}</Project>
+      <Name>System.Linq.Dynamic</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
