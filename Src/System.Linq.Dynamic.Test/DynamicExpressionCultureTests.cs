@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading;
 using System.Globalization;
+using System.Linq.Expressions;
 
 namespace System.Linq.Dynamic.Test
 {
@@ -17,15 +18,17 @@ namespace System.Linq.Dynamic.Test
         [TestMethod]
         public void Parse_DoubleLiteral_ReturnsDoubleExpression()
         {
-            var expression = DynamicExpression.Parse(typeof(double), "1.0");
+            var expression = (ConstantExpression)DynamicExpression.Parse(typeof(double), "1.0");
             Assert.AreEqual(typeof(double), expression.Type);
+            Assert.AreEqual(1.0, expression.Value);
         }
 
         [TestMethod]
         public void Parse_FloatLiteral_ReturnsFloatExpression()
         {
-            var expression = DynamicExpression.Parse(typeof(float), "1.0f");
+            var expression = (ConstantExpression)DynamicExpression.Parse(typeof(float), "1.0f");
             Assert.AreEqual(typeof(float), expression.Type);
+            Assert.AreEqual(1.0f, expression.Value);
         }
     }
 }
