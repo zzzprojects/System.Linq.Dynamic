@@ -2,13 +2,15 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>System.Linq.Dynamic</id>
-    <version>1.0.0</version>
+    <version>1.0.5</version>
     <authors>Microsoft</authors>
     <owners>Microsoft</owners>
     <licenseUrl>http://www.opensource.org/licenses/ms-pl</licenseUrl>
     <projectUrl>https://github.com/kahanu/System.Linq.Dynamic</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This is the Microsoft assembly for the .Net 4.0 Dynamic language functionality.</description>
+	<releaseNotes>This release 1.0.5 is to fix the following bugs: #29 (https://github.com/kahanu/System.Linq.Dynamic/issues/29), #31 (https://github.com/kahanu/System.Linq.Dynamic/issues/31), #33 (https://github.com/kahanu/System.Linq.Dynamic/issues/33), #36 (https://github.com/kahanu/System.Linq.Dynamic/issues/36)
+	</releaseNotes>
     <tags>system linq dynamic</tags>
   </metadata>
 </package>

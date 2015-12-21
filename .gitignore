@@ -2,3 +2,6 @@
 **/obj/
 *.suo
 **/packages/
+Src/System.Linq.Dynamic.sln.DotSettings.user
+*.nupkg
+*.dll
