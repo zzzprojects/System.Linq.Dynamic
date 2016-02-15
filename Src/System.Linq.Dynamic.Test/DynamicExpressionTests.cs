@@ -15,5 +15,16 @@ namespace System.Linq.Dynamic.Test
                 "it.ToString()");
             Assert.AreEqual(typeof(string), expression.ReturnType);
         }
+
+        [TestMethod]
+        public void ParseLambda_VoidMethodCall_ReturnsActionDelegate()
+        {
+            var expression = DynamicExpression.ParseLambda(
+                typeof(System.IO.FileStream),
+                null,
+                "it.Close()");
+            Assert.AreEqual(typeof(void), expression.ReturnType);
+            Assert.AreEqual(typeof(Action<System.IO.FileStream>), expression.Type);
+        }
     }
 }
