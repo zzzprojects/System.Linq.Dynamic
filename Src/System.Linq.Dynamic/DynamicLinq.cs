@@ -323,6 +323,12 @@ namespace System.Linq.Dynamic
             return Expression.Lambda(parser.Parse(resultType), parameters);
         }
 
+        public static LambdaExpression ParseLambda(Type delegateType, ParameterExpression[] parameters, Type resultType, string expression, params object[] values)
+        {
+            ExpressionParser parser = new ExpressionParser(parameters, expression, values);
+            return Expression.Lambda(delegateType, parser.Parse(resultType), parameters);
+        }
+
         public static Expression<Func<T, S>> ParseLambda<T, S>(string expression, params object[] values)
         {
             return (Expression<Func<T, S>>)ParseLambda(typeof(T), typeof(S), expression, values);
