@@ -306,6 +306,12 @@ namespace System.Linq.Dynamic
 
     public static class DynamicExpression
     {
+        public static Expression Parse(ParameterExpression[] parameters, Type resultType, string expression, params object[] values)
+        {
+            ExpressionParser parser = new ExpressionParser(parameters, expression, values);
+            return parser.Parse(resultType);
+        }
+
         public static Expression Parse(Type resultType, string expression, params object[] values)
         {
             ExpressionParser parser = new ExpressionParser(null, expression, values);
