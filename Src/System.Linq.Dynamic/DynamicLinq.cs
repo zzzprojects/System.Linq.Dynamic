@@ -423,8 +423,8 @@ namespace System.Linq.Dynamic
                 Type type;
                 if (!classes.TryGetValue(signature, out type))
                 {
-                    type = CreateDynamicClass(signature.properties);
-                    classes.Add(signature, type);
+                    type = CreateAndCacheDynamicClass(signature);
+                    
                 }
                 return type;
             }
@@ -434,36 +434,48 @@ namespace System.Linq.Dynamic
             }
         }
 
-        Type CreateDynamicClass(DynamicProperty[] properties)
+        Type CreateAndCacheDynamicClass(Signature signature)
         {
             LockCookie cookie = rwLock.UpgradeToWriterLock(Timeout.Infinite);
             try
             {
-                string typeName = "DynamicClass" + (classCount + 1);
-#if ENABLE_LINQ_PARTIAL_TRUST
-                new ReflectionPermission(PermissionState.Unrestricted).Assert();
-#endif
-                try
+                Type type;
+                if (!classes.TryGetValue(signature, out type))
                 {
-                    TypeBuilder tb = this.module.DefineType(typeName, TypeAttributes.Class |
-                        TypeAttributes.Public, typeof(DynamicClass));
-                    FieldInfo[] fields = GenerateProperties(tb, properties);
-                    GenerateEquals(tb, fields);
-                    GenerateGetHashCode(tb, fields);
-                    Type result = tb.CreateType();
-                    classCount++;
-                    return result;
+                    type = CreateDynamicClass(signature.properties);
+                    classes.Add(signature, type);
                 }
-                finally
-                {
-#if ENABLE_LINQ_PARTIAL_TRUST
-                    PermissionSet.RevertAssert();
-#endif
-                }
+
+                return type;
             }
             finally
             {
                 rwLock.DowngradeFromWriterLock(ref cookie);
+            }
+        }
+
+        Type CreateDynamicClass(DynamicProperty[] properties)
+        {
+            string typeName = "DynamicClass" + (classCount + 1);
+#if ENABLE_LINQ_PARTIAL_TRUST
+            new ReflectionPermission(PermissionState.Unrestricted).Assert();
+#endif
+            try
+            {
+                TypeBuilder tb = this.module.DefineType(typeName, TypeAttributes.Class |
+                    TypeAttributes.Public, typeof(DynamicClass));
+                FieldInfo[] fields = GenerateProperties(tb, properties);
+                GenerateEquals(tb, fields);
+                GenerateGetHashCode(tb, fields);
+                Type result = tb.CreateType();
+                classCount++;
+                return result;
+            }
+            finally
+            {
+#if ENABLE_LINQ_PARTIAL_TRUST
+                PermissionSet.RevertAssert();
+#endif
             }
         }
 
