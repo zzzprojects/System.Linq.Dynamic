@@ -306,6 +306,12 @@ namespace System.Linq.Dynamic
 
     public static class DynamicExpression
     {
+        public static Expression Parse(ParameterExpression[] parameters, Type resultType, string expression, params object[] values)
+        {
+            ExpressionParser parser = new ExpressionParser(parameters, expression, values);
+            return parser.Parse(resultType);
+        }
+
         public static Expression Parse(Type resultType, string expression, params object[] values)
         {
             ExpressionParser parser = new ExpressionParser(null, expression, values);
@@ -321,6 +327,12 @@ namespace System.Linq.Dynamic
         {
             ExpressionParser parser = new ExpressionParser(parameters, expression, values);
             return Expression.Lambda(parser.Parse(resultType), parameters);
+        }
+
+        public static LambdaExpression ParseLambda(Type delegateType, ParameterExpression[] parameters, Type resultType, string expression, params object[] values)
+        {
+            ExpressionParser parser = new ExpressionParser(parameters, expression, values);
+            return Expression.Lambda(delegateType, parser.Parse(resultType), parameters);
         }
 
         public static Expression<Func<T, S>> ParseLambda<T, S>(string expression, params object[] values)
@@ -1453,11 +1465,7 @@ namespace System.Linq.Dynamic
                         throw ParseError(errorPos, Res.NoApplicableMethod,
                             id, GetTypeName(type));
                     case 1:
-                        MethodInfo method = (MethodInfo)mb;
-                        if (method.ReturnType == typeof(void))
-                            throw ParseError(errorPos, Res.MethodIsVoid,
-                                id, GetTypeName(method.DeclaringType));
-                        return Expression.Call(instance, (MethodInfo)method, args);
+                        return Expression.Call(instance, (MethodInfo)mb, args);
                     default:
                         throw ParseError(errorPos, Res.AmbiguousMethodInvocation,
                             id, GetTypeName(type));
