@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq.Expressions;
 
@@ -27,7 +29,6 @@ namespace System.Linq.Dynamic.Test
             Assert.AreEqual(typeof(string), expression.ReturnType);
         }
 
-        [TestMethod]
         public void ParseLambda_DelegateTypeMethodCall_ReturnsEventHandlerLambdaExpression()
         {
             var expression = DynamicExpression.ParseLambda(
@@ -50,6 +51,23 @@ namespace System.Linq.Dynamic.Test
                 "it.Close()");
             Assert.AreEqual(typeof(void), expression.ReturnType);
             Assert.AreEqual(typeof(Action<System.IO.FileStream>), expression.Type);
+        }
+
+        [TestMethod]
+        public void CreateClass_TheadSafe()
+        {
+            const int numOfTasks = 15;
+
+            var properties = new[] { new DynamicProperty("prop1", typeof(string)) };
+
+            var tasks = new List<Task>(numOfTasks);
+
+            for (var i = 0; i < numOfTasks; i++)
+            {
+                tasks.Add(Task.Factory.StartNew(() => DynamicExpression.CreateClass(properties)));
+            }
+
+            Task.WaitAll(tasks.ToArray());
         }
     }
 }
