@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq.Expressions;
 
 namespace System.Linq.Dynamic.Test
 {
@@ -29,6 +28,7 @@ namespace System.Linq.Dynamic.Test
             Assert.AreEqual(typeof(string), expression.ReturnType);
         }
 
+        [TestMethod]
         public void ParseLambda_DelegateTypeMethodCall_ReturnsEventHandlerLambdaExpression()
         {
             var expression = DynamicExpression.ParseLambda(
