@@ -272,8 +272,6 @@ namespace System.Linq.Dynamic.Tests
             }
         }
 
-
-
         [TestMethod]
         public void ExpressionTests_FirstOrDefault()
         {

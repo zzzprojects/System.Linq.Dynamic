@@ -36,7 +36,6 @@ namespace System.Linq.Dynamic.Tests
             var baseQuery = User.GenerateSampleModels(100).AsQueryable();
             var containsList = new List<string>() { "User1", "User5", "User10" };
 
-
             //Act
             var realQuery = baseQuery.Where(x => containsList.Contains(x.UserName)).Select(x => x.Id);
             var testQuery = baseQuery.Where("@0.Contains(UserName)", containsList).Select("Id");
@@ -94,7 +93,7 @@ namespace System.Linq.Dynamic.Tests
 
         #endregion
 
-        #region Adjustors
+        #region Adjusters
 
         [TestMethod]
         public void Skip()
@@ -139,6 +138,7 @@ namespace System.Linq.Dynamic.Tests
         [TestMethod]
         public void Reverse()
         {
+            //Arrange
             var testList = User.GenerateSampleModels(100);
             IQueryable testListQry = testList.AsQueryable();
 
@@ -271,7 +271,5 @@ namespace System.Linq.Dynamic.Tests
 
 
         #endregion
-
     }
-
 }

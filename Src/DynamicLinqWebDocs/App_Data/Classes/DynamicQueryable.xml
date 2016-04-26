@@ -18,7 +18,7 @@
               <Description>An expression string to test each element for a condition.</Description>
             </Argument>
             <Argument name="args" type="object[]" typeNamespace="System">
-              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way `String.Format` formats strings.</Description>
+              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similar to the way `String.Format` formats strings.</Description>
             </Argument>
           </Arguments>
           <Examples>
@@ -66,7 +66,7 @@ IEnumerable&lt;string&gt; query = fruits.AsQueryable().Where("fruit.Length &lt; 
               <Description>An expression string to test each element for a condition.</Description>
             </Argument>
             <Argument name="args" type="object[]" typeNamespace="System">
-              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way `String.Format` formats strings.</Description>
+              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similar to the way `String.Format` formats strings.</Description>
             </Argument>
           </Arguments>
           <Examples>
@@ -114,7 +114,7 @@ IEnumerable&lt;string&gt; query = fruits.AsQueryable().Where("fruit.Length &lt; 
               <Description>A projection string expression to apply to each element.</Description>
             </Argument>
             <Argument name="args" type="object[]" typeNamespace="System">
-              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way `String.Format` formats strings.</Description>
+              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similar to the way `String.Format` formats strings.</Description>
             </Argument>
           </Arguments>
           <Examples>
@@ -197,7 +197,7 @@ var dynamicObject = qry.Select("new (StringProperty1, StringProperty2 as OtherSt
               <Description>A projection string expression to apply to each element.</Description>
             </Argument>
             <Argument name="args" type="object[]" typeNamespace="System">
-              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way `String.Format` formats strings.</Description>
+              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similar to the way `String.Format` formats strings.</Description>
             </Argument>
           </Arguments>
           <Examples>
@@ -272,6 +272,76 @@ public static void SelectManyEx1()
             </Example>
           </Examples>
         </Method>
+        
+        <Method name="SelectMany" isExtensionMethod="true" hasParamsArgument="true" returnType="IQueryable">
+          <Description>Projects each element of a sequence to an `IQueryable` and invokes a result selector function on each element therein. The resulting values from each intermediate sequence are combined into a single, one-dimensional sequence and returned.</Description>
+          <ReturnDescription>An `IQueryable` whose elements are the result of invoking the one-to-many projection function collectionSelector on each element of source and then mapping each of those sequence elements and their corresponding source element to a result element.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A sequence of values to project.</Description>
+            </Argument>
+            <Argument name="collectionSelector" type="string" typeNamespace="System">
+              <Description>A projection function to apply to each element of the input sequence.</Description>
+            </Argument>
+            <Argument name="resultSelector" type="string" typeNamespace="System">
+              <Description>A projection function to apply to each element of each intermediate sequence.</Description>
+            </Argument>
+            <Argument name="collectionSelectorArgs" type="object[]" typeNamespace="System">
+              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similar to the way `String.Format` formats strings.</Description>
+            </Argument>
+            <Argument name="resultSelectorArgs" type="object[]" typeNamespace="System">
+              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similar to the way `String.Format` formats strings.</Description>
+            </Argument>
+          </Arguments>
+          <Examples>
+            <Example>
+              <HeaderRemarks>The following code example demonstrates how to use `SelectMany` to perform the one-to-many projection function collectionSelector on each element of source and then mapping each of those sequence elements and their corresponding source element to a result element.</HeaderRemarks>
+              <ExampleCode>class PetOwner
+{
+    public string Name { get; set; }
+}
+
+class Pet
+{
+    public string Name { get; set; }
+}
+
+public static void SelectManyEx1()
+{
+    PetOwner[] petOwners =
+    { 
+      new PetOwner { Name="Higa, Sidney" },
+      new PetOwner { Name="Ashkenazi, Ronen" },
+      new PetOwner { Name="Price, Vernette" }
+    };
+    
+    Pet[] pets =
+    { 
+      new Pet { Name="Sidney's Fluffy" },
+      new Pet { Name="Ronen's Batman" },
+      new Pet { Name="Vernette's Heart" }
+    };
+
+    // Query using SelectMany().
+    IEnumerable resultQuery = petOwners.AsQueryable().SelectMany("@0", "new(x as Owner, y as Pet)", new object[] { pets.AsQueryable() })
+      .Where("it.Pet.Name.StartsWith(it.Owner.Name)");
+
+    Console.WriteLine("Using SelectMany():");
+    
+    foreach (dynamic pair in resultQuery)
+        Console.WriteLine("{0}:{1}", pair.Owner.Name, pair.Pet.Name);
+
+/*
+    This code produces the following output:
+
+    Using SelectMany():
+    Higa, Sidney:Sidney's Fluffy
+    Ashkenazi, Rone:Ronen's Batman
+    Price, Vernette:Vernette's Heart
+*/</ExampleCode>
+            </Example>
+          </Examples>
+        </Method>
 
         <Method name="OrderBy&lt;TSource&gt;" isExtensionMethod="true" hasParamsArgument="true" returnType="IQueryable&lt;TSource&gt;">
           <Description>Sorts the elements of a sequence in ascending order according to a key.</Description>
@@ -284,7 +354,7 @@ public static void SelectManyEx1()
               <Description>An expression string to indicate values to order by.</Description>
             </Argument>
             <Argument name="args" type="object[]" typeNamespace="System">
-              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way `String.Format` formats strings.</Description>
+              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similar to the way `String.Format` formats strings.</Description>
             </Argument>
           </Arguments>
           <Examples>
@@ -305,7 +375,7 @@ public static void SelectManyEx1()
               <Description>An expression string to indicate values to order by.</Description>
             </Argument>
             <Argument name="args" type="object[]" typeNamespace="System">
-              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way `String.Format` formats strings.</Description>
+              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similar to the way `String.Format` formats strings.</Description>
             </Argument>
           </Arguments>
           <Examples>
@@ -329,7 +399,7 @@ public static void SelectManyEx1()
               <Description>A string expression to specify a result value from each group.</Description>
             </Argument>
             <Argument name="args" type="object[]" typeNamespace="System">
-              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way String.Format formats strings.</Description>
+              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similar to the way String.Format formats strings.</Description>
             </Argument>
           </Arguments>
           <Examples>
@@ -381,7 +451,7 @@ public static void SelectManyEx1()
               <Description>A string expression to specify the key for each element.</Description>
             </Argument>
             <Argument name="args" type="object[]" typeNamespace="System">
-              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similiar to the way String.Format formats strings.</Description>
+              <Description>An object array that contains zero or more objects to insert into the predicate as parameters.  Similar to the way String.Format formats strings.</Description>
             </Argument>
           </Arguments>
           <Examples>
@@ -465,7 +535,7 @@ public static void SelectManyEx1()
               <Description>A dynamic function to create a result element from two matching elements.</Description>
             </Argument>
             <Argument name="args" type="object[]" typeNamespace="System">
-              <Description>An object array that contains zero or more objects to insert into the predicates as parameters.  Similiar to the way String.Format formats strings.</Description>
+              <Description>An object array that contains zero or more objects to insert into the predicates as parameters.  Similar to the way String.Format formats strings.</Description>
             </Argument>
           </Arguments>
           <Examples>
@@ -602,7 +672,7 @@ public static void JoinEx1()
               <Description>A dynamic function to create a result element from two matching elements.</Description>
             </Argument>
             <Argument name="args" type="object[]" typeNamespace="System">
-              <Description>An object array that contains zero or more objects to insert into the predicates as parameters.  Similiar to the way String.Format formats strings.</Description>
+              <Description>An object array that contains zero or more objects to insert into the predicates as parameters.  Similar to the way String.Format formats strings.</Description>
             </Argument>
           </Arguments>
           <Examples>

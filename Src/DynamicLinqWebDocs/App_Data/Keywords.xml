@@ -1,7 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <DynLINQDoc xmlns="http://schemas.plainlogic.net/dynamiclinqdocs/2014">
   <Keywords>
-    
+
+    <Keyword name="x, y">
+      <Description>`x, y` are argument names that can appear within selectors where two elements are provided.</Description>
+      <Examples>
+        <Example>
+          <HeaderRemarks>The following example shows how to use the `x, y` keyword.</HeaderRemarks>
+          <ExampleCode>
+            int[] firstPart = { 0, 1, 2, 3, 4 };
+            int[] secondPart = { 4, 3, 2, 1, 0 };
+
+            // The original SelectMany accepts lambda in `(x, y) => z` format.
+            IEnumerable resultQuery = firstPart.AsQueryable().SelectMany("@0", "x * y", new object[] { secondPart.AsQueryable() });
+          </ExampleCode>
+        </Example>
+      </Examples>
+    </Keyword>
+
     <Keyword name="it">
       <Description>`it` is a context keyword that allows a string expression to reference the current data element being referenced.</Description>
       <Remarks>You can use the equivalent symbol `$` instead of `it`.

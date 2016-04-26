@@ -18,13 +18,11 @@ namespace System.Linq.Dynamic.Tests
             var testList = User.GenerateSampleModels(100, allowNullableProfiles: true);
             var qry = testList.AsQueryable();
 
-
             //Act
             var userById = qry.Where("Id=@0", testList[10].Id);
             var userByUserName = qry.Where("UserName=\"User5\"");
             var nullProfileCount = qry.Where("Profile=null");
             var userByFirstName = qry.Where("Profile!=null && Profile.FirstName=@0", testList[1].Profile.FirstName);
-
 
             //Assert
             Assert.AreEqual(testList[10], userById.Single());
@@ -45,6 +43,7 @@ namespace System.Linq.Dynamic.Tests
             Helper.ExpectException<ParseException>(() => qry.Where("Bad=3"));
             Helper.ExpectException<ParseException>(() => qry.Where("Id=123"));
 
+            //Assert
             Helper.ExpectException<ArgumentNullException>(() => DynamicQueryable.Where(null, "Id=1"));
             Helper.ExpectException<ArgumentNullException>(() => qry.Where(null));
             Helper.ExpectException<ArgumentException>(() => qry.Where(""));
@@ -58,7 +57,6 @@ namespace System.Linq.Dynamic.Tests
             var testList = User.GenerateSampleModels(100);
             var qry = testList.AsQueryable();
 
-
             //Act
             var orderById = qry.OrderBy("Id");
             var orderByIdDesc = qry.OrderBy("Id DESC");
@@ -66,7 +64,6 @@ namespace System.Linq.Dynamic.Tests
             var orderByAgeDesc = qry.OrderBy("Profile.Age DESC");
             var orderByComplex = qry.OrderBy("Profile.Age, Id");
             var orderByComplex2 = qry.OrderBy("Profile.Age DESC, Id");
-            
 
             //Assert
             CollectionAssert.AreEqual(testList.OrderBy(x => x.Id).ToArray(), orderById.ToArray());
@@ -92,7 +89,6 @@ namespace System.Linq.Dynamic.Tests
 
             var orderByIdDesc = qry.SelectMany("Roles.OrderByDescending(Name)").Select("Name");
             var expectedDesc = qry.SelectMany(x => x.Roles.OrderByDescending(y => y.Name)).Select(x => x.Name);
-
 
             //Assert
             CollectionAssert.AreEqual(expected.ToArray(), orderById.Cast<string>().ToArray());
@@ -130,7 +126,6 @@ namespace System.Linq.Dynamic.Tests
             var userFirstName = qry.Select("new (UserName, Profile.FirstName as MyFirstName)");
             var userRoles = qry.Select("new (UserName, Roles.Select(Id) AS RoleIds)");
 
-
             //Assert
             CollectionAssert.AreEqual(range.Select(x => x * x).ToArray(), rangeResult.Cast<int>().ToArray());
 
@@ -167,6 +162,23 @@ namespace System.Linq.Dynamic.Tests
             Helper.ExpectException<ArgumentNullException>(() => qry.Select(null));
             Helper.ExpectException<ArgumentException>(() => qry.Select(""));
             Helper.ExpectException<ArgumentException>(() => qry.Select(" "));
+        }
+
+        [TestMethod]
+        public void SelectMany_WithResultProjection()
+        {
+            //Arrange
+            List<int> rangeOfInt = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            List<double> rangeOfDouble = new List<double> { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+            List<KeyValuePair<int, double>> range = rangeOfInt.SelectMany(e => rangeOfDouble, (x, y) => new KeyValuePair<int, double>(x, y)).ToList();
+
+            //Act
+            IEnumerable rangeResult = rangeOfInt.AsQueryable()
+                .SelectMany("@0", "new(x as _X, y as _Y)", new object[] { rangeOfDouble })
+                .Select("it._X * it._Y");
+
+            //Assert
+            CollectionAssert.AreEqual(range.Select(t => t.Key * t.Value).ToArray(), rangeResult.Cast<double>().ToArray());
         }
 
         [TestMethod]
@@ -278,7 +290,6 @@ namespace System.Linq.Dynamic.Tests
             List<Person> people = new List<Person> { magnus, terry, charlotte };
             List<Pet> pets = new List<Pet> { barley, boots, whiskers, daisy };
 
-
             //Act
             var realQuery = people.AsQueryable().Join(
                 pets,
@@ -315,8 +326,6 @@ namespace System.Linq.Dynamic.Tests
                 Assert.AreEqual(realResult[i].Pet, dynamicResult[i].Pet);
             }
 #endif
-
         }
-
     }
 }
