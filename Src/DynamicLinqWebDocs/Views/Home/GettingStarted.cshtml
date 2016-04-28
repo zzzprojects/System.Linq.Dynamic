@@ -173,8 +173,8 @@
             <div class="row">
                 <div class="col-md-9">
                     <p>The expression language supports integer, real, string, and character literals.</p>
-                    @Html.FormatMarkdown("An *integer literal* consists of a sequence of digits. The type of an integer literal is the first of the types `Int32`, `UInt32`, `Int64`, or `UInt64` that can represent the given value. An integer literal implicitly converts to any other numeric type provided the number is in the range of that type. Some examples of integer literals:")
-                    @Html.InlineCodeList("0", "123", "10000")
+                    @Html.FormatMarkdown("An *integer literal* consists of a sequence of digits. The type of an integer literal is defined by one of the integer qualifiers (U - UInt32, L - Int64, UL - UInt64) or type is deduced by first of the types `Int32`, `UInt32`, `Int64`, or `UInt64` that can represent the given value. An integer literal implicitly converts to any other numeric type provided the number is in the range of that type. Some examples of integer literals:")
+                    @Html.InlineCodeList("0", "123", "10000", "1L", "2U", "3UL")
 
                     @Html.FormatMarkdown("A *real literal* consists of an integral part followed by a fractional part and/or an exponent. The integral part is a sequence of one or more digits. The fractional part is a decimal point followed by one or more digits. The exponent is the letter e or E followed by an optional + or – sign followed by one or more digits. The type of a real literal is `Double`. A real literal implicitly converts to any other real type provided the number is in the range of that type. Some examples of real literals:")
                     @Html.InlineCodeList("1.0", "2.25", "10000.0", "1e0", "1e10", "1.2345E-4")

@@ -799,12 +799,31 @@ namespace System.Linq.Dynamic
         {
             ValidateToken(TokenId.IntegerLiteral);
             string text = _token.text;
+            string qualifier = null;
+            char last = text[text.Length - 1];
             if (text[0] != '-')
             {
+                if (Char.IsLetter(last))
+                {
+                    int pos = text.Length - 1, count = 0;
+                    while (Char.IsLetter(text[pos]))
+                    {
+                        ++count;
+                        --pos;
+                    }
+                    qualifier = text.Substring(text.Length - count, count);
+                    text = text.Substring(0, text.Length - count);
+                }
                 ulong value;
                 if (!UInt64.TryParse(text, out value))
                     throw ParseError(Res.InvalidIntegerLiteral, text);
                 NextToken();
+                if (!string.IsNullOrEmpty(qualifier))
+                {
+                    if (qualifier == "U") return CreateLiteral((uint)value, text);
+                    if (qualifier == "L") return CreateLiteral((long)value, text);
+                    else if (qualifier == "UL") return CreateLiteral(value, text);
+                }
                 if (value <= (ulong)Int32.MaxValue) return CreateLiteral((int)value, text);
                 if (value <= (ulong)UInt32.MaxValue) return CreateLiteral((uint)value, text);
                 if (value <= (ulong)Int64.MaxValue) return CreateLiteral((long)value, text);
@@ -2136,6 +2155,17 @@ namespace System.Linq.Dynamic
                         {
                             NextChar();
                         } while (Char.IsDigit(_ch));
+                        if (_ch == 'U' || _ch == 'L')
+                        {
+                            NextChar();
+                            if (_ch == 'L')
+                            {
+                                if (_text[_textPos - 1] == 'U') NextChar();
+                                else throw ParseError(_textPos, Res.InvalidIntegerQualifier, _text.Substring(_textPos - 1, 2));
+                            }
+                            ValidateExpression();
+                            break;
+                        }
                         if (_ch == '.')
                         {
                             t = TokenId.RealLiteral;
@@ -2183,6 +2213,12 @@ namespace System.Linq.Dynamic
             string id = _token.text;
             if (id.Length > 1 && id[0] == '@') id = id.Substring(1);
             return id;
+        }
+
+        void ValidateExpression()
+        {
+            if (Char.IsLetterOrDigit(_ch))
+                throw ParseError(_textPos, Res.ExpressionExpected);
         }
 
         void ValidateDigit()
