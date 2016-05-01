@@ -125,13 +125,18 @@ namespace System.Linq.Dynamic.Tests
             var valuesUL = new[] { 1UL, 2UL, 3UL }.AsQueryable();
             var resultValuesUL = new[] { 2UL, 3UL }.AsQueryable();
 
+            var valuesNeL = new[] { -1L, -2L, -3L }.AsQueryable();
+            var resultValuesNeL = new[] { -2L, -3L }.AsQueryable();
+
             //Act
             var resultL = valuesL.Where("it in (2L, 3L)").Cast<long>().ToArray();
+            var resultNeL = valuesNeL.Where("it in (-2L, -3L)").Cast<long>().ToArray();
             var resultU = valuesU.Where("it in (2U, 3U)").Cast<uint>().ToArray();
             var resultUL = valuesUL.Where("it in (2UL, 3UL)").Cast<ulong>().ToArray();
 
             //Assert
             CollectionAssert.AreEqual(resultL, resultValuesL.ToArray());
+            CollectionAssert.AreEqual(resultNeL, resultValuesNeL.ToArray());
             CollectionAssert.AreEqual(resultU, resultValuesU.ToArray());
             CollectionAssert.AreEqual(resultUL, resultValuesUL.ToArray());
         }
@@ -147,6 +152,7 @@ namespace System.Linq.Dynamic.Tests
             Helper.ExpectException<ParseException>(() => values.Where("it in (2UU)"));
             Helper.ExpectException<ParseException>(() => values.Where("it in (2LU)"));
             Helper.ExpectException<ParseException>(() => values.Where("it in (2B)"));
+            Helper.ExpectException<ParseException>(() => values.Where("it in (-2U)"));
         }
 
         [TestMethod]
