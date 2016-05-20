@@ -149,6 +149,20 @@ namespace System.Linq.Dynamic.Tests
             CollectionAssert.AreEqual(Enumerable.Reverse(testList).ToArray(), result.Cast<User>().ToArray());
         }
 
+        [TestMethod]
+        public void Distinct()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100);
+            IQueryable testListQry = testList.AsQueryable();
+
+            //Act
+            var result = BasicQueryable.Distinct(testListQry);
+
+            //Assert
+            CollectionAssert.AreEqual(Enumerable.Distinct(testList).ToArray(), result.Cast<User>().ToArray());
+        }
+
         #endregion
 
         #region Executors

@@ -111,6 +111,36 @@ Console.WriteLine();
             </Example>
           </Examples>
         </Method>
+        
+        <Method name="Distinct" isExtensionMethod="true" returnType="IQueryable">
+          <Description>Returns distinct elements from a sequence.</Description>
+          <ReturnDescription>A `IQueryable` contains distinct elements from source.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A sequence of values to distinct.</Description>
+            </Argument>
+          </Arguments>
+          <Examples>
+            <Example>
+              <HeaderRemarks>The following code example demonstrates how to use `Distinct(IQueryable)` to distinct elements in an array.</HeaderRemarks>
+              <ExampleCode>char[] apple = { 'a', 'p', 'p', 'l', 'e' };
+
+// Distinct the characters in the collection.
+IQueryable query = apple.AsQueryable();
+IQueryable distinct = query.Distinct();
+
+foreach (char chr in distinct)
+    Console.Write(chr + " ");
+Console.WriteLine();
+
+/*
+    This code produces the following output:
+
+    a p l e
+*/</ExampleCode>
+            </Example>
+          </Examples>
+        </Method>
     
         <Method name="Any" isExtensionMethod="true" returnType="bool">
           <Description>Determines whether a sequence contains any elements.</Description>

@@ -71,6 +71,20 @@ namespace System.Linq.Dynamic
                 new Type[] { source.ElementType }, source.Expression));
         }
 
+        /// <summary>
+        /// Returns distinct elements from a sequence.
+        /// </summary>
+        /// <param name="source">A sequence of values to distinct.</param>
+        /// <returns>A <see cref="IQueryable"/> contains distinct elements from source.</returns>
+        public static IQueryable Distinct(this IQueryable source)
+        {
+            Validate.Argument(source, "source").IsNotNull().Check();
+
+            return source.Provider.CreateQuery(Expression.Call(
+                typeof(Queryable), "Distinct",
+                new Type[] { source.ElementType }, source.Expression));
+        }
+
         #endregion
 
         #region Aggregates

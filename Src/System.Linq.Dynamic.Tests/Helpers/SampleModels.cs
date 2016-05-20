@@ -54,6 +54,17 @@ namespace System.Linq.Dynamic.Tests.Helpers
 
             return list.ToArray();
         }
+
+        public override bool Equals(object obj)
+        {
+            User other = obj as User;
+            return other != null ? this.Id == other.Id : false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode();
+        }
     }
 
     public class UserProfile
