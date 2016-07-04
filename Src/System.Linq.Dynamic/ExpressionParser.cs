@@ -147,6 +147,7 @@ namespace System.Linq.Dynamic
 
         interface IEnumerableSignatures
         {
+            void DefaultIfEmpty();
             void Where(bool predicate);
             void Any();
             void Any(bool predicate);

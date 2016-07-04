@@ -85,9 +85,25 @@ namespace System.Linq.Dynamic
                 new Type[] { source.ElementType }, source.Expression));
         }
 
+        /// <summary>
+        /// Returns the elements of the specified sequence or the type parameter's default value in a singleton collection if the sequence is empty.
+        /// </summary>
+        /// <param name="source">A sequence to return a default value for if empty.</param>
+        /// <returns>An <see cref="IQueryable"/> that contains default(TSource) if source is empty; otherwise, source.</returns>
+        public static IQueryable DefaultIfEmpty(this IQueryable source)
+        {
+            Validate.Argument(source, "source").IsNotNull().Check();
+
+            return source.Provider.CreateQuery(
+                Expression.Call(
+                    typeof(Queryable), "DefaultIfEmpty",
+                    new Type[] { source.ElementType }, source.Expression));
+        }
+
         #endregion
 
         #region Aggregates
+
         /// <summary>
         /// Determines whether a sequence contains any elements.
         /// </summary>
@@ -195,8 +211,6 @@ namespace System.Linq.Dynamic
                 new Type[] { source.ElementType }, source.Expression));
         }
 
-
-
         /// <summary>
         /// Returns the first element of a sequence, or a default value if the sequence contains no elements.
         /// </summary>
@@ -215,8 +229,6 @@ namespace System.Linq.Dynamic
                 new Type[] { source.ElementType }, source.Expression));
         }
 
-
-
         /// <summary>
         /// Returns the last element of a sequence.
         /// </summary>
@@ -234,8 +246,6 @@ namespace System.Linq.Dynamic
                 typeof(Queryable), "Last",
                 new Type[] { source.ElementType }, source.Expression));
         }
-
-
 
         /// <summary>
         /// Returns the last element of a sequence, or a default value if the sequence contains no elements.
@@ -277,7 +287,6 @@ namespace System.Linq.Dynamic
             }
         }
 
-
 #if !NET35
         /// <summary>
         /// Creates an array of dynamic objects from a <see cref="IEnumerable"/>.
@@ -291,9 +300,6 @@ namespace System.Linq.Dynamic
         }
 #endif
 
-
         #endregion
-
-
     }
 }

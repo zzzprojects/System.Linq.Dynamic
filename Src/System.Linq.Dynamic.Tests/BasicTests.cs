@@ -11,6 +11,22 @@ namespace System.Linq.Dynamic.Tests
         #region Aggregates
 
         [TestMethod]
+        public void DefaultIfEmpty()
+        {
+            //Arrange
+            IQueryable testListFull = User.GenerateSampleModels(100).AsQueryable();
+            IQueryable testListNone = Enumerable.Empty<User>().AsQueryable();
+
+            //Act
+            var resultFull = testListFull.DefaultIfEmpty();
+            var resultNone = testListNone.DefaultIfEmpty();
+
+            //Assert
+            CollectionAssert.AreEqual(testListFull.Cast<User>().ToArray(), resultFull.Cast<User>().ToArray());
+            CollectionAssert.AreEqual(new User[] { null }.Cast<User>().ToArray(), resultNone.Cast<User>().ToArray());
+        }
+
+        [TestMethod]
         public void Any()
         {
             //Arrange
@@ -91,9 +107,9 @@ namespace System.Linq.Dynamic.Tests
             CollectionAssert.AreEqual(testModels.Where(x => nullableTestInExpression.Contains(x.NullableAge)).ToArray(), result6);
         }
 
-        #endregion
+#endregion
 
-        #region Adjusters
+#region Adjusters
 
         [TestMethod]
         public void Skip()
@@ -163,9 +179,9 @@ namespace System.Linq.Dynamic.Tests
             CollectionAssert.AreEqual(Enumerable.Distinct(testList).ToArray(), result.Cast<User>().ToArray());
         }
 
-        #endregion
+#endregion
 
-        #region Executors
+#region Executors
 
         [TestMethod]
         public void Single()
@@ -284,6 +300,6 @@ namespace System.Linq.Dynamic.Tests
         }
 
 
-        #endregion
+#endregion
     }
 }
