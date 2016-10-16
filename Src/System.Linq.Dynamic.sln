@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0185395A-4942-45C3-9C90-169A15D0E649}"
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
+		..\NuGet\System.Linq.Dynamic.nuspec = ..\NuGet\System.Linq.Dynamic.nuspec
 		System.Linq.Dynamic.vsmdi = System.Linq.Dynamic.vsmdi
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
