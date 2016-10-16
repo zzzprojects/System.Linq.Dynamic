@@ -17,6 +17,32 @@ namespace System.Linq.Dynamic
     {
         #region IQueryable Extensions
 
+        public static IQueryable Join(this IQueryable outer, IEnumerable inner, string outerSelector, string innerSelector, string resultsSelector, params object[] values)
+        {
+            if (inner == null) throw new ArgumentNullException("inner");
+            if (outerSelector == null) throw new ArgumentNullException("outerSelector");
+            if (innerSelector == null) throw new ArgumentNullException("innerSelector");
+            if (resultsSelector == null) throw new ArgumentNullException("resultsSelctor");
+
+            LambdaExpression outerSelectorLambda = DynamicExpression.ParseLambda(outer.ElementType, null, outerSelector, values);
+            LambdaExpression innerSelectorLambda = DynamicExpression.ParseLambda(inner.AsQueryable().ElementType, null, innerSelector, values);
+
+            ParameterExpression[] parameters = new ParameterExpression[] {
+            Expression.Parameter(outer.ElementType, "outer"), Expression.Parameter(inner.AsQueryable().ElementType, "inner") };
+            LambdaExpression resultsSelectorLambda = DynamicExpression.ParseLambda(parameters, null, resultsSelector, values);
+
+            return outer.Provider.CreateQuery(
+                Expression.Call(
+                    typeof(Queryable), "Join",
+                    new Type[] { outer.ElementType, inner.AsQueryable().ElementType, outerSelectorLambda.Body.Type, resultsSelectorLambda.Body.Type },
+                    outer.Expression, inner.AsQueryable().Expression, Expression.Quote(outerSelectorLambda), Expression.Quote(innerSelectorLambda), Expression.Quote(resultsSelectorLambda)));
+        }
+
+        public static IQueryable<T> Join<T>(this IQueryable<T> outer, IEnumerable<T> inner, string outerSelector, string innerSelector, string resultsSelector, params object[] values)
+        {
+            return (IQueryable<T>)Join((IQueryable)outer, (IEnumerable)inner, outerSelector, innerSelector, resultsSelector, values);
+        }
+
         public static IQueryable<T> Where<T>(this IQueryable<T> source, string predicate, params object[] values)
         {
             return (IQueryable<T>)Where((IQueryable)source, predicate, values);
