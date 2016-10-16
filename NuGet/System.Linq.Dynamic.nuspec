@@ -9,8 +9,9 @@
     <projectUrl>https://github.com/kahanu/System.Linq.Dynamic</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This is the Microsoft assembly for the .Net 4.0 Dynamic language functionality.</description>
-	<releaseNotes>This release 1.0.5 is to fix the following bugs: #29 (https://github.com/kahanu/System.Linq.Dynamic/issues/29), #31 (https://github.com/kahanu/System.Linq.Dynamic/issues/31), #33 (https://github.com/kahanu/System.Linq.Dynamic/issues/33), #36 (https://github.com/kahanu/System.Linq.Dynamic/issues/36)
-	</releaseNotes>
+	<releaseNotes>
+    This release 1.0.7 is to fix the following bugs: #33 https://github.com/kahanu/System.Linq.Dynamic/issues/33 #39 https://github.com/kahanu/System.Linq.Dynamic/issues/39 #40 https://github.com/kahanu/System.Linq.Dynamic/issues/40 #42 https://github.com/kahanu/System.Linq.Dynamic/issues/42 #43 https://github.com/kahanu/System.Linq.Dynamic/issues/43 #44 https://github.com/kahanu/System.Linq.Dynamic/issues/44 #50 https://github.com/kahanu/System.Linq.Dynamic/issues/50 #51 https://github.com/kahanu/System.Linq.Dynamic/issues/51
+  </releaseNotes>
     <tags>system linq dynamic</tags>
   </metadata>
 </package>
