@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq.Expressions;
@@ -401,7 +402,7 @@ namespace System.Linq.Dynamic
         static ClassFactory() { }  // Trigger lazy initialization of static fields
 
         ModuleBuilder module;
-        Dictionary<Signature, Type> classes;
+        ConcurrentDictionary<Signature, Type> classes;
         int classCount;
         ReaderWriterLock rwLock;
 
@@ -422,7 +423,7 @@ namespace System.Linq.Dynamic
                 PermissionSet.RevertAssert();
 #endif
             }
-            classes = new Dictionary<Signature, Type>();
+            classes = new ConcurrentDictionary<Signature, Type>();
             rwLock = new ReaderWriterLock();
         }
 
@@ -455,7 +456,7 @@ namespace System.Linq.Dynamic
                 if (!classes.TryGetValue(signature, out type))
                 {
                     type = CreateDynamicClass(signature.properties);
-                    classes.Add(signature, type);
+                    classes.AddOrUpdate(signature, type, (sigType, old) => type);
                 }
 
                 return type;
