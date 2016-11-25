@@ -620,7 +620,8 @@ namespace System.Linq.Dynamic
             RealLiteral,
             Exclamation,
             Percent,
-            Amphersand,
+            Ampersand,
+            AmpersandB,
             OpenParen,
             CloseParen,
             Asterisk,
@@ -638,12 +639,13 @@ namespace System.Linq.Dynamic
             CloseBracket,
             Bar,
             ExclamationEqual,
-            DoubleAmphersand,
+            DoubleAmpersand,
             LessThanEqual,
             LessGreater,
             DoubleEqual,
             GreaterThanEqual,
-            DoubleBar
+            DoubleBar,
+            Caret,
         }
 
         interface ILogicalSignatures
@@ -893,7 +895,7 @@ namespace System.Linq.Dynamic
         Expression ParseExpression()
         {
             int errorPos = token.pos;
-            Expression expr = ParseLogicalOr();
+            Expression expr = ParseConditionalOr();
             if (token.id == TokenId.Question)
             {
                 NextToken();
@@ -907,14 +909,14 @@ namespace System.Linq.Dynamic
         }
 
         // ||, or operator
-        Expression ParseLogicalOr()
+        Expression ParseConditionalOr()
         {
-            Expression left = ParseLogicalAnd();
+            Expression left = ParseConditionalAnd();
             while (token.id == TokenId.DoubleBar || TokenIdentifierIs("or"))
             {
                 Token op = token;
                 NextToken();
-                Expression right = ParseLogicalAnd();
+                Expression right = ParseConditionalAnd();
                 CheckAndPromoteOperands(typeof(ILogicalSignatures), op.text, ref left, ref right, op.pos);
                 left = Expression.OrElse(left, right);
             }
@@ -922,16 +924,61 @@ namespace System.Linq.Dynamic
         }
 
         // &&, and operator
+        Expression ParseConditionalAnd()
+        {
+            Expression left = ParseLogicalOr();
+            while (token.id == TokenId.DoubleAmpersand || TokenIdentifierIs("and"))
+            {
+                Token op = token;
+                NextToken();
+                Expression right = ParseLogicalOr();
+                CheckAndPromoteOperands(typeof(ILogicalSignatures), op.text, ref left, ref right, op.pos);
+                left = Expression.AndAlso(left, right);
+            }
+            return left;
+        }
+
+
+        // | operator
+        Expression ParseLogicalOr()
+        {
+            Expression left = ParseLogicalXor();
+            while (token.id == TokenId.Bar)
+            {
+                Token op = token;
+                NextToken();
+                Expression right = ParseLogicalXor();
+                CheckAndPromoteOperands(typeof(IArithmeticSignatures), op.text, ref left, ref right, op.pos);
+                left = Expression.Or(left, right);
+            }
+            return left;
+        }
+        // ^ operator
+        Expression ParseLogicalXor()
+        {
+            Expression left = ParseLogicalAnd();
+            while (token.id == TokenId.Caret)
+            {
+                Token op = token;
+                NextToken();
+                Expression right = ParseLogicalAnd();
+                CheckAndPromoteOperands(typeof(IArithmeticSignatures), op.text, ref left, ref right, op.pos);
+                left = Expression.ExclusiveOr(left, right);
+            }
+            return left;
+        }
+
+        // & operator
         Expression ParseLogicalAnd()
         {
             Expression left = ParseComparison();
-            while (token.id == TokenId.DoubleAmphersand || TokenIdentifierIs("and"))
+            while (token.id == TokenId.AmpersandB)//token.id == TokenId.BAmpersand)
             {
                 Token op = token;
                 NextToken();
                 Expression right = ParseComparison();
-                CheckAndPromoteOperands(typeof(ILogicalSignatures), op.text, ref left, ref right, op.pos);
-                left = Expression.AndAlso(left, right);
+                CheckAndPromoteOperands(typeof(IArithmeticSignatures), op.text, ref left, ref right, op.pos);
+                left = Expression.And(left, right);
             }
             return left;
         }
@@ -1032,12 +1079,11 @@ namespace System.Linq.Dynamic
             return left;
         }
 
-        // +, -, & operators
+        // +, - operators
         Expression ParseAdditive()
         {
             Expression left = ParseMultiplicative();
-            while (token.id == TokenId.Plus || token.id == TokenId.Minus ||
-                token.id == TokenId.Amphersand)
+            while (token.id == TokenId.Plus || token.id == TokenId.Minus || token.id == TokenId.Ampersand)
             {
                 Token op = token;
                 NextToken();
@@ -1046,7 +1092,7 @@ namespace System.Linq.Dynamic
                 {
                     case TokenId.Plus:
                         if (left.Type == typeof(string) || right.Type == typeof(string))
-                            goto case TokenId.Amphersand;
+                            goto case TokenId.Ampersand;
                         CheckAndPromoteOperands(typeof(IAddSignatures), op.text, ref left, ref right, op.pos);
                         left = GenerateAdd(left, right);
                         break;
@@ -1054,7 +1100,7 @@ namespace System.Linq.Dynamic
                         CheckAndPromoteOperands(typeof(ISubtractSignatures), op.text, ref left, ref right, op.pos);
                         left = GenerateSubtract(left, right);
                         break;
-                    case TokenId.Amphersand:
+                    case TokenId.Ampersand:
                         left = GenerateStringConcat(left, right);
                         break;
                 }
@@ -2214,12 +2260,20 @@ namespace System.Linq.Dynamic
                     if (ch == '&')
                     {
                         NextChar();
-                        t = TokenId.DoubleAmphersand;
+                        t = TokenId.DoubleAmpersand;
+                    } else if (ch == 'b')
+                    {
+                        NextChar();
+                        t = TokenId.AmpersandB;
                     }
                     else
                     {
-                        t = TokenId.Amphersand;
+                        t = TokenId.Ampersand;
                     }
+                    break;
+                case '^':
+                    NextChar();
+                    t = TokenId.Caret;
                     break;
                 case '(':
                     NextChar();
