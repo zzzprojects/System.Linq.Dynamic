@@ -756,6 +756,7 @@ namespace System.Linq.Dynamic
             void Average(double? selector);
             void Average(decimal selector);
             void Average(decimal? selector);
+            void Select(object selector);
         }
 
         static readonly Type[] predefinedTypes = {
@@ -1512,7 +1513,7 @@ namespace System.Linq.Dynamic
             if (FindMethod(typeof(IEnumerableSignatures), methodName, false, args, out signature) != 1)
                 throw ParseError(errorPos, Res.NoApplicableAggregate, methodName);
             Type[] typeArgs;
-            if (signature.Name == "Min" || signature.Name == "Max")
+            if (signature.Name == "Min" || signature.Name == "Max"|| signature.Name == "Select")
             {
                 typeArgs = new Type[] { elementType, args[0].Type };
             }
