@@ -54,6 +54,20 @@ namespace System.Linq.Dynamic.Tests
             int count = Cars.Where("vin<0").Count();
             Assert.AreEqual(0, count);
         }
+
+        [TestMethod()]
+        public void Where_Dynamic_Test()
+        {
+            List<dynamic> data = new List<dynamic>();
+            for (int i = 0; i < 10; i++)
+            {
+                dynamic obj = new ExpandoObject();
+                obj.vin = i;
+                data.Add(obj);
+            }
+            int count = data.Where("vin>0").Count();
+            Assert.AreEqual(10, count);
+        }
     }
 
     class Car
