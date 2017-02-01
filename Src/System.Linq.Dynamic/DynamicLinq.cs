@@ -798,7 +798,7 @@ namespace System.Linq.Dynamic
         IDictionary<string, object> externals;
         Dictionary<Expression, string> literals;
         ParameterExpression it;
-        ParameterExpression outerIt;
+        Stack<ParameterExpression> outerIts = new Stack<ParameterExpression>();
 
         string text;
         int textPos;
@@ -1295,10 +1295,10 @@ namespace System.Linq.Dynamic
 
         Expression ParseOuterIt()
         {
-            if (outerIt == null)
+            if (!outerIts.Any())
                 throw ParseError(Res.NoItInScope);
             NextToken();
-            return outerIt;
+            return outerIts.Peek();
         }
 
         Expression ParseIif()
@@ -1503,11 +1503,11 @@ namespace System.Linq.Dynamic
 
         Expression ParseAggregate(Expression instance, Type elementType, string methodName, int errorPos)
         {
-            outerIt = it;
+            outerIts.Push(it);
             ParameterExpression innerIt = Expression.Parameter(elementType, "");
             it = innerIt;
             Expression[] args = ParseArgumentList();
-            it = outerIt;
+            it = outerIts.Pop();
             MethodBase signature;
             if (FindMethod(typeof(IEnumerableSignatures), methodName, false, args, out signature) != 1)
                 throw ParseError(errorPos, Res.NoApplicableAggregate, methodName);
