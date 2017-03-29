@@ -1167,14 +1167,7 @@ namespace System.Linq.Dynamic
             ValidateToken(TokenId.StringLiteral);
             char quote = token.text[0];
             string s = token.text.Substring(1, token.text.Length - 2);
-            int start = 0;
-            while (true)
-            {
-                int i = s.IndexOf(quote, start);
-                if (i < 0) break;
-                s = s.Remove(i, 1);
-                start = i + 1;
-            }
+
             if (quote == '\'')
             {
                 if (s.Length != 1)
@@ -2327,8 +2320,21 @@ namespace System.Linq.Dynamic
                     char quote = ch;
                     do
                     {
-                        NextChar();
-                        while (textPos < textLen && ch != quote) NextChar();
+                        bool escaped;
+
+                        do 
+                        {
+                            escaped = false;
+                            NextChar();
+                            
+                            if (ch == '\\')
+                            {
+                                escaped = true;
+                                if (textPos < textLen) NextChar();
+                            }
+                        }
+                        while (textPos < textLen && (ch != quote || escaped));
+
                         if (textPos == textLen)
                             throw ParseError(textPos, Res.UnterminatedStringLiteral);
                         NextChar();
