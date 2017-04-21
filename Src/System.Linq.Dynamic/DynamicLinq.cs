@@ -1162,6 +1162,39 @@ namespace System.Linq.Dynamic
             }
         }
 
+        string RemoveEscapes(string s)
+        {
+            StringBuilder newS = new StringBuilder(s.Length);
+
+            for(int i = 0; i < s.Length; i++)
+            {
+                if (s[i] == '\\')
+                {
+                    i++;
+                    if (i == s.Length)
+                        break;
+
+                    switch (s[i])
+                    {
+                        case '\\': newS.Append('\\'); break;
+                        case '"': newS.Append('"'); break;
+                        case '\'': newS.Append('\''); break;
+                        case 't': newS.Append('\t'); break;
+                        case 'n': newS.Append('\n'); break;
+                        case 'r': newS.Append('\r'); break;
+                        default:    // Unrecognized. Copy as-is.
+                            newS.Append('\\').Append(s[i]); break;
+                    }
+                }
+                else
+                {
+                    newS.Append(s[i]);
+                }
+            }
+
+            return newS.ToString();
+        }
+
         Expression ParseStringLiteral()
         {
             ValidateToken(TokenId.StringLiteral);
@@ -1176,6 +1209,9 @@ namespace System.Linq.Dynamic
                 return CreateLiteral(s[0], s);
             }
             NextToken();
+
+            s = RemoveEscapes(s);
+
             return CreateLiteral(s, s);
         }
 

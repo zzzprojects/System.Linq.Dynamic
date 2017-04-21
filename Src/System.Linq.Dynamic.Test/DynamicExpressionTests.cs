@@ -45,29 +45,27 @@ namespace System.Linq.Dynamic.Test
         [TestMethod]
         public void Parse_StringLiteralEmbeddedQuote_ReturnsBooleanLambdaExpression()
         {
-            string expectedRightValue = "\"test \\\"string\"";
             var expression = DynamicExpression.Parse(
                 new[] { Expression.Parameter(typeof(string), "Property1") }, 
                 typeof(Boolean), 
-                string.Format("Property1 == {0}", expectedRightValue));
+                string.Format("Property1 == {0}", "\"test \\\"string\""));
 
             string rightValue = ((BinaryExpression) expression).Right.ToString();
             Assert.AreEqual(typeof(Boolean), expression.Type);
-            Assert.AreEqual(expectedRightValue, rightValue);
+            Assert.AreEqual("\"test \"string\"", rightValue);
         }
 
         [TestMethod]
         public void Parse_StringLiteralStartEmbeddedQuote_ReturnsBooleanLambdaExpression()
         {
-            string expectedRightValue = "\"\\\"test\"";
             var expression = DynamicExpression.Parse(
                 new[] { Expression.Parameter(typeof(string), "Property1") },
                 typeof(Boolean),
-                string.Format("Property1 == {0}", expectedRightValue));
+                string.Format("Property1 == {0}", "\"\\\"test\""));
 
             string rightValue = ((BinaryExpression)expression).Right.ToString();
             Assert.AreEqual(typeof(Boolean), expression.Type);
-            Assert.AreEqual(expectedRightValue, rightValue);
+            Assert.AreEqual("\"\"test\"", rightValue);
         }
 
         [ExpectedException(typeof(ParseException))]
@@ -84,15 +82,14 @@ namespace System.Linq.Dynamic.Test
         [TestMethod]
         public void Parse_StringLiteralEscapedBackslash_ReturnsBooleanLambdaExpression()
         {
-            string expectedRightValue = "\"test\\string\"";
             var expression = DynamicExpression.Parse(
                 new[] { Expression.Parameter(typeof(string), "Property1") },
                 typeof(Boolean),
-                string.Format("Property1 == {0}", expectedRightValue));
+                string.Format("Property1 == {0}", "\"test\\\\string\""));
 
             string rightValue = ((BinaryExpression)expression).Right.ToString();
             Assert.AreEqual(typeof(Boolean), expression.Type);
-            Assert.AreEqual(expectedRightValue, rightValue);
+            Assert.AreEqual("\"test\\string\"", rightValue);
         }
 
         [TestMethod]
