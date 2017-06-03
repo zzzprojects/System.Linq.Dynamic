@@ -4,7 +4,7 @@ This fork takes the basic library to a new level.  Contains XML Documentation an
 
 Suggestions and comments are welcome.
 
-The binary is available on [NuGet][1].  **Install-Package System.Linq.Dynamic.Library**
+The binary is available on [NuGet][1].  **Install-Package AK.System.Linq.Dynamic**
 
 Documentation can be found [here][2].
 
