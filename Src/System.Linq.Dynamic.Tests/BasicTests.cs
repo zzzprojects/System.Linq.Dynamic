@@ -8,7 +8,75 @@ namespace System.Linq.Dynamic.Tests
     [TestClass]
     public class BasicTests
     {
-        #region Aggregates
+        #region Adjusters
+
+        [TestMethod]
+        public void Skip()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100);
+            IQueryable testListQry = testList.AsQueryable();
+
+            //Act
+            var resultFull = testListQry.Skip(0);
+            var resultMinus1 = testListQry.Skip(1);
+            var resultHalf = testListQry.Skip(50);
+            var resultNone = testListQry.Skip(100);
+
+            //Assert
+            CollectionAssert.AreEqual(testList.Skip(0).ToArray(), resultFull.Cast<User>().ToArray());
+            CollectionAssert.AreEqual(testList.Skip(1).ToArray(), resultMinus1.Cast<User>().ToArray());
+            CollectionAssert.AreEqual(testList.Skip(50).ToArray(), resultHalf.Cast<User>().ToArray());
+            CollectionAssert.AreEqual(testList.Skip(100).ToArray(), resultNone.Cast<User>().ToArray());
+        }
+
+        [TestMethod]
+        public void Take()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100);
+            IQueryable testListQry = testList.AsQueryable();
+
+            //Act
+            var resultFull = testListQry.Take(100);
+            var resultMinus1 = testListQry.Take(99);
+            var resultHalf = testListQry.Take(50);
+            var resultOne = testListQry.Take(1);
+
+            //Assert
+            CollectionAssert.AreEqual(testList.Take(100).ToArray(), resultFull.Cast<User>().ToArray());
+            CollectionAssert.AreEqual(testList.Take(99).ToArray(), resultMinus1.Cast<User>().ToArray());
+            CollectionAssert.AreEqual(testList.Take(50).ToArray(), resultHalf.Cast<User>().ToArray());
+            CollectionAssert.AreEqual(testList.Take(1).ToArray(), resultOne.Cast<User>().ToArray());
+        }
+
+        [TestMethod]
+        public void Reverse()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100);
+            IQueryable testListQry = testList.AsQueryable();
+
+            //Act
+            var result = BasicQueryable.Reverse(testListQry);
+
+            //Assert
+            CollectionAssert.AreEqual(Enumerable.Reverse(testList).ToArray(), result.Cast<User>().ToArray());
+        }
+
+        [TestMethod]
+        public void Distinct()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100);
+            IQueryable testListQry = testList.AsQueryable();
+
+            //Act
+            var result = BasicQueryable.Distinct(testListQry);
+
+            //Assert
+            CollectionAssert.AreEqual(Enumerable.Distinct(testList).ToArray(), result.Cast<User>().ToArray());
+        }
 
         [TestMethod]
         public void DefaultIfEmpty()
@@ -25,6 +93,10 @@ namespace System.Linq.Dynamic.Tests
             CollectionAssert.AreEqual(testListFull.Cast<User>().ToArray(), resultFull.Cast<User>().ToArray());
             CollectionAssert.AreEqual(new User[] { null }.Cast<User>().ToArray(), resultNone.Cast<User>().ToArray());
         }
+
+        #endregion
+
+        #region Aggregates
 
         [TestMethod]
         public void Any()
@@ -109,79 +181,7 @@ namespace System.Linq.Dynamic.Tests
 
 #endregion
 
-#region Adjusters
-
-        [TestMethod]
-        public void Skip()
-        {
-            //Arrange
-            var testList = User.GenerateSampleModels(100);
-            IQueryable testListQry = testList.AsQueryable();
-
-            //Act
-            var resultFull = testListQry.Skip(0);
-            var resultMinus1 = testListQry.Skip(1);
-            var resultHalf = testListQry.Skip(50);
-            var resultNone = testListQry.Skip(100);
-
-            //Assert
-            CollectionAssert.AreEqual(testList.Skip(0).ToArray(), resultFull.Cast<User>().ToArray());
-            CollectionAssert.AreEqual(testList.Skip(1).ToArray(), resultMinus1.Cast<User>().ToArray());
-            CollectionAssert.AreEqual(testList.Skip(50).ToArray(), resultHalf.Cast<User>().ToArray());
-            CollectionAssert.AreEqual(testList.Skip(100).ToArray(), resultNone.Cast<User>().ToArray());
-        }
-
-        [TestMethod]
-        public void Take()
-        {
-            //Arrange
-            var testList = User.GenerateSampleModels(100);
-            IQueryable testListQry = testList.AsQueryable();
-
-            //Act
-            var resultFull = testListQry.Take(100);
-            var resultMinus1 = testListQry.Take(99);
-            var resultHalf = testListQry.Take(50);
-            var resultOne = testListQry.Take(1);
-
-            //Assert
-            CollectionAssert.AreEqual(testList.Take(100).ToArray(), resultFull.Cast<User>().ToArray());
-            CollectionAssert.AreEqual(testList.Take(99).ToArray(), resultMinus1.Cast<User>().ToArray());
-            CollectionAssert.AreEqual(testList.Take(50).ToArray(), resultHalf.Cast<User>().ToArray());
-            CollectionAssert.AreEqual(testList.Take(1).ToArray(), resultOne.Cast<User>().ToArray());
-        }
-
-        [TestMethod]
-        public void Reverse()
-        {
-            //Arrange
-            var testList = User.GenerateSampleModels(100);
-            IQueryable testListQry = testList.AsQueryable();
-
-            //Act
-            var result = BasicQueryable.Reverse(testListQry);
-
-            //Assert
-            CollectionAssert.AreEqual(Enumerable.Reverse(testList).ToArray(), result.Cast<User>().ToArray());
-        }
-
-        [TestMethod]
-        public void Distinct()
-        {
-            //Arrange
-            var testList = User.GenerateSampleModels(100);
-            IQueryable testListQry = testList.AsQueryable();
-
-            //Act
-            var result = BasicQueryable.Distinct(testListQry);
-
-            //Assert
-            CollectionAssert.AreEqual(Enumerable.Distinct(testList).ToArray(), result.Cast<User>().ToArray());
-        }
-
-#endregion
-
-#region Executors
+        #region Executors
 
         [TestMethod]
         public void Single()
@@ -299,7 +299,6 @@ namespace System.Linq.Dynamic.Tests
 #endif
         }
 
-
-#endregion
+        #endregion
     }
 }

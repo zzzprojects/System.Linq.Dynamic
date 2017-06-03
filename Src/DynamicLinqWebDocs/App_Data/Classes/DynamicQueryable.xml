@@ -516,7 +516,7 @@ public static void SelectManyEx1()
         </Method>
 
         <Method name="Join" returnType="IQueryable" isExtensionMethod="true" hasParamsArgument="true">
-          <Description>Correlates the elements of two sequences based on matching keys. The default equality comparer is used to compare keys.</Description>
+          <Description>Correlates the elements of two sequences based on matching keys.</Description>
           <ReturnDescription>An `IQueryable` obtained by performing an inner join on two sequences.</ReturnDescription>
           <Arguments>
             <Argument name="outer" type="IQueryable" typeNamespace="System.Linq">
@@ -652,7 +652,7 @@ public static void JoinEx1()
         </Method>
          
         <Method name="Join&lt;TElement&gt;" returnType="IQueryable&lt;TElement&gt;" isExtensionMethod="true" hasParamsArgument="true">
-          <Description>Correlates the elements of two sequences based on matching keys. The default equality comparer is used to compare keys.</Description>
+          <Description>Correlates the elements of two sequences based on matching keys.</Description>
           <Remarks>This `Join` overload only works on elements where both sequences and the resulting element match.</Remarks>
           <ReturnDescription>An `IQueryable&lt;TElement&gt;` obtained by performing an inner join on two sequences.</ReturnDescription>
           <Arguments>
@@ -784,6 +784,202 @@ public static void JoinEx1()
     Adams, Terry - Boots
     Weiss, Charlotte - Whiskers
 */</EquivalentCode>
+            </Example>
+          </Examples>
+        </Method>
+
+        <Method name="Union" returnType="IQueryable" isExtensionMethod="true">
+          <Description>Produces the set union of sequences.</Description>
+          <ReturnDescription>An `IQueryable` that contains the elements from both input sequences, excluding duplicates.</ReturnDescription>
+          <Arguments>
+            <Argument name="first" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A sequence whose distinct elements form the first set for the union operation.</Description>
+            </Argument>
+            <Argument name="second" type="IEnumerable" typeNamespace="System.Collections">
+              <Description>A sequence whose distinct elements form the first set for the union operation.</Description>
+            </Argument>
+          </Arguments>
+          <Examples>
+            <Example>
+              <HeaderRemarks>The following code example demonstrates how to use `Union` to perform union using Dynamic LINQ.</HeaderRemarks>
+              <ExampleCode>
+                class Person
+                {
+                    public string Name { get; set; }
+                }
+
+                class Pet
+                {
+                    public string Name { get; set; }
+                    public Person Owner { get; set; }
+                }
+                
+                public static void UnionEx1 
+                {
+                    Person magnus = new Person { Name = "Hedlund, Magnus" };
+                    Person terry = new Person { Name = "Adams, Terry" };
+                    Person charlotte = new Person { Name = "Weiss, Charlotte" };
+
+                    List&lt;Person&gt; group_a = new List&lt;Person&gt; { magnus, terry };
+                    List&lt;Person&gt; group_b = new List&lt;Person&gt; { magnus, charlotte };
+
+                    var realQuery = group_a.AsQueryable().Union((IEnumerable)group_b);
+                    var realResult = realQuery.ToArray();
+                    
+                    foreach (var obj in query)
+                    {
+                        Console.WriteLine(
+                            "{0} - {1}",
+                            obj.OwnerName,
+                            obj.Pet);
+                    }
+                }
+                /*
+                    This code produces the following output:
+
+                    Hedlund, Magnus - Daisy
+                    Adams, Terry - Barley
+                    Weiss, Charlotte - Whiskers
+                */
+              </ExampleCode>
+              <EquivalentCode>
+                class Person
+                {
+                    public string Name { get; set; }
+                }
+
+                class Pet
+                {
+                    public string Name { get; set; }
+                    public Person Owner { get; set; }
+                }
+                
+                public static void UnionEx1 
+                {
+                    Person magnus = new Person { Name = "Hedlund, Magnus" };
+                    Person terry = new Person { Name = "Adams, Terry" };
+                    Person charlotte = new Person { Name = "Weiss, Charlotte" };
+
+                    List&lt;Person&gt; group_a = new List&lt;Person&gt; { magnus, terry };
+                    List&lt;Person&gt; group_b = new List&lt;Person&gt; { magnus, charlotte };
+
+                    var realQuery = group_a.AsQueryable().Union((IEnumerable&lt;Person&gt;)group_b);
+                    var realResult = realQuery.ToArray();
+                    
+                    foreach (var obj in query)
+                    {
+                        Console.WriteLine(
+                            "{0} - {1}",
+                            obj.OwnerName,
+                            obj.Pet);
+                    }
+                }
+                /*
+                    This code produces the following output:
+
+                    Hedlund, Magnus - Daisy
+                    Adams, Terry - Barley
+                    Weiss, Charlotte - Whiskers
+                */
+              </EquivalentCode>
+            </Example>
+          </Examples>
+        </Method>
+
+        <Method name="Union&lt;TElement&gt;" returnType="IQueryable&lt;TElement&gt;" isExtensionMethod="true">
+          <Description>Produces the set union of sequences.</Description>
+          <ReturnDescription>An `IQueryable&lt;TElement&gt;` that contains the elements from both input sequences, excluding duplicates.</ReturnDescription>
+          <Arguments>
+            <Argument name="first" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A sequence whose distinct elements form the first set for the union operation.</Description>
+            </Argument>
+            <Argument name="second" type="IEnumerable" typeNamespace="System.Collections">
+              <Description>A sequence whose distinct elements form the first set for the union operation.</Description>
+            </Argument>
+          </Arguments>
+          <Examples>
+            <Example>
+              <HeaderRemarks>The following code example demonstrates how to use `Union` to perform union using Dynamic LINQ.</HeaderRemarks>
+              <ExampleCode>
+                class Person
+                {
+                    public string Name { get; set; }
+                }
+
+                class Pet
+                {
+                    public string Name { get; set; }
+                    public Person Owner { get; set; }
+                }
+                
+                public static void UnionEx1 
+                {
+                    Person magnus = new Person { Name = "Hedlund, Magnus" };
+                    Person terry = new Person { Name = "Adams, Terry" };
+                    Person charlotte = new Person { Name = "Weiss, Charlotte" };
+
+                    List&lt;Person&gt; group_a = new List&lt;Person&gt; { magnus, terry };
+                    List&lt;Person&gt; group_b = new List&lt;Person&gt; { magnus, charlotte };
+
+                    var realQuery = group_a.AsQueryable().Union((IEnumerable)group_b);
+                    var realResult = realQuery.ToArray();
+                    
+                    foreach (var obj in query)
+                    {
+                        Console.WriteLine(
+                            "{0} - {1}",
+                            obj.OwnerName,
+                            obj.Pet);
+                    }
+                }
+                /*
+                    This code produces the following output:
+
+                    Hedlund, Magnus - Daisy
+                    Adams, Terry - Barley
+                    Weiss, Charlotte - Whiskers
+                */
+              </ExampleCode>
+              <EquivalentCode>
+                class Person
+                {
+                    public string Name { get; set; }
+                }
+
+                class Pet
+                {
+                    public string Name { get; set; }
+                    public Person Owner { get; set; }
+                }
+                
+                public static void UnionEx1 
+                {
+                    Person magnus = new Person { Name = "Hedlund, Magnus" };
+                    Person terry = new Person { Name = "Adams, Terry" };
+                    Person charlotte = new Person { Name = "Weiss, Charlotte" };
+
+                    List&lt;Person&gt; group_a = new List&lt;Person&gt; { magnus, terry };
+                    List&lt;Person&gt; group_b = new List&lt;Person&gt; { magnus, charlotte };
+
+                    var realQuery = group_a.AsQueryable().Union((IEnumerable&lt;Person&gt;)group_b);
+                    var realResult = realQuery.ToArray();
+                    
+                    foreach (var obj in query)
+                    {
+                        Console.WriteLine(
+                            "{0} - {1}",
+                            obj.OwnerName,
+                            obj.Pet);
+                    }
+                }
+                /*
+                    This code produces the following output:
+
+                    Hedlund, Magnus - Daisy
+                    Adams, Terry - Barley
+                    Weiss, Charlotte - Whiskers
+                */
+              </EquivalentCode>
             </Example>
           </Examples>
         </Method>

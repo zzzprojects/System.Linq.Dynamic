@@ -327,5 +327,43 @@ namespace System.Linq.Dynamic.Tests
             }
 #endif
         }
+
+        [TestMethod]
+        public void Union()
+        {
+            //Arrange
+            Person magnus = new Person { Name = "Hedlund, Magnus" };
+            Person terry = new Person { Name = "Adams, Terry" };
+            Person charlotte = new Person { Name = "Weiss, Charlotte" };
+
+            List<Person> group_a = new List<Person> { magnus, terry };
+            List<Person> group_b = new List<Person> { magnus, charlotte };
+
+            //Act
+            var realQuery = group_a.AsQueryable().Union((IEnumerable<Person>)group_b);
+
+            var dynamicQuery = group_a.AsQueryable().Union((IEnumerable)group_b);
+
+            //Assert
+            var realResult = realQuery.ToArray();
+
+#if NET35
+            var dynamicResult = dynamicQuery.Cast<object>().ToArray();
+
+            Assert.AreEqual(realResult.Length, dynamicResult.Length);
+            for (int i = 0; i < realResult.Length; i++)
+            {
+                Assert.AreEqual(realResult[i].Name, dynamicResult[i].GetDynamicProperty<string>("Name"));
+            }
+#else
+            var dynamicResult = dynamicQuery.ToDynamicArray();
+
+            Assert.AreEqual(realResult.Length, dynamicResult.Length);
+            for (int i = 0; i < realResult.Length; i++)
+            {
+                Assert.AreEqual(realResult[i].Name, dynamicResult[i].Name);
+            }
+#endif
+        }
     }
 }

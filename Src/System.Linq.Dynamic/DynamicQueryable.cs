@@ -402,7 +402,7 @@ namespace System.Linq.Dynamic
         #region Join
 
         /// <summary>
-        /// Correlates the elements of two sequences based on matching keys. The default equality comparer is used to compare keys.
+        /// Correlates the elements of two sequences based on matching keys.
         /// </summary>
         /// <param name="outer">The first sequence to join.</param>
         /// <param name="inner">The sequence to join to the first sequence.</param>
@@ -439,7 +439,7 @@ namespace System.Linq.Dynamic
         }
 
         /// <summary>
-        /// Correlates the elements of two sequences based on matching keys. The default equality comparer is used to compare keys.
+        /// Correlates the elements of two sequences based on matching keys.
         /// </summary>
         /// <typeparam name="TElement">The type of the elements of both sequences, and the result.</typeparam>
         /// <param name="outer">The first sequence to join.</param>
@@ -455,6 +455,41 @@ namespace System.Linq.Dynamic
             return (IQueryable<TElement>)Join((IQueryable)outer, (IEnumerable)inner, outerKeySelector, innerKeySelector, resultSelector, args);
         }
 
+        #endregion
+
+        #region Union
+        /// <summary>
+        /// Produces the set union of sequences.
+        /// </summary>
+        /// <param name="first">A sequence whose distinct elements form the first set for the union operation.</param>
+        /// <param name="second">A sequence whose distinct elements form the second set for the union operation.</param>
+        /// <returns>An <see cref="IQueryable" /> that contains the elements from both input sequences, excluding duplicates.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="first" /> or <paramref name="second" /> is null.</exception>
+        public static IQueryable Union(this IQueryable first, IEnumerable second)
+        {
+            Validate.Argument(first, "first").IsNotNull().Check()
+                    .Argument(second, "second").IsNotNull().Check();
+
+            return first.Provider.CreateQuery(
+                Expression.Call(
+                    typeof(Queryable), "Union",
+                    new Type[] { first.ElementType },
+                    first.Expression, second.AsQueryable().Expression));
+        }
+
+        /// <summary>
+        /// Produces the set union of sequences.
+        /// </summary>
+        /// <typeparam name="TElement">The type of the elements of both sequences, and the result.</typeparam>
+        /// <param name="first">A sequence whose distinct elements form the first set for the union operation.</param>
+        /// <param name="second">A sequence whose distinct elements form the second set for the union operation.</param>
+        /// <returns>An <see cref="IQueryable" /> that contains the elements from both input sequences, excluding duplicates.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="first" /> or <paramref name="second" /> is null.</exception>
+        public static IQueryable<TElement> Union<TElement>(this IQueryable<TElement> first, IEnumerable<TElement> second)
+        {
+            return (IQueryable<TElement>)Union((IQueryable)first, (IEnumerable)second);
+
+        }
         #endregion
     }
 }

@@ -123,21 +123,55 @@ Console.WriteLine();
           <Examples>
             <Example>
               <HeaderRemarks>The following code example demonstrates how to use `Distinct(IQueryable)` to distinct elements in an array.</HeaderRemarks>
-              <ExampleCode>char[] apple = { 'a', 'p', 'p', 'l', 'e' };
+              <ExampleCode>
+                char[] apple = { 'a', 'p', 'p', 'l', 'e' };
 
-// Distinct the characters in the collection.
-IQueryable query = apple.AsQueryable();
-IQueryable distinct = query.Distinct();
+                // Distinct the characters in the collection.
+                IQueryable query = apple.AsQueryable();
+                IQueryable distinct = query.Distinct();
 
-foreach (char chr in distinct)
-    Console.Write(chr + " ");
-Console.WriteLine();
+                foreach (char chr in distinct)
+                Console.Write(chr + " ");
+                Console.WriteLine();
 
-/*
-    This code produces the following output:
+                /*
+                This code produces the following output:
 
-    a p l e
-*/</ExampleCode>
+                a p l e
+                */
+              </ExampleCode>
+            </Example>
+          </Examples>
+        </Method>
+
+        <Method name="DefaultIfEmpty" isExtensionMethod="true" returnType="IQueryable">
+          <Description>Returns the elements of the specified sequence or the type parameter's default value in a singleton collection if the sequence is empty.</Description>
+          <ReturnDescription>A `IQueryable` that contains default(TSource) if source is empty; otherwise, source.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>A sequence to return a default value for if empty.</Description>
+            </Argument>
+          </Arguments>
+          <Examples>
+            <Example>
+              <HeaderRemarks>The following code example demonstrates how to use `DefaultIfEmpty(IQueryable)` to return default(TSource) if source is empty.</HeaderRemarks>
+              <ExampleCode>
+                string[] array = { };
+
+                // Get the default if empty.
+                IQueryable query = array.AsQueryable();
+                IQueryable values = query.DefaultIfEmpty();
+
+                Console.WriteLine("Count: {0}", values.Count());
+                Console.WriteLine("Value: {0}", values.Single() ?? "null");
+
+                /*
+                This code produces the following output:
+
+                Count: 1
+                Value: null
+                */
+              </ExampleCode>
             </Example>
           </Examples>
         </Method>

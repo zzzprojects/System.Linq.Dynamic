@@ -183,6 +183,7 @@ namespace System.Linq.Dynamic
             void Average(decimal selector);
             void Average(decimal? selector);
             void Select(object selector);
+            void Union(object source);
             void OrderBy(object selector);
             void OrderByDescending(object selector);
             void Contains(object selector);
@@ -1436,8 +1437,7 @@ namespace System.Linq.Dynamic
                 (staticAccess ? BindingFlags.Static : BindingFlags.Instance);
             foreach (Type t in SelfAndBaseTypes(type))
             {
-                MemberInfo[] members = t.FindMembers(MemberTypes.Property | MemberTypes.Field,
-                    flags, Type.FilterNameIgnoreCase, memberName);
+                MemberInfo[] members = t.FindMembers(MemberTypes.Property | MemberTypes.Field, flags, Type.FilterNameIgnoreCase, memberName);
                 if (members.Length != 0) return members[0];
             }
             return null;
@@ -1449,8 +1449,7 @@ namespace System.Linq.Dynamic
                 (staticAccess ? BindingFlags.Static : BindingFlags.Instance);
             foreach (Type t in SelfAndBaseTypes(type))
             {
-                MemberInfo[] members = t.FindMembers(MemberTypes.Method,
-                    flags, Type.FilterNameIgnoreCase, methodName);
+                MemberInfo[] members = t.FindMembers(MemberTypes.Method, flags, Type.FilterNameIgnoreCase, methodName);
                 int count = FindBestMethod(members.Cast<MethodBase>(), args, out method);
                 if (count != 0) return count;
             }
