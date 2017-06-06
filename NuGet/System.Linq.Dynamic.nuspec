@@ -2,66 +2,22 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>AK.System.Linq.Dynamic</id>
-        <version>1.1.19</version>
+        <version>1.1.20</version>
         <title>Dynamic Linq Library</title>
         <authors>Aleh Karasik</authors>
         <owners>Aleh Karasik</owners>
         <licenseUrl>http://www.opensource.org/licenses/ms-pl</licenseUrl>
         <projectUrl>http://ak-dynamic-linq.azurewebsites.net</projectUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
-        <description>This is a branch of the Microsoft Dyamic LINQ library. It allows developers to construct LINQ queries using string expressions instead of lambda expressions. 
+        <description>This is a fork of the System.Linq.Dynamic.Library project that was itself forked from the Microsoft System.Linq.Dynamic project.
 
-This package is more than a simple NuGet deployment of the Dynamic Linq Library. It is a living project, and contains XML documentation with examples.</description>
+The library allows you to construct dynamic linq queries using string expressions instead of C# expressions.
+
+See more information on project site.</description>
         <summary>Supports Framework 3.5 and 4.0+</summary>
-        <releaseNotes>1.1.19 Added support for Union method.
-        
-1.1.18 Added support for DefaultIfEmpty method.
-        
-1.1.17 Added support for Distinct method.
-        
-1.1.16 Added support for complex SelectMany method overloads.
+        <releaseNotes>Renamed Union method to UnionAll method to avoid signature trashing with System.Linq.
 
-Added support for explicit integer number qualifiers: U - UInt32, L - Int64, UL - UInt64
-        
-1.1.15 Added support for OData like opearator aliases: "eq", "ne", "neq", "lt", "le", "gt", "ge", "and", "or", "not", "mod".
-
-Added support for string to type convertion using T"s" syntax (see documentation for details).
-
-Added support for primitive type aliases ("int", "uint", "short", "ushort", "long", "ulong", "bool", "float")
-          
-1.1.14 Added support for Silverlight 5. A special thanks to jkuehner for providing this.
-    
-Added several new helper methods, including First, FirstOrDefault, Last, LastOrDefault, Single, SingleOrDefault, and Sum.
-
-1.1.13 Added Dynamic Join Method.
-    
-Added dynamic context keywords "parent" and "root", to the existing keyword "it".  Also added symbol equivalents to those keywords ($ - it, ^ - parent, and ~ - root). Added ability to GlobalConfig to disable the context keywords.
-    
-1.1.12 Added dynamic method for GroupByMany. Support for logical operators. Better Guid and Enum Support. Added support for shift operators.
-    
-Added static GlobalConfig class, and IDynamicLinkCustomTypeProvider to allow developers to add custom understood types to Dynamic Linq without the need to recompile.
-    
-1.1.9 Added In operator for both static inline lists, as well as a single parameter list (similiar to contains).
-
-1.1.8 Added support for the use of Single(), SingleOrDefault(), First(), FirstOrDefault(), OrderBy(), OrderByDescending(), and Contains() in string expressions.
-
-1.1.7 Added SelectMany Method.
-
-Fixed bugs that only appear when using LINQ-to-Entities.
-
-1.1.6 Added ability to access members of dynamic objects in subsequent sequences.
-
-Fixed multi-threading issue in conjuction with "new()" expressions.
-
-1.1.5 Added ability to select members of sub-tables.  Example: var dynamicObject = qry.Select("new (StringProperty, SubTable.Select(SubTableId) as SubTableIds)") 
-
-1.1.4 For .NET 4.0+, Select and GroupBy now take advantage of the dynamic keyword, allowing for prevervation of generic types when possible, and easier access to members of dynamic queries.
-
-1.1.3 Added several new Methods to support base IQueryable interface, including: Single(), SingleOrDefault(), First(), FirstOrDefault() and Reverse().  Also adds dynamics verisons of those methods for 4.0+ targets, including a AsEnumerableDynamic(). 
-
-Added GroupBy Method that Doesn't Require a resultSelector predicate.
-
-Bug Fix when using Select Method to select multiple values.</releaseNotes>
+Updated assembly information.</releaseNotes>
         <tags>dynamic linq c# entities</tags>
         <dependencies>
             <dependency id="FluentValidationNA" version="1.2.16" />
