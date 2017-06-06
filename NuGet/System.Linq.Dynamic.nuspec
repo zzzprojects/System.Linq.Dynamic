@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
-        <id>System.Linq.Dynamic.Library</id>
+        <id>AK.System.Linq.Dynamic</id>
         <version>1.1.19</version>
         <title>Dynamic Linq Library</title>
-        <authors>Aleh Karasik,Nathan Arnott,Microsoft</authors>
+        <authors>Aleh Karasik</authors>
         <owners>Aleh Karasik</owners>
         <licenseUrl>http://www.opensource.org/licenses/ms-pl</licenseUrl>
         <projectUrl>http://ak-dynamic-linq.azurewebsites.net</projectUrl>
