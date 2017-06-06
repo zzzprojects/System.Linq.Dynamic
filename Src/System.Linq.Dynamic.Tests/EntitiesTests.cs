@@ -38,7 +38,7 @@ namespace System.Linq.Dynamic.Tests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            var connectionString = String.Format(@"Data Source=(localdb)\v11.0;Initial Catalog=DynamicLinqTestDb_{0};Integrated Security=True", TestContext.TestName);
+            var connectionString = String.Format(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=DynamicLinqTestDb_{0};Integrated Security=True", TestContext.TestName);
 
             _context = new BlogContext(connectionString);
             _context.Database.Delete();

@@ -465,7 +465,7 @@ namespace System.Linq.Dynamic
         /// <param name="second">A sequence whose distinct elements form the second set for the union operation.</param>
         /// <returns>An <see cref="IQueryable" /> that contains the elements from both input sequences, excluding duplicates.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="first" /> or <paramref name="second" /> is null.</exception>
-        public static IQueryable Union(this IQueryable first, IEnumerable second)
+        public static IQueryable UnionAll(this IQueryable first, IEnumerable second)
         {
             Validate.Argument(first, "first").IsNotNull().Check()
                     .Argument(second, "second").IsNotNull().Check();
@@ -485,9 +485,9 @@ namespace System.Linq.Dynamic
         /// <param name="second">A sequence whose distinct elements form the second set for the union operation.</param>
         /// <returns>An <see cref="IQueryable" /> that contains the elements from both input sequences, excluding duplicates.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="first" /> or <paramref name="second" /> is null.</exception>
-        public static IQueryable<TElement> Union<TElement>(this IQueryable<TElement> first, IEnumerable<TElement> second)
+        public static IQueryable<TElement> UnionAll<TElement>(this IQueryable<TElement> first, IEnumerable<TElement> second)
         {
-            return (IQueryable<TElement>)Union((IQueryable)first, (IEnumerable)second);
+            return (IQueryable<TElement>)UnionAll(first, (IEnumerable)second);
 
         }
         #endregion

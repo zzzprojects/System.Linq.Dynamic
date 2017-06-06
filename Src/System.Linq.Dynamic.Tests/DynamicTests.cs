@@ -342,7 +342,7 @@ namespace System.Linq.Dynamic.Tests
             //Act
             var realQuery = group_a.AsQueryable().Union((IEnumerable<Person>)group_b);
 
-            var dynamicQuery = group_a.AsQueryable().Union((IEnumerable)group_b);
+            var dynamicQuery = group_a.AsQueryable().UnionAll((IEnumerable)group_b);
 
             //Assert
             var realResult = realQuery.ToArray();

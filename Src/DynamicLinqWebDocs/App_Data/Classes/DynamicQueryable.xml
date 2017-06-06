@@ -788,7 +788,7 @@ public static void JoinEx1()
           </Examples>
         </Method>
 
-        <Method name="Union" returnType="IQueryable" isExtensionMethod="true">
+        <Method name="UnionAll" returnType="IQueryable" isExtensionMethod="true">
           <Description>Produces the set union of sequences.</Description>
           <ReturnDescription>An `IQueryable` that contains the elements from both input sequences, excluding duplicates.</ReturnDescription>
           <Arguments>
@@ -823,7 +823,7 @@ public static void JoinEx1()
                     List&lt;Person&gt; group_a = new List&lt;Person&gt; { magnus, terry };
                     List&lt;Person&gt; group_b = new List&lt;Person&gt; { magnus, charlotte };
 
-                    var realQuery = group_a.AsQueryable().Union((IEnumerable)group_b);
+                    var realQuery = group_a.AsQueryable().UnionAll(group_b);
                     var realResult = realQuery.ToArray();
                     
                     foreach (var obj in query)
@@ -863,7 +863,7 @@ public static void JoinEx1()
                     List&lt;Person&gt; group_a = new List&lt;Person&gt; { magnus, terry };
                     List&lt;Person&gt; group_b = new List&lt;Person&gt; { magnus, charlotte };
 
-                    var realQuery = group_a.AsQueryable().Union((IEnumerable&lt;Person&gt;)group_b);
+                    var realQuery = group_a.AsQueryable().Union(group_b);
                     var realResult = realQuery.ToArray();
                     
                     foreach (var obj in query)
@@ -886,7 +886,7 @@ public static void JoinEx1()
           </Examples>
         </Method>
 
-        <Method name="Union&lt;TElement&gt;" returnType="IQueryable&lt;TElement&gt;" isExtensionMethod="true">
+        <Method name="UnionAll&lt;TElement&gt;" returnType="IQueryable&lt;TElement&gt;" isExtensionMethod="true">
           <Description>Produces the set union of sequences.</Description>
           <ReturnDescription>An `IQueryable&lt;TElement&gt;` that contains the elements from both input sequences, excluding duplicates.</ReturnDescription>
           <Arguments>
@@ -921,7 +921,7 @@ public static void JoinEx1()
                     List&lt;Person&gt; group_a = new List&lt;Person&gt; { magnus, terry };
                     List&lt;Person&gt; group_b = new List&lt;Person&gt; { magnus, charlotte };
 
-                    var realQuery = group_a.AsQueryable().Union((IEnumerable)group_b);
+                    var realQuery = group_a.AsQueryable().UnionAll(group_b);
                     var realResult = realQuery.ToArray();
                     
                     foreach (var obj in query)
@@ -961,7 +961,7 @@ public static void JoinEx1()
                     List&lt;Person&gt; group_a = new List&lt;Person&gt; { magnus, terry };
                     List&lt;Person&gt; group_b = new List&lt;Person&gt; { magnus, charlotte };
 
-                    var realQuery = group_a.AsQueryable().Union((IEnumerable&lt;Person&gt;)group_b);
+                    var realQuery = group_a.AsQueryable().Union(group_b);
                     var realResult = realQuery.ToArray();
                     
                     foreach (var obj in query)
