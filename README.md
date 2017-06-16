@@ -1,7 +1,7 @@
 # About
 As far as I know the history is somewhat similar to this.
 
-This project takes his beggining as .NET 3.5 libary created by Microsoft for some reason - if I am not mistaken there should be some articles in the MSDN Magazine at least about a parser engine that is used here.
+This project takes his beggining as .NET 3.5 library created by Microsoft for some reason - if I am not mistaken there should be some articles in the MSDN Magazine at least about a parser engine that is used here.
 
 Then it was ported to .NET 4.0 by @kahanu and shared on the GitHub for public use according to MSPL licence.
 
