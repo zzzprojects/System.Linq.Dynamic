@@ -16,7 +16,7 @@ Then sometime ago @NArnott dismissed the NuGet package and deleted the documenta
 I would like to thank everyone who put his effort in this project. 
 
 # What's next?
-I use this library on several production project that is why it gets updated with new features but most of the time it is not. The project itself is alive and I will encouradge you to report bugs and propose feature requests (if I would have time I will do both).
+I use this library on several production project that is why it gets updated with new features but most of the time it is not. The project itself is alive and I encourage you to report bugs and propose feature requests (if I would have time I will do both).
 
 # P.S
 Hope I didn't missed anything +)
