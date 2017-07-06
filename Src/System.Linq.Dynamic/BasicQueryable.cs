@@ -135,6 +135,21 @@ namespace System.Linq.Dynamic
         }
 
         /// <summary>
+        /// Returns the number of elements in a sequence.
+        /// </summary>
+        /// <param name="source">The <see cref="IQueryable"/> that contains the elements to be counted.</param>
+        /// <returns>The number of elements in the input sequence.</returns>
+        public static long LongCount(this IQueryable source)
+        {
+            Validate.Argument(source, "source").IsNotNull().Check();
+
+            return (long)source.Provider.Execute(
+                Expression.Call(
+                    typeof(Queryable), "LongCount",
+                    new Type[] { source.ElementType }, source.Expression));
+        }
+
+        /// <summary>
         /// Computes the sum of a sequence of numeric values.
         /// </summary>
         /// <param name="source">A sequence of numeric values to calculate the sum of.</param>

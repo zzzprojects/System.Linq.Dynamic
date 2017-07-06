@@ -152,6 +152,25 @@ namespace System.Linq.Dynamic.Tests
         }
 
         [TestMethod]
+        public void LongCount()
+        {
+            //Arrange
+            IQueryable testListFull = User.GenerateSampleModels(100).AsQueryable();
+            IQueryable testListOne = User.GenerateSampleModels(1).AsQueryable();
+            IQueryable testListNone = User.GenerateSampleModels(0).AsQueryable();
+
+            //Act
+            var resultFull = testListFull.LongCount();
+            var resultOne = testListOne.LongCount();
+            var resultNone = testListNone.LongCount();
+
+            //Assert
+            Assert.AreEqual(100L, resultFull);
+            Assert.AreEqual(1L, resultOne);
+            Assert.AreEqual(0L, resultNone);
+        }
+
+        [TestMethod]
         public void In()
         {
             //Arrange
