@@ -22,6 +22,56 @@ namespace DynamicLinqWebDocs.Infrastructure
 
         public static HtmlString FormatCodeBlock(this HtmlHelper helper, string value)
         {
+            if (String.IsNullOrWhiteSpace(value)) return null;
+
+            var lines = value.Split(new[] { '\n' }, StringSplitOptions.None);
+
+            if (lines.Length > 1)
+            {
+                /*
+                    Search for the minimum left padding across all the lines.
+                */
+                var paddingLeft = int.MaxValue;
+                foreach (var line in lines)
+                {
+                    if (string.IsNullOrWhiteSpace(line)) continue;
+
+                    var count = 0;
+
+                    for (var i = 0; i < line.Length; ++i, ++count)
+                    {
+                        if (!char.IsWhiteSpace(line[i])) break;
+                    }
+
+                    if (paddingLeft > count) paddingLeft = count;
+                }
+                if (paddingLeft > 0)
+                {
+                    var builder = new StringBuilder(value.Length - (lines.Length * paddingLeft));
+                    for (var i = 0; i < lines.Length; ++i)
+                    {
+                        var line = lines[i];
+
+                        if (string.IsNullOrWhiteSpace(line))
+                        {
+                            if (i == 0 || i == lines.Length - 1) continue;
+
+                            builder.AppendLine();
+                        }
+                        else
+                        {
+                            builder.AppendLine(line.Substring(paddingLeft));
+                        }
+                    }
+
+                    value = builder.ToString();
+                }
+            }
+            else
+            {
+                value = value.TrimStart();
+            }
+
             var pre = new TagBuilder("pre");
 
             pre.AddCssClass("sunlight-highlight-csharp");
