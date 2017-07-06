@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8" ?> 
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <DynLINQDoc xmlns="http://schemas.plainlogic.net/dynamiclinqdocs/2014">
-  
+
   <Classes>
     <Class name="DynamicQueryable" namespace="System.Linq.Dynamic">
       <Description>Provides a set of **static** methods for querying data structures that implement `IQueryable`. It allows dynamic string based querying.  Very handy when, at compile time, you don't know the type of queries that will be generated, or when downstream components only return column names to sort and filter by.</Description>
@@ -24,23 +24,23 @@
           <Examples>
             <Example>
               <HeaderRemarks>The following is an example of a *basic value* used in the `Where` string expression to filter a sequence.</HeaderRemarks>
-              <ExampleCode>List&lt;string&gt; fruits =
-    new List&lt;string> { "apple", "passionfruit", "banana", "mango", 
-                        "orange", "blueberry", "grape", "strawberry" };
+              <ExampleCode>
+                List&lt;string&gt; fruits = new List&lt;string> { "apple", "passionfruit", "banana", "mango", "orange", "blueberry", "grape", "strawberry" };
 
-// Get all strings whose length is less than 6.
-IEnumerable query = fruits.AsQueryable().Where("fruit.Length &lt; 6");
+                // Get all strings whose length is less than 6.
+                IEnumerable query = fruits.AsQueryable().Where("fruit.Length &lt; 6");
 
-foreach (string fruit in query)
-    Console.WriteLine(fruit);
+                foreach (string fruit in query)
+                  Console.WriteLine(fruit);
 
-/*
-    This code produces the following output:
+                /*
+                This code produces the following output:
 
-    apple
-    mango
-    grape
-*/</ExampleCode>
+                apple
+                mango
+                grape
+                */
+              </ExampleCode>
             </Example>
             <Example>
               <HeaderRemarks>The following is an example of a *static argument value* used in the `Where` string expression to filter a sequence.</HeaderRemarks>
@@ -48,9 +48,11 @@ foreach (string fruit in query)
             </Example>
             <Example>
               <HeaderRemarks>The following is an example of a *variable argument value* used in the `Where` string expression to filter a sequence.</HeaderRemarks>
-              <ExampleCode>int someValue = 6;
- 
-IEnumerable&lt;string&gt; query = fruits.AsQueryable().Where("fruit.Length &lt; @0", someValue);</ExampleCode>
+              <ExampleCode>
+                int someValue = 6;
+
+                IEnumerable&lt;string&gt; query = fruits.AsQueryable().Where("fruit.Length &lt; @0", someValue);
+              </ExampleCode>
             </Example>
           </Examples>
         </Method>
@@ -72,23 +74,23 @@ IEnumerable&lt;string&gt; query = fruits.AsQueryable().Where("fruit.Length &lt; 
           <Examples>
             <Example>
               <HeaderRemarks>The following is an example of a *basic value* used in the `Where` string expression to filter a sequence.</HeaderRemarks>
-              <ExampleCode>List&lt;string&gt; fruits =
-    new List&lt;string> { "apple", "passionfruit", "banana", "mango", 
-                        "orange", "blueberry", "grape", "strawberry" };
+              <ExampleCode>
+                List&lt;string&gt; fruits = new List&lt;string> { "apple", "passionfruit", "banana", "mango", "orange", "blueberry", "grape", "strawberry" };
 
-// Get all strings whose length is less than 6.
-IEnumerable query = fruits.AsQueryable().Where("fruit.Length &lt; 6");
+                // Get all strings whose length is less than 6.
+                IEnumerable query = fruits.AsQueryable().Where("fruit.Length &lt; 6");
 
-foreach (string fruit in query)
-    Console.WriteLine(fruit);
+                foreach (string fruit in query)
+                  Console.WriteLine(fruit);
 
-/*
-    This code produces the following output:
+                /*
+                This code produces the following output:
 
-    apple
-    mango
-    grape
-*/</ExampleCode>
+                apple
+                mango
+                grape
+                */
+              </ExampleCode>
             </Example>
             <Example>
               <HeaderRemarks>The following is an example of a *static argument value* used in the `Where` string expression to filter a sequence.</HeaderRemarks>
@@ -96,13 +98,15 @@ foreach (string fruit in query)
             </Example>
             <Example>
               <HeaderRemarks>The following is an example of a *variable argument value* used in the `Where` string expression to filter a sequence.</HeaderRemarks>
-              <ExampleCode>int someValue = 6;
- 
-IEnumerable&lt;string&gt; query = fruits.AsQueryable().Where("fruit.Length &lt; @0", someValue);</ExampleCode>
+              <ExampleCode>
+                int someValue = 6;
+
+                IEnumerable&lt;string&gt; query = fruits.AsQueryable().Where("fruit.Length &lt; @0", someValue);
+              </ExampleCode>
             </Example>
           </Examples>
         </Method>
-        
+
         <Method name="Select" isExtensionMethod="true" hasParamsArgument="true" returnType="IQueryable">
           <Description>Projects each element of a sequence into a new form.</Description>
           <ReturnDescription>An `IQueryable` whose elements are the result of invoking a projection string on each element of *source*.</ReturnDescription>
@@ -120,68 +124,72 @@ IEnumerable&lt;string&gt; query = fruits.AsQueryable().Where("fruit.Length &lt; 
           <Examples>
             <Example>
               <HeaderRemarks>The following code example demonstrates how to use `Select` to project over a sequence of values, using the `it` keyword.</HeaderRemarks>
-              <ExampleCode>List&lt;int&gt; range =
-    new List&lt;int&gt; { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+              <ExampleCode>
+                List&lt;int&gt; range = new List&lt;int&gt; { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-// Project the square of each int value.
-IEnumerable squares =
-    range.AsQueryable().Select("it * it");
+                // Project the square of each int value.
+                IEnumerable squares =
+                range.AsQueryable().Select("it * it");
 
-foreach (int num in squares)
-    Console.WriteLine(num);
+                foreach (int num in squares)
+                  Console.WriteLine(num);
 
-/*
-    This code produces the following output:
+                /*
+                This code produces the following output:
 
-    1
-    4
-    9
-    16
-    25
-    36
-    49
-    64
-    81
-    100
-*/</ExampleCode>
-              <EquivalentCode>List&lt;int&gt; range =
-    new List&lt;int&gt; { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+                1
+                4
+                9
+                16
+                25
+                36
+                49
+                64
+                81
+                100
+                */
+              </ExampleCode>
+              <EquivalentCode>
+                List&lt;int&gt; range = new List&lt;int&gt; { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-// Project the square of each int value.
-IEnumerable&lt;int&gt; squares =
-    range.AsQueryable().Select(x => x * x);
+                // Project the square of each int value.
+                IEnumerable&lt;int&gt; squares =
+                range.AsQueryable().Select(x => x * x);
 
-foreach (int num in squares)
-    Console.WriteLine(num);
+                foreach (int num in squares)
+                  Console.WriteLine(num);
 
-/*
-    This code produces the following output:
+                /*
+                This code produces the following output:
 
-    1
-    4
-    9
-    16
-    25
-    36
-    49
-    64
-    81
-    100
-*/</EquivalentCode>
+                1
+                4
+                9
+                16
+                25
+                36
+                49
+                64
+                81
+                100
+                */
+              </EquivalentCode>
             </Example>
             <Example>
               <HeaderRemarks>The following code example demonstrates how to use `Select` to project a single field and a group of fields over a sequence of values.</HeaderRemarks>
-              <ExampleCode>class ExampleClass
-{
-    public string StringProperty1 { get; set; }
-    public string StringProperty2 { get; set; }
-}
+              <ExampleCode>
+                class ExampleClass
+                {
+                  public string StringProperty1 { get; set; }
+                  public string StringProperty2 { get; set; }
+                }
 
-//Select a single field
-var singleField = qry.Select("StringProperty");
-    
-//Select a group of fields
-var dynamicObject = qry.Select("new (StringProperty1, StringProperty2 as OtherStringPropertyName)");</ExampleCode>
+                //Select a single field
+                var singleField = qry.Select("StringProperty");
+
+                //Select a group of fields
+                var dynamicObject = qry.Select("new (StringProperty1, StringProperty2 as OtherStringPropertyName)");
+              </ExampleCode>
             </Example>
           </Examples>
         </Method>
@@ -203,76 +211,73 @@ var dynamicObject = qry.Select("new (StringProperty1, StringProperty2 as OtherSt
           <Examples>
             <Example>
               <HeaderRemarks>The following code example demonstrates how to use `SelectMany` to perform a one-to-many projection over an array.</HeaderRemarks>
-              <ExampleCode>class PetOwner
-{
-    public string Name { get; set; }
-    public List&lt;String&gt; Pets { get; set; }
-}
+              <ExampleCode>
+                class PetOwner
+                {
+                  public string Name { get; set; }
+                  public List&lt;String&gt; Pets { get; set; }
+                }
 
-public static void SelectManyEx1()
-{
-    PetOwner[] petOwners =
-        { new PetOwner { Name="Higa, Sidney",
-              Pets = new List&lt;string&gt;{ "Scruffy", "Sam" } },
-          new PetOwner { Name="Ashkenazi, Ronen",
-              Pets = new List&lt;string&gt;{ "Walker", "Sugar" } },
-          new PetOwner { Name="Price, Vernette",
-              Pets = new List&lt;string&gt;{ "Scratches", "Diesel" } } };
+                public static void SelectManyEx1()
+                {
+                  PetOwner[] petOwners = { 
+                    new PetOwner { Name="Higa, Sidney", Pets = new List&lt;string&gt;{ "Scruffy", "Sam" } },
+                    new PetOwner { Name="Ashkenazi, Ronen", Pets = new List&lt;string&gt;{ "Walker", "Sugar" } },
+                    new PetOwner { Name="Price, Vernette", Pets = new List&lt;string&gt;{ "Scratches", "Diesel" } } 
+                  };
 
-    // Query using SelectMany().
-    IEnumerable query1 =
-        petOwners.AsQueryable().SelectMany("Pets");
+                  // Query using SelectMany().
+                  IEnumerable query1 = petOwners.AsQueryable().SelectMany("Pets");
 
-    Console.WriteLine("Using SelectMany():");
+                  Console.WriteLine("Using SelectMany():");
 
-    // Only one foreach loop is required to iterate through the
-    // results because it is a one-dimensional collection.
-    foreach (string pet in query1)
-        Console.WriteLine(pet);
+                  // Only one foreach loop is required to iterate through the
+                  // results because it is a one-dimensional collection.
+                  foreach (string pet in query1)
+                    Console.WriteLine(pet);
 
-    // This code shows how to use Select() instead of SelectMany().
-    IEnumerable query2 =
-        petOwners.AsQueryable().Select("Pets");
+                  // This code shows how to use Select() instead of SelectMany().
+                  IEnumerable query2 = petOwners.AsQueryable().Select("Pets");
 
-    Console.WriteLine("\nUsing Select():");
+                  Console.WriteLine("\nUsing Select():");
 
-    // Notice that two foreach loops are required to iterate through
-    // the results because the query returns a collection of arrays.
-    foreach (IEnumerable petList in query2)
-    {
-        foreach (string pet in petList)
-        {
-            Console.WriteLine(pet);
-        }
-        Console.WriteLine();
-    }
-}
+                  // Notice that two foreach loops are required to iterate through
+                  // the results because the query returns a collection of arrays.
+                  foreach (IEnumerable petList in query2)
+                  {
+                    foreach (string pet in petList)
+                      Console.WriteLine(pet);
+                  
+                    Console.WriteLine();
+                  }
+                }
 
-/*
-    This code produces the following output:
+                /*
+                This code produces the following output:
 
-    Using SelectMany():
-    Scruffy
-    Sam
-    Walker
-    Sugar
-    Scratches
-    Diesel
+                Using SelectMany(): 
+                Scruffy
+                Sam
+                Walker
+                Sugar
+                Scratches
+                Diesel
 
-    Using Select():
-    Scruffy
-    Sam
+                Using Select():
+                Scruffy
+                Sam
 
-    Walker
-    Sugar
+                Walker
+                Sugar
 
-    Scratches
-    Diesel
-*/</ExampleCode>
+                Scratches
+                Diesel
+                */
+              </ExampleCode>
             </Example>
           </Examples>
         </Method>
-        
+
         <Method name="SelectMany" isExtensionMethod="true" hasParamsArgument="true" returnType="IQueryable">
           <Description>Projects each element of a sequence to an `IQueryable` and invokes a result selector function on each element therein. The resulting values from each intermediate sequence are combined into a single, one-dimensional sequence and returned.</Description>
           <ReturnDescription>An `IQueryable` whose elements are the result of invoking the one-to-many projection function collectionSelector on each element of source and then mapping each of those sequence elements and their corresponding source element to a result element.</ReturnDescription>
@@ -296,49 +301,53 @@ public static void SelectManyEx1()
           <Examples>
             <Example>
               <HeaderRemarks>The following code example demonstrates how to use `SelectMany` to perform the one-to-many projection function collectionSelector on each element of source and then mapping each of those sequence elements and their corresponding source element to a result element.</HeaderRemarks>
-              <ExampleCode>class PetOwner
-{
-    public string Name { get; set; }
-}
+              <ExampleCode>
+                class PetOwner
+                {
+                  public string Name { get; set; }
+                }
 
-class Pet
-{
-    public string Name { get; set; }
-}
+                class Pet
+                {
+                  public string Name { get; set; }
+                }
 
-public static void SelectManyEx1()
-{
-    PetOwner[] petOwners =
-    { 
-      new PetOwner { Name="Higa, Sidney" },
-      new PetOwner { Name="Ashkenazi, Ronen" },
-      new PetOwner { Name="Price, Vernette" }
-    };
-    
-    Pet[] pets =
-    { 
-      new Pet { Name="Sidney's Fluffy" },
-      new Pet { Name="Ronen's Batman" },
-      new Pet { Name="Vernette's Heart" }
-    };
+                public static void SelectManyEx1()
+                {
+                  PetOwner[] petOwners =
+                  {
+                    new PetOwner { Name="Higa, Sidney" },
+                    new PetOwner { Name="Ashkenazi, Ronen" },
+                    new PetOwner { Name="Price, Vernette" }
+                  };
 
-    // Query using SelectMany().
-    IEnumerable resultQuery = petOwners.AsQueryable().SelectMany("@0", "new(x as Owner, y as Pet)", new object[] { pets.AsQueryable() })
-      .Where("it.Pet.Name.StartsWith(it.Owner.Name)");
+                  Pet[] pets =
+                  {
+                    new Pet { Name="Sidney's Fluffy" },
+                    new Pet { Name="Ronen's Batman" },
+                    new Pet { Name="Vernette's Heart" }
+                  };
 
-    Console.WriteLine("Using SelectMany():");
-    
-    foreach (dynamic pair in resultQuery)
-        Console.WriteLine("{0}:{1}", pair.Owner.Name, pair.Pet.Name);
+                  // Query using SelectMany().
+                  IEnumerable resultQuery = petOwners.AsQueryable()
+                    .SelectMany("@0", "new(x as Owner, y as Pet)", new object[] { pets.AsQueryable() })
+                    .Where("it.Pet.Name.StartsWith(it.Owner.Name)");
 
-/*
-    This code produces the following output:
+                  Console.WriteLine("Using SelectMany():");
 
-    Using SelectMany():
-    Higa, Sidney:Sidney's Fluffy
-    Ashkenazi, Rone:Ronen's Batman
-    Price, Vernette:Vernette's Heart
-*/</ExampleCode>
+                  foreach (dynamic pair in resultQuery)
+                    Console.WriteLine("{0}:{1}", pair.Owner.Name, pair.Pet.Name);
+                }
+                
+                /*
+                This code produces the following output:
+
+                Using SelectMany():
+                Higa, Sidney:Sidney's Fluffy
+                Ashkenazi, Rone:Ronen's Batman
+                Price, Vernette:Vernette's Heart
+                */
+              </ExampleCode>
             </Example>
           </Examples>
         </Method>
@@ -541,116 +550,101 @@ public static void SelectManyEx1()
           <Examples>
             <Example>
               <HeaderRemarks>The following code example demonstrates how to use `Join` to perform an inner join of two sequences based on a common key using Dynamic LINQ.</HeaderRemarks>
-              <ExampleCode>class Person
-{
-    public string Name { get; set; }
-}
+              <ExampleCode>
+                class Person
+                {
+                  public string Name { get; set; }
+                }
 
-class Pet
-{
-    public string Name { get; set; }
-    public Person Owner { get; set; }
-}
+                class Pet
+                {
+                  public string Name { get; set; }
+                  public Person Owner { get; set; }
+                }
 
-public static void JoinEx1()
-{
-    Person magnus = new Person { Name = "Hedlund, Magnus" };
-    Person terry = new Person { Name = "Adams, Terry" };
-    Person charlotte = new Person { Name = "Weiss, Charlotte" };
+                public static void JoinEx1()
+                {
+                  Person magnus = new Person { Name = "Hedlund, Magnus" };
+                  Person terry = new Person { Name = "Adams, Terry" };
+                  Person charlotte = new Person { Name = "Weiss, Charlotte" };
 
-    Pet barley = new Pet { Name = "Barley", Owner = terry };
-    Pet boots = new Pet { Name = "Boots", Owner = terry };
-    Pet whiskers = new Pet { Name = "Whiskers", Owner = charlotte };
-    Pet daisy = new Pet { Name = "Daisy", Owner = magnus };
+                  Pet barley = new Pet { Name = "Barley", Owner = terry };
+                  Pet boots = new Pet { Name = "Boots", Owner = terry };
+                  Pet whiskers = new Pet { Name = "Whiskers", Owner = charlotte };
+                  Pet daisy = new Pet { Name = "Daisy", Owner = magnus };
 
-    List&lt;Person&gt; people = new List&lt;Person&gt; { magnus, terry, charlotte };
-    List&lt;Pet&gt; pets = new List&lt;Pet&gt; { barley, boots, whiskers, daisy };
+                  List&lt;Person&gt; people = new List&lt;Person&gt; { magnus, terry, charlotte };
+                  List&lt;Pet&gt; pets = new List&lt;Pet&gt; { barley, boots, whiskers, daisy };
 
-    // Join the list of Person objects and the list of Pet objects 
-    // to create a list of person-pet pairs where each element is 
-    // an anonymous type that contains the name of pet and the name
-    // of the person that owns the pet.
-    var query = people.AsQueryable().Join(
-        pets,
-        "it",
-        "Owner",
-        "new(outer.Name as OwnerName, inner.Name as Pet)";
-      
+                  // Join the list of Person objects and the list of Pet objects
+                  // to create a list of person-pet pairs where each element is
+                  // an anonymous type that contains the name of pet and the name
+                  // of the person that owns the pet.
+                  var query = people.AsQueryable().Join(pets, "it", "Owner", "new(outer.Name as OwnerName, inner.Name as Pet)";
 
-    foreach (var obj in query)
-    {
-        Console.WriteLine(
-            "{0} - {1}",
-            obj.OwnerName,
-            obj.Pet);
-    }
-}
+                  foreach (var obj in query)
+                    Console.WriteLine("{0} - {1}", obj.OwnerName, obj.Pet);
+                }
 
-/*
-    This code produces the following output:
+                /*
+                This code produces the following output:
 
-    Hedlund, Magnus - Daisy
-    Adams, Terry - Barley
-    Adams, Terry - Boots
-    Weiss, Charlotte - Whiskers
-*/</ExampleCode>
-              <EquivalentCode>class Person
-{
-    public string Name { get; set; }
-}
+                Hedlund, Magnus - Daisy
+                Adams, Terry - Barley
+                Adams, Terry - Boots
+                Weiss, Charlotte - Whiskers
+                */
+              </ExampleCode>
+              <EquivalentCode>
+                class Person
+                {
+                  public string Name { get; set; }
+                }
 
-class Pet
-{
-    public string Name { get; set; }
-    public Person Owner { get; set; }
-}
+                class Pet
+                {
+                  public string Name { get; set; }
+                  public Person Owner { get; set; }
+                }
 
-public static void JoinEx1()
-{
-    Person magnus = new Person { Name = "Hedlund, Magnus" };
-    Person terry = new Person { Name = "Adams, Terry" };
-    Person charlotte = new Person { Name = "Weiss, Charlotte" };
+                public static void JoinEx1()
+                {
+                  Person magnus = new Person { Name = "Hedlund, Magnus" };
+                  Person terry = new Person { Name = "Adams, Terry" };
+                  Person charlotte = new Person { Name = "Weiss, Charlotte" };
 
-    Pet barley = new Pet { Name = "Barley", Owner = terry };
-    Pet boots = new Pet { Name = "Boots", Owner = terry };
-    Pet whiskers = new Pet { Name = "Whiskers", Owner = charlotte };
-    Pet daisy = new Pet { Name = "Daisy", Owner = magnus };
+                  Pet barley = new Pet { Name = "Barley", Owner = terry };
+                  Pet boots = new Pet { Name = "Boots", Owner = terry };
+                  Pet whiskers = new Pet { Name = "Whiskers", Owner = charlotte };
+                  Pet daisy = new Pet { Name = "Daisy", Owner = magnus };
 
-    List&lt;Person&gt; people = new List&lt;Person&gt; { magnus, terry, charlotte };
-    List&lt;Pet&gt; pets = new List&lt;Pet&gt; { barley, boots, whiskers, daisy };
+                  List&lt;Person&gt; people = new List&lt;Person&gt; { magnus, terry, charlotte };
+                  List&lt;Pet&gt; pets = new List&lt;Pet&gt; { barley, boots, whiskers, daisy };
 
-    // Join the list of Person objects and the list of Pet objects 
-    // to create a list of person-pet pairs where each element is 
-    // an anonymous type that contains the name of pet and the name
-    // of the person that owns the pet.
-    var query = people.AsQueryable().Join(
-        pets,
-        person => person,
-        pet => pet.Owner,
-        (person, pet) =>
-            new { OwnerName = person.Name, Pet = pet.Name });
+                  // Join the list of Person objects and the list of Pet objects
+                  // to create a list of person-pet pairs where each element is
+                  // an anonymous type that contains the name of pet and the name
+                  // of the person that owns the pet.
+                  var query = people.AsQueryable()
+                    .Join(pets, person => person, pet => pet.Owner, (person, pet) => new { OwnerName = person.Name, Pet = pet.Name });
 
-    foreach (var obj in query)
-    {
-        Console.WriteLine(
-            "{0} - {1}",
-            obj.OwnerName,
-            obj.Pet);
-    }
-}
+                  foreach (var obj in query)
+                    Console.WriteLine("{0} - {1}", obj.OwnerName, obj.Pet);
+                }
 
-/*
-    This code produces the following output:
+                /*
+                This code produces the following output:
 
-    Hedlund, Magnus - Daisy
-    Adams, Terry - Barley
-    Adams, Terry - Boots
-    Weiss, Charlotte - Whiskers
-*/</EquivalentCode>
+                Hedlund, Magnus - Daisy
+                Adams, Terry - Barley
+                Adams, Terry - Boots
+                Weiss, Charlotte - Whiskers
+                */
+              </EquivalentCode>
             </Example>
           </Examples>
         </Method>
-         
+
         <Method name="Join&lt;TElement&gt;" returnType="IQueryable&lt;TElement&gt;" isExtensionMethod="true" hasParamsArgument="true">
           <Description>Correlates the elements of two sequences based on matching keys.</Description>
           <Remarks>This `Join` overload only works on elements where both sequences and the resulting element match.</Remarks>
@@ -678,112 +672,97 @@ public static void JoinEx1()
           <Examples>
             <Example>
               <HeaderRemarks>The following code example demonstrates how to use `Join` to perform an inner join of two sequences based on a common key using Dynamic LINQ.</HeaderRemarks>
-              <ExampleCode>class Person
-{
-    public string Name { get; set; }
-}
+              <ExampleCode>
+                class Person
+                {
+                  public string Name { get; set; }
+                }
 
-class Pet
-{
-    public string Name { get; set; }
-    public Person Owner { get; set; }
-}
+                class Pet
+                {
+                  public string Name { get; set; }
+                  public Person Owner { get; set; }
+                }
 
-public static void JoinEx1()
-{
-    Person magnus = new Person { Name = "Hedlund, Magnus" };
-    Person terry = new Person { Name = "Adams, Terry" };
-    Person charlotte = new Person { Name = "Weiss, Charlotte" };
+                public static void JoinEx1()
+                {
+                  Person magnus = new Person { Name = "Hedlund, Magnus" };
+                  Person terry = new Person { Name = "Adams, Terry" };
+                  Person charlotte = new Person { Name = "Weiss, Charlotte" };
 
-    Pet barley = new Pet { Name = "Barley", Owner = terry };
-    Pet boots = new Pet { Name = "Boots", Owner = terry };
-    Pet whiskers = new Pet { Name = "Whiskers", Owner = charlotte };
-    Pet daisy = new Pet { Name = "Daisy", Owner = magnus };
+                  Pet barley = new Pet { Name = "Barley", Owner = terry };
+                  Pet boots = new Pet { Name = "Boots", Owner = terry };
+                  Pet whiskers = new Pet { Name = "Whiskers", Owner = charlotte };
+                  Pet daisy = new Pet { Name = "Daisy", Owner = magnus };
 
-    List&lt;Person&gt; people = new List&lt;Person&gt; { magnus, terry, charlotte };
-    List&lt;Pet&gt; pets = new List&lt;Pet&gt; { barley, boots, whiskers, daisy };
+                  List&lt;Person&gt; people = new List&lt;Person&gt; { magnus, terry, charlotte };
+                  List&lt;Pet&gt; pets = new List&lt;Pet&gt; { barley, boots, whiskers, daisy };
 
-    // Join the list of Person objects and the list of Pet objects 
-    // to create a list of person-pet pairs where each element is 
-    // an anonymous type that contains the name of pet and the name
-    // of the person that owns the pet.
-    var query = people.AsQueryable().Join(
-        pets,
-        "it",
-        "Owner",
-        "new(outer.Name as OwnerName, inner.Name as Pet)";
-      
+                  // Join the list of Person objects and the list of Pet objects
+                  // to create a list of person-pet pairs where each element is
+                  // an anonymous type that contains the name of pet and the name
+                  // of the person that owns the pet.
+                  var query = people.AsQueryable().Join(pets, "it", "Owner", "new(outer.Name as OwnerName, inner.Name as Pet)";
 
-    foreach (var obj in query)
-    {
-        Console.WriteLine(
-            "{0} - {1}",
-            obj.OwnerName,
-            obj.Pet);
-    }
-}
+                  foreach (var obj in query)
+                    Console.WriteLine("{0} - {1}", obj.OwnerName, obj.Pet);
+                }
 
-/*
-    This code produces the following output:
+                /*
+                This code produces the following output:
 
-    Hedlund, Magnus - Daisy
-    Adams, Terry - Barley
-    Adams, Terry - Boots
-    Weiss, Charlotte - Whiskers
-*/</ExampleCode>
-              <EquivalentCode>class Person
-{
-    public string Name { get; set; }
-}
+                Hedlund, Magnus - Daisy
+                Adams, Terry - Barley
+                Adams, Terry - Boots
+                Weiss, Charlotte - Whiskers
+                */
+              </ExampleCode>
+              <EquivalentCode>
+                class Person
+                {
+                  public string Name { get; set; }
+                }
 
-class Pet
-{
-    public string Name { get; set; }
-    public Person Owner { get; set; }
-}
+                class Pet
+                {
+                  public string Name { get; set; }
+                  public Person Owner { get; set; }
+                }
 
-public static void JoinEx1()
-{
-    Person magnus = new Person { Name = "Hedlund, Magnus" };
-    Person terry = new Person { Name = "Adams, Terry" };
-    Person charlotte = new Person { Name = "Weiss, Charlotte" };
+                public static void JoinEx1()
+                {
+                  Person magnus = new Person { Name = "Hedlund, Magnus" };
+                  Person terry = new Person { Name = "Adams, Terry" };
+                  Person charlotte = new Person { Name = "Weiss, Charlotte" };
 
-    Pet barley = new Pet { Name = "Barley", Owner = terry };
-    Pet boots = new Pet { Name = "Boots", Owner = terry };
-    Pet whiskers = new Pet { Name = "Whiskers", Owner = charlotte };
-    Pet daisy = new Pet { Name = "Daisy", Owner = magnus };
+                  Pet barley = new Pet { Name = "Barley", Owner = terry };
+                  Pet boots = new Pet { Name = "Boots", Owner = terry };
+                  Pet whiskers = new Pet { Name = "Whiskers", Owner = charlotte };
+                  Pet daisy = new Pet { Name = "Daisy", Owner = magnus };
 
-    List&lt;Person&gt; people = new List&lt;Person&gt; { magnus, terry, charlotte };
-    List&lt;Pet&gt; pets = new List&lt;Pet&gt; { barley, boots, whiskers, daisy };
+                  List&lt;Person&gt; people = new List&lt;Person&gt; { magnus, terry, charlotte };
+                  List&lt;Pet&gt; pets = new List&lt;Pet&gt; { barley, boots, whiskers, daisy };
 
-    // Join the list of Person objects and the list of Pet objects 
-    // to create a list of person-pet pairs where each element is 
-    // an anonymous type that contains the name of pet and the name
-    // of the person that owns the pet.
-    var query = people.AsQueryable().Join(
-        pets,
-        person => person,
-        pet => pet.Owner,
-        (person, pet) =>
-            new { OwnerName = person.Name, Pet = pet.Name });
+                  // Join the list of Person objects and the list of Pet objects
+                  // to create a list of person-pet pairs where each element is
+                  // an anonymous type that contains the name of pet and the name
+                  // of the person that owns the pet.
+                  var query = people.AsQueryable()
+                    .Join(pets, person => person, pet => pet.Owner, (person, pet) => new { OwnerName = person.Name, Pet = pet.Name });
 
-    foreach (var obj in query)
-    {
-        Console.WriteLine(
-            "{0} - {1}",
-            obj.OwnerName,
-            obj.Pet);
-    }
-}
+                  foreach (var obj in query)
+                    Console.WriteLine("{0} - {1}", obj.OwnerName, obj.Pet);
+                }
 
-/*
-    This code produces the following output:
+                /*
+                This code produces the following output:
 
-    Hedlund, Magnus - Daisy
-    Adams, Terry - Barley
-    Adams, Terry - Boots
-    Weiss, Charlotte - Whiskers
-*/</EquivalentCode>
+                Hedlund, Magnus - Daisy
+                Adams, Terry - Barley
+                Adams, Terry - Boots
+                Weiss, Charlotte - Whiskers
+                */
+              </EquivalentCode>
             </Example>
           </Examples>
         </Method>
@@ -805,81 +784,73 @@ public static void JoinEx1()
               <ExampleCode>
                 class Person
                 {
-                    public string Name { get; set; }
+                  public string Name { get; set; }
                 }
 
                 class Pet
                 {
-                    public string Name { get; set; }
-                    public Person Owner { get; set; }
+                  public string Name { get; set; }
+                  public Person Owner { get; set; }
+                }
+
+                public static void UnionEx1
+                {
+                  Person magnus = new Person { Name = "Hedlund, Magnus" };
+                  Person terry = new Person { Name = "Adams, Terry" };
+                  Person charlotte = new Person { Name = "Weiss, Charlotte" };
+
+                  List&lt;Person&gt; group_a = new List&lt;Person&gt; { magnus, terry };
+                  List&lt;Person&gt; group_b = new List&lt;Person&gt; { magnus, charlotte };
+
+                  var realQuery = group_a.AsQueryable().UnionAll(group_b);
+                  var realResult = realQuery.ToArray();
+
+                  foreach (var obj in query)
+                    Console.WriteLine("{0} - {1}", obj.OwnerName, obj.Pet);
                 }
                 
-                public static void UnionEx1 
-                {
-                    Person magnus = new Person { Name = "Hedlund, Magnus" };
-                    Person terry = new Person { Name = "Adams, Terry" };
-                    Person charlotte = new Person { Name = "Weiss, Charlotte" };
-
-                    List&lt;Person&gt; group_a = new List&lt;Person&gt; { magnus, terry };
-                    List&lt;Person&gt; group_b = new List&lt;Person&gt; { magnus, charlotte };
-
-                    var realQuery = group_a.AsQueryable().UnionAll(group_b);
-                    var realResult = realQuery.ToArray();
-                    
-                    foreach (var obj in query)
-                    {
-                        Console.WriteLine(
-                            "{0} - {1}",
-                            obj.OwnerName,
-                            obj.Pet);
-                    }
-                }
                 /*
-                    This code produces the following output:
+                This code produces the following output:
 
-                    Hedlund, Magnus - Daisy
-                    Adams, Terry - Barley
-                    Weiss, Charlotte - Whiskers
+                Hedlund, Magnus - Daisy
+                Adams, Terry - Barley
+                Weiss, Charlotte - Whiskers
                 */
               </ExampleCode>
               <EquivalentCode>
                 class Person
                 {
-                    public string Name { get; set; }
+                  public string Name { get; set; }
                 }
 
                 class Pet
                 {
-                    public string Name { get; set; }
-                    public Person Owner { get; set; }
+                  public string Name { get; set; }
+                  public Person Owner { get; set; }
+                }
+
+                public static void UnionEx1
+                {
+                  Person magnus = new Person { Name = "Hedlund, Magnus" };
+                  Person terry = new Person { Name = "Adams, Terry" };
+                  Person charlotte = new Person { Name = "Weiss, Charlotte" };
+
+                  List&lt;Person&gt; group_a = new List&lt;Person&gt; { magnus, terry };
+                  List&lt;Person&gt; group_b = new List&lt;Person&gt; { magnus, charlotte };
+
+                  var realQuery = group_a.AsQueryable().Union(group_b);
+                  var realResult = realQuery.ToArray();
+
+                  foreach (var obj in query)
+                    Console.WriteLine("{0} - {1}", obj.OwnerName, obj.Pet);
                 }
                 
-                public static void UnionEx1 
-                {
-                    Person magnus = new Person { Name = "Hedlund, Magnus" };
-                    Person terry = new Person { Name = "Adams, Terry" };
-                    Person charlotte = new Person { Name = "Weiss, Charlotte" };
-
-                    List&lt;Person&gt; group_a = new List&lt;Person&gt; { magnus, terry };
-                    List&lt;Person&gt; group_b = new List&lt;Person&gt; { magnus, charlotte };
-
-                    var realQuery = group_a.AsQueryable().Union(group_b);
-                    var realResult = realQuery.ToArray();
-                    
-                    foreach (var obj in query)
-                    {
-                        Console.WriteLine(
-                            "{0} - {1}",
-                            obj.OwnerName,
-                            obj.Pet);
-                    }
-                }
                 /*
-                    This code produces the following output:
+                This code produces the following output:
 
-                    Hedlund, Magnus - Daisy
-                    Adams, Terry - Barley
-                    Weiss, Charlotte - Whiskers
+                Hedlund, Magnus - Daisy
+                Adams, Terry - Barley
+                Weiss, Charlotte - Whiskers
                 */
               </EquivalentCode>
             </Example>
@@ -903,81 +874,73 @@ public static void JoinEx1()
               <ExampleCode>
                 class Person
                 {
-                    public string Name { get; set; }
+                  public string Name { get; set; }
                 }
 
                 class Pet
                 {
-                    public string Name { get; set; }
-                    public Person Owner { get; set; }
+                  public string Name { get; set; }
+                  public Person Owner { get; set; }
+                }
+
+                public static void UnionEx1
+                {
+                  Person magnus = new Person { Name = "Hedlund, Magnus" };
+                  Person terry = new Person { Name = "Adams, Terry" };
+                  Person charlotte = new Person { Name = "Weiss, Charlotte" };
+
+                  List&lt;Person&gt; group_a = new List&lt;Person&gt; { magnus, terry };
+                  List&lt;Person&gt; group_b = new List&lt;Person&gt; { magnus, charlotte };
+
+                  var realQuery = group_a.AsQueryable().UnionAll(group_b);
+                  var realResult = realQuery.ToArray();
+
+                  foreach (var obj in query)
+                    Console.WriteLine("{0} - {1}", obj.OwnerName, obj.Pet);
                 }
                 
-                public static void UnionEx1 
-                {
-                    Person magnus = new Person { Name = "Hedlund, Magnus" };
-                    Person terry = new Person { Name = "Adams, Terry" };
-                    Person charlotte = new Person { Name = "Weiss, Charlotte" };
-
-                    List&lt;Person&gt; group_a = new List&lt;Person&gt; { magnus, terry };
-                    List&lt;Person&gt; group_b = new List&lt;Person&gt; { magnus, charlotte };
-
-                    var realQuery = group_a.AsQueryable().UnionAll(group_b);
-                    var realResult = realQuery.ToArray();
-                    
-                    foreach (var obj in query)
-                    {
-                        Console.WriteLine(
-                            "{0} - {1}",
-                            obj.OwnerName,
-                            obj.Pet);
-                    }
-                }
                 /*
-                    This code produces the following output:
+                This code produces the following output:
 
-                    Hedlund, Magnus - Daisy
-                    Adams, Terry - Barley
-                    Weiss, Charlotte - Whiskers
+                Hedlund, Magnus - Daisy
+                Adams, Terry - Barley
+                Weiss, Charlotte - Whiskers
                 */
               </ExampleCode>
               <EquivalentCode>
                 class Person
                 {
-                    public string Name { get; set; }
+                  public string Name { get; set; }
                 }
 
                 class Pet
                 {
-                    public string Name { get; set; }
-                    public Person Owner { get; set; }
+                  public string Name { get; set; }
+                  public Person Owner { get; set; }
+                }
+
+                public static void UnionEx1
+                {
+                  Person magnus = new Person { Name = "Hedlund, Magnus" };
+                  Person terry = new Person { Name = "Adams, Terry" };
+                  Person charlotte = new Person { Name = "Weiss, Charlotte" };
+
+                  List&lt;Person&gt; group_a = new List&lt;Person&gt; { magnus, terry };
+                  List&lt;Person&gt; group_b = new List&lt;Person&gt; { magnus, charlotte };
+
+                  var realQuery = group_a.AsQueryable().Union(group_b);
+                  var realResult = realQuery.ToArray();
+
+                  foreach (var obj in query)
+                    Console.WriteLine("{0} - {1}", obj.OwnerName, obj.Pet);
                 }
                 
-                public static void UnionEx1 
-                {
-                    Person magnus = new Person { Name = "Hedlund, Magnus" };
-                    Person terry = new Person { Name = "Adams, Terry" };
-                    Person charlotte = new Person { Name = "Weiss, Charlotte" };
-
-                    List&lt;Person&gt; group_a = new List&lt;Person&gt; { magnus, terry };
-                    List&lt;Person&gt; group_b = new List&lt;Person&gt; { magnus, charlotte };
-
-                    var realQuery = group_a.AsQueryable().Union(group_b);
-                    var realResult = realQuery.ToArray();
-                    
-                    foreach (var obj in query)
-                    {
-                        Console.WriteLine(
-                            "{0} - {1}",
-                            obj.OwnerName,
-                            obj.Pet);
-                    }
-                }
                 /*
-                    This code produces the following output:
+                This code produces the following output:
 
-                    Hedlund, Magnus - Daisy
-                    Adams, Terry - Barley
-                    Weiss, Charlotte - Whiskers
+                Hedlund, Magnus - Daisy
+                Adams, Terry - Barley
+                Weiss, Charlotte - Whiskers
                 */
               </EquivalentCode>
             </Example>

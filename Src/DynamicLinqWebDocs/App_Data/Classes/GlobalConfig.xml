@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <DynLINQDoc xmlns="http://schemas.plainlogic.net/dynamiclinqdocs/2014">
-  
+
   <Classes>
 
     <Class name="GlobalConfig" namespace="System.Linq.Dynamic">
@@ -17,7 +17,7 @@
         </Property>
       </Properties>
     </Class>
-    
+
   </Classes>
-  
+
 </DynLINQDoc>

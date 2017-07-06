@@ -1,13 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8" ?> 
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <DynLINQDoc xmlns="http://schemas.plainlogic.net/dynamiclinqdocs/2014">
-  
+
   <Classes>
     <Class name="BasicQueryable" namespace="System.Linq.Dynamic">
       <Description>Provides a set of **static** methods for querying data structures that implement `IQueryable`.</Description>
       <Remarks>The purpose of this class is to mimic several basic methods implemented by the standard `System.Linq.IQueryable&lt;T&gt;`, but that work with `IQueryable`.</Remarks>
-      
+
       <Methods>
-        
+
         <Method name="Take" isExtensionMethod="true" returnType="IQueryable">
           <Description>Returns a specified number of contiguous elements from the start of a sequence.</Description>
           <Remarks>`Take` enumerates *source* and *yields* elements until *count* elements have been yielded or *source* contains no more elements.&#xA;&#xA;If *count* is less than or equal to zero, *source* is not enumerated and an empty `IQueryable` is returned.</Remarks>
@@ -23,24 +23,26 @@
           <Examples>
             <Example>
               <HeaderRemarks>The following code example demonstrates how to use `Take(IQueryable, Int32)` to return elements from the start of a sequence.</HeaderRemarks>
-              <ExampleCode>int[] grades = { 59, 82, 70, 56, 92, 98, 85 };
-              
-// Sort the grades in descending order and take the first three.
-IEnumerable&lt;int&gt; topThreeGrades =
-    grades.AsQueryable().OrderByDescending(grade => grade).Take(3);
-    
-Console.WriteLine("The top three grades are:");
-foreach (int grade in topThreeGrades)
-    Console.WriteLine(grade);
-  
-/*
-    This code produces the following output:
+              <ExampleCode>
+                int[] grades = { 59, 82, 70, 56, 92, 98, 85 };
 
-    The top three grades are:
-    98
-    92
-    85
-*/</ExampleCode>
+                // Sort the grades in descending order and take the first three.
+                IEnumerable&lt;int&gt; topThreeGrades =
+                grades.AsQueryable().OrderByDescending(grade => grade).Take(3);
+
+                Console.WriteLine("The top three grades are:");
+                foreach (int grade in topThreeGrades)
+                  Console.WriteLine(grade);
+
+                /*
+                This code produces the following output:
+
+                The top three grades are:
+                98
+                92
+                85
+                */
+              </ExampleCode>
             </Example>
           </Examples>
         </Method>
@@ -59,29 +61,31 @@ foreach (int grade in topThreeGrades)
           <Examples>
             <Example>
               <HeaderRemarks>The following code example demonstrates how to use `Skip(IQueryable, Int32)` to skip a specified number of elements in a sorted array and return the remaining elements.</HeaderRemarks>
-              <ExampleCode>int[] grades = { 59, 82, 70, 56, 92, 98, 85 };
+              <ExampleCode>
+                int[] grades = { 59, 82, 70, 56, 92, 98, 85 };
 
-// Sort the grades in descending order get all except the first three.
-IEnumerable&lt;int&gt; lowerGrades =
-    grades.AsQueryable().OrderByDescending(grade => grade).Skip(3);
+                // Sort the grades in descending order get all except the first three.
+                IEnumerable&lt;int&gt; lowerGrades =
+                grades.AsQueryable().OrderByDescending(grade => grade).Skip(3);
 
-Console.WriteLine("All grades except the top three are:");
-foreach (int grade in topThreeGrades)
-    Console.WriteLine(grade);
+                Console.WriteLine("All grades except the top three are:");
+                foreach (int grade in topThreeGrades)
+                  Console.WriteLine(grade);
 
-/*
-    This code produces the following output:
+                /*
+                This code produces the following output:
 
-    All grades except the top three are:
-    82
-    70
-    59
-    56
-*/</ExampleCode>
+                All grades except the top three are:
+                82
+                70
+                59
+                56
+                */
+              </ExampleCode>
             </Example>
           </Examples>
         </Method>
-        
+
         <Method name="Reverse" isExtensionMethod="true" returnType="IQueryable">
           <Description>Inverts the order of the elements in a sequence.</Description>
           <ReturnDescription>A `IQueryable` whose elements correspond to those of the input sequence in reverse order.</ReturnDescription>
@@ -93,25 +97,26 @@ foreach (int grade in topThreeGrades)
           <Examples>
             <Example>
               <HeaderRemarks>The following code example demonstrates how to use `Reverse(IQueryable)` to reverse the order of elements in an array.</HeaderRemarks>
-              <ExampleCode>char[] apple = { 'a', 'p', 'p', 'l', 'e' };
+              <ExampleCode>
+                char[] apple = { 'a', 'p', 'p', 'l', 'e' };
 
-// Reverse the order of the characters in the collection.
-IQueryable query = apple.AsQueryable();
-IQueryable reversed = query.Reverse();
+                // Reverse the order of the characters in the collection.
+                IQueryable query = apple.AsQueryable();
+                IQueryable reversed = query.Reverse();
 
-foreach (char chr in reversed)
-    Console.Write(chr + " ");
-Console.WriteLine();
+                foreach (char chr in reversed)
+                  Console.Write(chr + " ");
 
-/*
-    This code produces the following output:
+                /*
+                This code produces the following output:
 
-    e l p p a
-*/</ExampleCode>
+                e l p p a
+                */
+              </ExampleCode>
             </Example>
           </Examples>
         </Method>
-        
+
         <Method name="Distinct" isExtensionMethod="true" returnType="IQueryable">
           <Description>Returns distinct elements from a sequence.</Description>
           <ReturnDescription>A `IQueryable` contains distinct elements from source.</ReturnDescription>
@@ -131,8 +136,7 @@ Console.WriteLine();
                 IQueryable distinct = query.Distinct();
 
                 foreach (char chr in distinct)
-                Console.Write(chr + " ");
-                Console.WriteLine();
+                  Console.Write(chr + " ");
 
                 /*
                 This code produces the following output:
@@ -175,7 +179,7 @@ Console.WriteLine();
             </Example>
           </Examples>
         </Method>
-    
+
         <Method name="Any" isExtensionMethod="true" returnType="bool">
           <Description>Determines whether a sequence contains any elements.</Description>
           <ReturnDescription>`true` if the source sequence contains any elements; otherwise, `false`.</ReturnDescription>
@@ -187,17 +191,18 @@ Console.WriteLine();
           <Examples>
             <Example>
               <HeaderRemarks>The following code example demonstrates how to use `Any(IQueryable)` to determine whether a sequence contains any elements.</HeaderRemarks>
-              <ExampleCode>List&lt;int&gt; numbers = new List&lt;int&gt; { 1, 2 };
+              <ExampleCode>
+                List&lt;int&gt; numbers = new List&lt;int&gt; { 1, 2 };
 
-// Determine if the list contains any elements.
-bool hasElements = numbers.AsQueryable().Any();
+                // Determine if the list contains any elements.
+                bool hasElements = numbers.AsQueryable().Any();
 
-Console.WriteLine("The list {0} empty.",
-    hasElements ? "is not" : "is");
+                Console.WriteLine("The list {0} empty.", hasElements ? "is not" : "is");
 
-// This code produces the following output:
-//
-// The list is not empty.</ExampleCode>
+                // This code produces the following output:
+                //
+                // The list is not empty.
+              </ExampleCode>
             </Example>
           </Examples>
         </Method>
@@ -223,18 +228,43 @@ Console.WriteLine("The list {0} empty.",
           <Examples>
             <Example>
               <HeaderRemarks>The following code example demonstrates how to use `Count(IQueryable)` to count the elements in a sequence.</HeaderRemarks>
-              <ExampleCode>string[] fruits = { "apple", "banana", "mango",
-"orange", "passionfruit", "grape" };
+              <ExampleCode>
+                string[] fruits = { "apple", "banana", "mango", "orange", "passionfruit", "grape" };
 
-int numberOfFruits = fruits.AsQueryable().Count();
+                int numberOfFruits = fruits.AsQueryable().Count();
 
-Console.WriteLine(
-    "There are {0} items in the array.",
-    numberOfFruits);
+                Console.WriteLine("There are {0} items in the array.", numberOfFruits);
 
-// This code produces the following output:
-//
-// There are 6 items in the array.</ExampleCode>
+                // This code produces the following output:
+                //
+                // There are 6 items in the array.
+              </ExampleCode>
+            </Example>
+          </Examples>
+        </Method>
+
+        <Method name="LongCount" isExtensionMethod="true" returnType="long">
+          <Description>Returns the number of elements in a sequence.</Description>
+          <ReturnDescription>The number of elements in the input sequence.</ReturnDescription>
+          <Arguments>
+            <Argument name="source" type="IQueryable" typeNamespace="System.Linq">
+              <Description>The `IQueryable` that contains the elements to be counted.</Description>
+            </Argument>
+          </Arguments>
+          <Examples>
+            <Example>
+              <HeaderRemarks>The following code example demonstrates how to use `LongCount(IQueryable)` to count the elements in a sequence.</HeaderRemarks>
+              <ExampleCode>
+                string[] fruits = { "apple", "banana", "mango", "orange", "passionfruit", "grape" };
+
+                long numberOfFruits = fruits.AsQueryable().LongCount();
+
+                Console.WriteLine("There are {0} items in the array.", numberOfFruits);
+
+                // This code produces the following output:
+                //
+                // There are 6 items in the array.
+              </ExampleCode>
             </Example>
           </Examples>
         </Method>
@@ -388,7 +418,7 @@ Console.WriteLine(
             </Argument>
           </Arguments>
         </Method>
-        
+
       </Methods>
     </Class>
   </Classes>
