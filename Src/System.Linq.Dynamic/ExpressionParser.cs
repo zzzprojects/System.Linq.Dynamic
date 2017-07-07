@@ -1052,7 +1052,7 @@ namespace System.Linq.Dynamic
                 NextToken();
             }
 
-            // This is a shorthand for explicitely converting a string to something
+            // This is a shorthand for explicitly converting a string to something
             //
             bool shorthand = _token.id == TokenId.StringLiteral;
             if (_token.id == TokenId.OpenParen || shorthand)
