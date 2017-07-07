@@ -7,7 +7,6 @@ using System.Text;
 
 namespace System.Linq.Dynamic
 {
-
     /// <summary>
     /// The result of a call to a <see cref="DynamicQueryable"/>.GroupByMany() overload.
     /// </summary>

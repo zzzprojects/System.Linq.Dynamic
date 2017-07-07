@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace System.Linq.Dynamic
 {
@@ -13,7 +10,7 @@ namespace System.Linq.Dynamic
         /// <summary>
         /// Returns a list of custom types that Dynamic Linq will understand.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
+        [Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         HashSet<Type> GetCustomTypes();
     }
 }

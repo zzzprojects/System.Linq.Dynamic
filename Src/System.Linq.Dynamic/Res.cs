@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace System.Linq.Dynamic
+﻿namespace System.Linq.Dynamic
 {
-
     static class Res
     {
         public const string DuplicateIdentifier = "The identifier '{0}' was defined more than once";

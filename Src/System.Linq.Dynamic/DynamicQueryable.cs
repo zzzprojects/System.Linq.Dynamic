@@ -1,10 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq.Expressions;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Threading;
 using FluentValidationNA;
 
 namespace System.Linq.Dynamic
@@ -95,6 +91,10 @@ namespace System.Linq.Dynamic
                     new Type[] { source.ElementType, lambda.Body.Type },
                     source.Expression, Expression.Quote(lambda)));
         }
+
+        #endregion
+
+        #region SelectMany
 
         /// <summary>
         /// Projects each element of a sequence to an <see cref="IQueryable"/> and combines the 
@@ -458,6 +458,7 @@ namespace System.Linq.Dynamic
         #endregion
 
         #region Union
+
         /// <summary>
         /// Produces the set union of sequences.
         /// </summary>
@@ -488,8 +489,8 @@ namespace System.Linq.Dynamic
         public static IQueryable<TElement> UnionAll<TElement>(this IQueryable<TElement> first, IEnumerable<TElement> second)
         {
             return (IQueryable<TElement>)UnionAll(first, (IEnumerable)second);
-
         }
+
         #endregion
     }
 }

@@ -1,18 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Text;
 using System.Threading;
 
 namespace System.Linq.Dynamic
 {
-
     [SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable", Justification="There is only ever one instance of this class, and it should never be destroyed except on AppDomain termination.")]
     internal class ClassFactory
     {
+        private class Signature : IEquatable<Signature>
+        {
+            public DynamicProperty[] properties;
+            public int hashCode;
+
+            public Signature(IEnumerable<DynamicProperty> properties)
+            {
+                this.properties = properties.ToArray();
+                hashCode = 0;
+                foreach (DynamicProperty p in properties)
+                {
+                    hashCode ^= p.Name.GetHashCode() ^ p.Type.GetHashCode();
+                }
+            }
+
+            public override int GetHashCode()
+            {
+                return hashCode;
+            }
+
+            public override bool Equals(object obj)
+            {
+                var other = obj as Signature;
+
+                if (other != null) return Equals(other);
+
+                return false;
+            }
+
+            public bool Equals(Signature other)
+            {
+                if (ReferenceEquals(this, other)) return true;
+                if (other == null) return false;
+                if (properties.Length != other.properties.Length) return false;
+
+                for (int i = 0; i < properties.Length; i++)
+                {
+                    if (properties[i].Name != other.properties[i].Name ||
+                        properties[i].Type != other.properties[i].Type) return false;
+                }
+                return true;
+            }
+        }
+
         public static readonly ClassFactory Instance = new ClassFactory();
 
         ModuleBuilder _module;
@@ -49,87 +89,7 @@ namespace System.Linq.Dynamic
 #endif
         }
 
-        public Type GetDynamicClass(IEnumerable<DynamicProperty> properties)
-        {
-            Signature signature = new Signature(properties);
-
-#if SILVERLIGHT
-            _rwLock.AcquireReaderLock(Timeout.Infinite);
-#else
-            _rwLock.EnterReadLock();
-#endif
-       
-            try
-            {
-                Type type;
-
-                if (_classes.TryGetValue(signature, out type)) return type;
-            }
-            finally
-            {
-#if SILVERLIGHT
-                 _rwLock.ReleaseReaderLock();
-#else
-                 _rwLock.ExitReadLock();
-#endif
-            }
-
-            return CreateDynamicClass(signature);
-        }
-
-        Type CreateDynamicClass(Signature signature)
-        {
-#if SILVERLIGHT
-            _rwLock.UpgradeToWriterLock(Timeout.Infinite);
-#else
-            _rwLock.EnterWriteLock();
-#endif
-
-            try
-            {
-                Type type;
-
-                //do a final check to make sure the type hasn't been generated.
-                if (_classes.TryGetValue(signature, out type)) return type;
-            
-
-                string typeName = "DynamicClass" + (_classCount + 1);
-#if ENABLE_LINQ_PARTIAL_TRUST
-                new ReflectionPermission(PermissionState.Unrestricted).Assert();
-#endif
-                try
-                {
-                    TypeBuilder tb = this._module.DefineType(typeName, TypeAttributes.Class |
-                        TypeAttributes.Public, typeof(DynamicClass));
-                    FieldInfo[] fields = GenerateProperties(tb, signature.properties);
-                    GenerateEquals(tb, fields);
-                    GenerateGetHashCode(tb, fields);
-                    
-                    Type result = tb.CreateType();
-                    _classCount++;
-
-                    _classes.Add(signature, result);
-
-                    return result;
-                }
-                finally
-                {
-#if ENABLE_LINQ_PARTIAL_TRUST
-                    PermissionSet.RevertAssert();
-#endif
-                }
-            }
-            finally
-            {
-#if SILVERLIGHT
-                _rwLock.DowngradeToReaderLock();
-#else
-                _rwLock.ExitWriteLock();
-#endif
-            }
-        }
-
-        static FieldInfo[] GenerateProperties(TypeBuilder tb, DynamicProperty[] properties)
+        private static FieldInfo[] GenerateProperties(TypeBuilder tb, DynamicProperty[] properties)
         {
             FieldInfo[] fields = new FieldBuilder[properties.Length];
             for (int i = 0; i < properties.Length; i++)
@@ -159,7 +119,7 @@ namespace System.Linq.Dynamic
             return fields;
         }
 
-        static void GenerateEquals(TypeBuilder tb, FieldInfo[] fields)
+        private static void GenerateEquals(TypeBuilder tb, FieldInfo[] fields)
         {
             MethodBuilder mb = tb.DefineMethod("Equals",
                 MethodAttributes.Public | MethodAttributes.ReuseSlot |
@@ -196,7 +156,7 @@ namespace System.Linq.Dynamic
             gen.Emit(OpCodes.Ret);
         }
 
-        static void GenerateGetHashCode(TypeBuilder tb, FieldInfo[] fields)
+        private static void GenerateGetHashCode(TypeBuilder tb, FieldInfo[] fields)
         {
             MethodBuilder mb = tb.DefineMethod("GetHashCode",
                 MethodAttributes.Public | MethodAttributes.ReuseSlot |
@@ -217,49 +177,86 @@ namespace System.Linq.Dynamic
             gen.Emit(OpCodes.Ret);
         }
 
-
-        class Signature : IEquatable<Signature>
+        private Type CreateDynamicClass(Signature signature)
         {
-            public DynamicProperty[] properties;
-            public int hashCode;
+#if SILVERLIGHT
+            _rwLock.UpgradeToWriterLock(Timeout.Infinite);
+#else
+            _rwLock.EnterWriteLock();
+#endif
 
-            public Signature(IEnumerable<DynamicProperty> properties)
+            try
             {
-                this.properties = properties.ToArray();
-                hashCode = 0;
-                foreach (DynamicProperty p in properties)
+                Type type;
+
+                //do a final check to make sure the type hasn't been generated.
+                if (_classes.TryGetValue(signature, out type)) return type;
+            
+
+                string typeName = "DynamicClass" + (_classCount + 1);
+#if ENABLE_LINQ_PARTIAL_TRUST
+                new ReflectionPermission(PermissionState.Unrestricted).Assert();
+#endif
+                try
                 {
-                    hashCode ^= p.Name.GetHashCode() ^ p.Type.GetHashCode();
+                    TypeBuilder tb = this._module.DefineType(
+                        typeName, 
+                        TypeAttributes.Class | TypeAttributes.Public, 
+                        typeof(DynamicClass));
+                    FieldInfo[] fields = GenerateProperties(tb, signature.properties);
+                    GenerateEquals(tb, fields);
+                    GenerateGetHashCode(tb, fields);
+                    
+                    Type result = tb.CreateType();
+                    _classCount++;
+
+                    _classes.Add(signature, result);
+
+                    return result;
+                }
+                finally
+                {
+#if ENABLE_LINQ_PARTIAL_TRUST
+                    PermissionSet.RevertAssert();
+#endif
                 }
             }
-
-            public override int GetHashCode()
+            finally
             {
-                return hashCode;
-            }
-
-            public override bool Equals(object obj)
-            {
-                var other = obj as Signature;
-
-                if (other != null) return Equals(other);
-
-                return false;
-            }
-
-            public bool Equals(Signature other)
-            {
-                if (other == null) return false;
-                if (properties.Length != other.properties.Length) return false;
-
-                for (int i = 0; i < properties.Length; i++)
-                {
-                    if (properties[i].Name != other.properties[i].Name ||
-                        properties[i].Type != other.properties[i].Type) return false;
-                }
-                return true;
+#if SILVERLIGHT
+                _rwLock.DowngradeToReaderLock();
+#else
+                _rwLock.ExitWriteLock();
+#endif
             }
         }
-    }
 
+        public Type GetDynamicClass(IEnumerable<DynamicProperty> properties)
+        {
+            Signature signature = new Signature(properties);
+
+#if SILVERLIGHT
+            _rwLock.AcquireReaderLock(Timeout.Infinite);
+#else
+            _rwLock.EnterReadLock();
+#endif
+       
+            try
+            {
+                Type type;
+
+                if (_classes.TryGetValue(signature, out type)) return type;
+            }
+            finally
+            {
+#if SILVERLIGHT
+                 _rwLock.ReleaseReaderLock();
+#else
+                 _rwLock.ExitReadLock();
+#endif
+            }
+
+            return CreateDynamicClass(signature);
+        }
+    }
 }

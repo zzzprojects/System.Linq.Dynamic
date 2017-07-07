@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace System.Linq.Dynamic
 {
-
     /// <summary>
     /// Represents errors that occur while parsing dynamic linq string expressions.
     /// </summary>
@@ -31,6 +26,14 @@ namespace System.Linq.Dynamic
             this._position = position;
         }
 
+#if !SILVERLIGHT
+        ParseException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+            _position = (int)info.GetValue("position", typeof(int));
+        }
+#endif
+
         /// <summary>
         /// The location in the parsed string that produced the <see cref="ParseException"/>.
         /// </summary>
@@ -49,12 +52,6 @@ namespace System.Linq.Dynamic
         }
 
 #if !SILVERLIGHT
-        ParseException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-            _position = (int)info.GetValue("position", typeof(int));
-        }
-
         /// <summary>
         /// Supports Serialization
         /// </summary>

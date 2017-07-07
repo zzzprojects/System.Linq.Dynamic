@@ -1,16 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace System.Linq.Dynamic
+﻿namespace System.Linq.Dynamic
 {
     /// <summary>
     /// Static configuration class for Dynamic Linq.
     /// </summary>
     public static class GlobalConfig
     {
+        static bool _contextKeywordsEnabled = true;
+
         static IDynamicLinkCustomTypeProvider _customTypeProvider;
+
+        /// <summary>
+        /// Determines if the context keywords (it, parent, and root) are valid and usable inside a Dynamic Linq string expression.  
+        /// Does not affect the usability of the equivalent context symbols ($, ^ and ~).
+        /// </summary>
+        public static bool AreContextKeywordsEnabled
+        {
+            get { return _contextKeywordsEnabled; }
+            set
+            {
+                if (value != _contextKeywordsEnabled)
+                {
+                    _contextKeywordsEnabled = value;
+
+                    ExpressionParser.ResetDynamicLinqTypes();
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets the <see cref="IDynamicLinkCustomTypeProvider"/>.  Defaults to <see cref="DefaultDynamicLinqCustomTypeProvider" />.
@@ -28,26 +43,6 @@ namespace System.Linq.Dynamic
                 if (_customTypeProvider != value)
                 {
                     _customTypeProvider = value;
-
-                    ExpressionParser.ResetDynamicLinqTypes();
-                }
-            }
-        }
-
-        static bool _contextKeywordsEnabled = true;
-
-        /// <summary>
-        /// Determines if the context keywords (it, parent, and root) are valid and usable inside a Dynamic Linq string expression.  
-        /// Does not affect the usability of the equivalent context symbols ($, ^ and ~).
-        /// </summary>
-        public static bool AreContextKeywordsEnabled
-        {
-            get { return _contextKeywordsEnabled; }
-            set
-            {
-                if( value != _contextKeywordsEnabled )
-                {
-                    _contextKeywordsEnabled = value;
 
                     ExpressionParser.ResetDynamicLinqTypes();
                 }

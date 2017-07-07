@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 using System.Collections;
 using System.Globalization;
 
 namespace System.Linq.Dynamic
 {
-
     internal class ExpressionParser
     {
         struct Token
@@ -160,6 +156,8 @@ namespace System.Linq.Dynamic
             void All(bool predicate);
             void Count();
             void Count(bool predicate);
+            void LongCount();
+            void LongCount(bool predicate);
             void Min(object selector);
             void Max(object selector);
             void Sum(int selector);
@@ -234,7 +232,7 @@ namespace System.Linq.Dynamic
             typeof(Convert),
             typeof(Uri),
 #if !NET35 && !SILVERLIGHT
-			typeof(System.Data.Objects.EntityFunctions)
+			typeof(Data.Objects.EntityFunctions)
 #endif
         };
 

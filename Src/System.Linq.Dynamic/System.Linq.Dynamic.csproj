@@ -65,7 +65,7 @@
     <Compile Include="DynamicProperty.cs" />
     <Compile Include="ExpressionParser.cs" />
     <Compile Include="GlobalConfig.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Properties\GlobalSuppressions.cs" />
     <Compile Include="GroupResult.cs" />
     <Compile Include="IDynamicLinkTypeProvider.cs" />
     <Compile Include="ParseException.cs" />
