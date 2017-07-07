@@ -85,9 +85,6 @@
     <Compile Include="..\System.Linq.Dynamic\GlobalConfig.cs">
       <Link>GlobalConfig.cs</Link>
     </Compile>
-    <Compile Include="..\System.Linq.Dynamic\GlobalSuppressions.cs">
-      <Link>GlobalSuppressions.cs</Link>
-    </Compile>
     <Compile Include="..\System.Linq.Dynamic\GroupResult.cs">
       <Link>GroupResult.cs</Link>
     </Compile>
@@ -99,6 +96,9 @@
     </Compile>
     <Compile Include="..\System.Linq.Dynamic\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Linq.Dynamic\Properties\GlobalSuppressions.cs">
+      <Link>Properties\GlobalSuppressions.cs</Link>
     </Compile>
     <Compile Include="..\System.Linq.Dynamic\Res.cs">
       <Link>Res.cs</Link>
