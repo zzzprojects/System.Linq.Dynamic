@@ -1022,7 +1022,7 @@ namespace System.Linq.Dynamic
             }
             ValidateToken(TokenId.CloseParen, Res.CloseParenOrCommaExpected);
             NextToken();
-            Type type = DynamicExpression.CreateClass(properties);
+            Type type = ClassFactory.Instance.GetDynamicClass(properties);
             MemberBinding[] bindings = new MemberBinding[properties.Count];
             for (int i = 0; i < bindings.Length; i++)
                 bindings[i] = Expression.Bind(type.GetProperty(properties[i].Name), expressions[i]);
