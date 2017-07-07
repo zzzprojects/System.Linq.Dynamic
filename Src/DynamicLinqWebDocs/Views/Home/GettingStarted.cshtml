@@ -93,10 +93,9 @@
                     @Html.FormatCodeBlock("var query = db.Customers\n     .Where(\"City = @0 and Orders.Count >= @1\", \"London\", 10)\n     .OrderBy(\"CompanyName\")\n     .Select(\"new(CompanyName as Name, Phone)\");")
                 </div>
                 <div class="col-md-3">
-                    @using (Html.BeginNote())
-                    {
-                        <p>Expressions in the query are strings that could have been dynamically constructed at run-time.</p>
-                    }
+                    @Html.OpenNote()
+                    <p>Expressions in the query are strings that could have been dynamically constructed at run-time.</p>
+                    @Html.CloseNote()
                 </div>
             </div>
         </section>
@@ -122,10 +121,9 @@
                     <p>orders a sequence of products by ascending category name and, within each category, descending unit price.</p>
                 </div>
                 <div class="col-md-3">
-                    @using (Html.BeginNote())
-                    {
-                        @Html.FormatMarkdown("Because a dynamic predicate or ordering does not affect the result type, generic overloads are provided for `Where` and `OrderBy` in order to preserve strong typing when possible.")
-                    }
+                    @Html.OpenNote()
+                    @Html.FormatMarkdown("Because a dynamic predicate or ordering does not affect the result type, generic overloads are provided for `Where` and `OrderBy` in order to preserve strong typing when possible.")
+                    @Html.CloseNote()
                 </div>
             </div>
         </section>
@@ -154,15 +152,14 @@
             <div class="row">
                 <div class="col-md-9">
                     @Html.FormatMarkdown("An *Identifier* consists of a letter or underscore followed by any number of letters, digits, or underscores. In order to reference an identifier with the same spelling as a keyword, the identifier must be prefixed with a single `@` character. Some examples of identifiers:")
-                    @Html.InlineCodeList("x", "Hello", "m_1", "@true", "@String")
+                    @Html.FormatInlineCodeList("x", "Hello", "m_1", "@true", "@String")
                     @Html.FormatMarkdown("Identifiers of the from `@x`, where `x` is an integral number greater than or equal to zero, are used to denote the [substitution values][0], if any, that were passed to the expression parser. For example:\n[0]:#subValues")
                     @Html.FormatCodeBlock("customers.Where(\"Country = @0\", country);")
                 </div>
                 <div class="col-md-3">
-                    @using (Html.BeginNote())
-                    {
-                        <p>Casing is not significant in identifiers or keywords.</p>
-                    }
+                    @Html.OpenNote()
+                    <p>Casing is not significant in identifiers or keywords.</p>
+                    @Html.CloseNote()
                 </div>
             </div>
 
@@ -174,16 +171,16 @@
                 <div class="col-md-9">
                     <p>The expression language supports integer, real, string, and character literals.</p>
                     @Html.FormatMarkdown("An *integer literal* consists of a sequence of digits. The type of an integer literal is defined by one of the integer qualifiers (U - UInt32, L - Int64, UL - UInt64) or type is deduced by first of the types `Int32`, `UInt32`, `Int64`, or `UInt64` that can represent the given value. An integer literal implicitly converts to any other numeric type provided the number is in the range of that type. Some examples of integer literals:")
-                    @Html.InlineCodeList("0", "123", "10000", "1L", "2U", "3UL")
+                    @Html.FormatInlineCodeList("0", "123", "10000", "1L", "2U", "3UL")
 
                     @Html.FormatMarkdown("A *real literal* consists of an integral part followed by a fractional part and/or an exponent. The integral part is a sequence of one or more digits. The fractional part is a decimal point followed by one or more digits. The exponent is the letter e or E followed by an optional + or – sign followed by one or more digits. The type of a real literal is `Double`. A real literal implicitly converts to any other real type provided the number is in the range of that type. Some examples of real literals:")
-                    @Html.InlineCodeList("1.0", "2.25", "10000.0", "1e0", "1e10", "1.2345E-4")
+                    @Html.FormatInlineCodeList("1.0", "2.25", "10000.0", "1e0", "1e10", "1.2345E-4")
 
                     @Html.FormatMarkdown("A *string literal* consists of zero or more characters enclosed in double quotes. Inside a string literal, a double quote is written as two consecutive double quotes. The type of a string literal is `String`. Some examples of string literals:")
-                    @Html.InlineCodeList("\"hello\"", "\"\"", "\"\"\"quoted\"\"\"", "\"'\"")
+                    @Html.FormatInlineCodeList("\"hello\"", "\"\"", "\"\"\"quoted\"\"\"", "\"'\"")
 
                     @Html.FormatMarkdown("A *character literal* consists of a single character enclosed in single quotes. Inside a character literal, a single quote is written as two consecutive single quotes. The type of a character literal is `Char`. Some examples of character literals:")
-                    @Html.InlineCodeList("'A'", "'1'", "''''", "'\"'")
+                    @Html.FormatInlineCodeList("'A'", "'1'", "''''", "'\"'")
                 </div>
             </div>
         </section>
@@ -203,10 +200,10 @@
             <div class="row">
                 <div class="col-md-9">
                     @Html.FormatMarkdown("The expression language defines the following *primitive types*:")
-                    @Html.InlineCodeList("Object", "Boolean", "Char", "String", "SByte", "Byte", "Int16", "UInt16", "Int32", "UInt32", "Int64", "UInt64", "Decimal", "Single", "Double", "DateTime", "TimeSpan", "Guid")
+                    @Html.FormatInlineCodeList("Object", "Boolean", "Char", "String", "SByte", "Byte", "Int16", "UInt16", "Int32", "UInt32", "Int64", "UInt64", "Decimal", "Single", "Double", "DateTime", "TimeSpan", "Guid")
 
                     @Html.FormatMarkdown("The primitive types correspond to the similarly named types in the `System` namespace of the .NET Framework Base Class Library. The expression language also defines a set of accessible types consisting of the primitive types and the following types from the `System` namespace:")
-                    @Html.InlineCodeList("Math", "Convert")
+                    @Html.FormatInlineCodeList("Math", "Convert")
 
                     <p>The accessible types are the only types that can be explicitly referenced in expressions, and method invocations in the expression language are restricted to methods declared in the accessible types.</p>
                     @Html.FormatMarkdown("The *nullable form* of a value type is referenced by writing a `?` after the type name. For example, `Int32?` denotes the nullable form of `Int32`.")
