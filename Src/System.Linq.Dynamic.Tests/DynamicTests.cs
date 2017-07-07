@@ -145,6 +145,21 @@ namespace System.Linq.Dynamic.Tests
         }
 
         [TestMethod]
+        public void Select_AsStringExpression()
+        {
+            //Arrange
+            var testList = User.GenerateSampleModels(100);
+            var qry = testList.AsQueryable();
+
+            //Act
+            var select = qry.SelectMany("Roles.Select(Name)");
+            var expected = qry.SelectMany(x => x.Roles.Select(y => y.Name));
+
+            //Assert
+            CollectionAssert.AreEqual(expected.ToArray(), select.Cast<string>().ToArray());
+        }
+
+        [TestMethod]
         public void Select_Exceptions()
         {
             //Arrange
