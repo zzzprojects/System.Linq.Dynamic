@@ -1176,7 +1176,6 @@ namespace System.Linq.Dynamic
             }
         }
 
-
         static Type FindGenericType(Type generic, Type type)
         {
             while (type != null && type != typeof(object))
@@ -1931,7 +1930,6 @@ namespace System.Linq.Dynamic
             return Expression.Call(null, GetStaticMethod(methodName, left, right), new[] { left, right });
         }
 
-        
         static void OptimizeForEqualityIfPossible(ref Expression left, ref Expression right)
         {
             // The goal here is to provide the way to convert some types from the string form in a way that is compatible with Linq-to-Entities.
@@ -1948,6 +1946,7 @@ namespace System.Linq.Dynamic
                 left = OptimizeStringForEqualityIfPossible((string)((ConstantExpression)left).Value, rightType) ?? left;
             }
         }
+
         static Expression OptimizeStringForEqualityIfPossible(string text, Type type)
         {
             DateTime dateTime;
