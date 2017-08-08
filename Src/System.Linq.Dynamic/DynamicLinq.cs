@@ -155,13 +155,18 @@ namespace System.Linq.Dynamic
             // We've tried to find an expression of the type Expression<Func<TSource, TAcc>>,
             // which is expressed as ( (TSource s) => s.Price );
 
-            var methods = typeof(Queryable).GetMethods().Where(x => x.Name == function);
+            var methods = typeof(Queryable).GetMethods().Where(x => x.Name == function && m.IsGenericMethod);
 
             // Method
-            MethodInfo aggregateMethod = typeof(Queryable).GetMethods().SingleOrDefault(
-                m => m.Name == function
-                    && m.ReturnType == property.PropertyType // should match the type of the property
-                    && m.IsGenericMethod);
+	    MethodInfo aggregateMethod = methods.SingleOrDefault(m =>
+            {
+                ParameterInfo lastParameter = m.GetParameters().LastOrDefault();
+                if (lastParameter != null)
+                {
+                    return GetRightOuterType(lastParameter.ParameterType) == property.PropertyType;
+                }
+                return false;
+            });
 
             // Sum, Average
             if (aggregateMethod != null)
@@ -175,10 +180,9 @@ namespace System.Linq.Dynamic
             // Min, Max
             else
             {
-                aggregateMethod = typeof(Queryable).GetMethods().SingleOrDefault(
+                aggregateMethod = methods.SingleOrDefault(
                     m => m.Name == function
-                        && m.GetGenericArguments().Length == 2
-                        && m.IsGenericMethod);
+                        && m.GetGenericArguments().Length == 2);
 
                 return source.Provider.Execute(
                     Expression.Call(
@@ -187,6 +191,21 @@ namespace System.Linq.Dynamic
                         new[] { source.Expression, Expression.Quote(selector) }));
             }
         }
+	 
+	private static Type GetRightOuterType(Type type)
+        {
+            if (type != null)
+            {
+                var genericTypeArguments = type.GetGenericArguments();
+                if (genericTypeArguments.Any())
+                {
+                    var outerType = GetRightOuterType(genericTypeArguments.LastOrDefault());
+                    return Nullable.GetUnderlyingType(type) == outerType ? type : outerType;
+                }
+            }
+            return type;
+        }
+
         #endregion
 
         #region IEnumerable Extensions
