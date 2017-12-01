@@ -1448,16 +1448,35 @@ namespace System.Linq.Dynamic
             NextToken();
             if (token.id == TokenId.OpenParen)
             {
+                Expression[] args = null;
+                bool argsLoaded = false;
+		    
                 if (instance != null && type != typeof(string))
                 {
                     Type enumerableType = FindGenericType(typeof(IEnumerable<>), type);
                     if (enumerableType != null)
                     {
                         Type elementType = enumerableType.GetGenericArguments()[0];
-                        return ParseAggregate(instance, elementType, id, errorPos);
+			    
+                        outerIt = it; 			
+                        ParameterExpression innerIt = Expression.Parameter(elementType, ""); 			
+                        it = innerIt; 			
+                        args = ParseArgumentList(); 			
+                        it = outerIt; 			
+                        argsLoaded = true; 			
+                        
+                        if (HasAggregateMethod(id, args)) 			
+                        {   
+                            return ParseAggregate(instance, elementType, id, errorPos, args, innerIt);
+			}
                     }
                 }
-                Expression[] args = ParseArgumentList();
+                
+                if (!argsLoaded) 	
+                {
+                    args = ParseArgumentList();
+                } 
+		    
                 MethodBase mb;
                 switch (FindMethod(type, id, instance == null, args, out mb))
                 {
@@ -1501,13 +1520,21 @@ namespace System.Linq.Dynamic
             return null;
         }
 
-        Expression ParseAggregate(Expression instance, Type elementType, string methodName, int errorPos)
+        bool HasAggregateMethod(string methodName, Expression[] args)
         {
-            outerIt = it;
-            ParameterExpression innerIt = Expression.Parameter(elementType, "");
-            it = innerIt;
-            Expression[] args = ParseArgumentList();
-            it = outerIt;
+            MethodBase signature;
+            if (FindMethod(typeof(IEnumerableSignatures), methodName, false, args, out signature) != 1)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        Expression ParseAggregate(Expression instance, Type elementType, string methodName, int errorPos, Expression[] args, ParameterExpression innerIt)
+        {
             MethodBase signature;
             if (FindMethod(typeof(IEnumerableSignatures), methodName, false, args, out signature) != 1)
                 throw ParseError(errorPos, Res.NoApplicableAggregate, methodName);
@@ -1524,8 +1551,6 @@ namespace System.Linq.Dynamic
             {
                 args = new Expression[] { instance };
             }
-            
-
             else
             {
                 if (signature.Name == "Contains")
