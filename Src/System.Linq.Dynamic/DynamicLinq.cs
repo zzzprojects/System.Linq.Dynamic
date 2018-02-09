@@ -1281,10 +1281,22 @@ namespace System.Linq.Dynamic
                 NextToken();
                 return expr;
             }
+            
+            #region Enable case insensitive string comparisions
+
+            if (ParseEnumType(out value))
+            {
+                Expression expr = Expression.Constant(value);
+                NextToken();
+                return expr;
+            }
+
+            #endregion
+
             if (it != null) return ParseMemberAccess(null, it);
             throw ParseError(Res.UnknownIdentifier, token.text);
         }
-
+        
         Expression ParseIt()
         {
             if (it == null)
@@ -1917,6 +1929,63 @@ namespace System.Linq.Dynamic
             return null;
         }
 
+        #region Eable case insensitive string comparisions
+
+        bool ParseEnumType(out object value)
+        {
+            value = null;
+
+            ValidateToken(TokenId.Identifier);
+            Type enumType = null;
+            int position = token.pos;
+            string typeName = token.text;
+            while (enumType == null)
+            {
+                // Loop until we stop processing identifiers and/or dots
+                enumType = Type.GetType(typeName, false, true);
+                if (enumType == null)
+                {
+                    NextToken();
+                    if (token.id == TokenId.Dot)
+                    {
+                        typeName += token.text;
+                        NextToken();
+                        if (token.id == TokenId.Identifier)
+                        {
+                            typeName += token.text;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if ((enumType != null) && IsEnumType(enumType))
+            {
+                NextToken();
+                ValidateToken(TokenId.Dot, Res.DotExpected);
+                NextToken();
+                ValidateToken(TokenId.Identifier, Res.IdentifierExpected);
+                value = Enum.Parse(enumType, token.text, true);
+                return true;
+            }
+            else
+            {
+                SetTextPos(position);
+                NextToken();
+            }
+
+            return false;
+        }
+
+        #endregion
+
         static bool IsCompatibleWith(Type source, Type target)
         {
             if (source == target) return true;
@@ -2487,5 +2556,11 @@ namespace System.Linq.Dynamic
         public const string OpenBracketExpected = "'[' expected";
         public const string CloseBracketOrCommaExpected = "']' or ',' expected";
         public const string IdentifierExpected = "Identifier expected";
+
+        #region Enable case insensitive string comparisions
+
+        public const string DotExpected = "'.' expected";
+
+        #endregion
     }
 }
