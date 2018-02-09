@@ -48,6 +48,7 @@
     <Compile Include="DynamicExpressionCultureTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DynamicExpressionTests.cs" />
+    <Compile Include="StringComparisionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\System.Linq.Dynamic\System.Linq.Dynamic.csproj">
