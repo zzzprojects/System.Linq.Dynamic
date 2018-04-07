@@ -407,6 +407,7 @@ namespace System.Linq.Dynamic
 
         private ClassFactory()
         {
+#if DotNetFull
             AssemblyName name = new AssemblyName("DynamicClasses");
             AssemblyBuilder assembly = AppDomain.CurrentDomain.DefineDynamicAssembly(name, AssemblyBuilderAccess.Run);
 #if ENABLE_LINQ_PARTIAL_TRUST
@@ -424,6 +425,9 @@ namespace System.Linq.Dynamic
             }
             classes = new Dictionary<Signature, Type>();
             rwLock = new ReaderWriterLock();
+#else
+            throw new NotSupportedException();
+#endif
         }
 
         public Type GetDynamicClass(IEnumerable<DynamicProperty> properties)
@@ -436,7 +440,7 @@ namespace System.Linq.Dynamic
                 if (!classes.TryGetValue(signature, out type))
                 {
                     type = CreateAndCacheDynamicClass(signature);
-                    
+
                 }
                 return type;
             }
@@ -479,7 +483,11 @@ namespace System.Linq.Dynamic
                 FieldInfo[] fields = GenerateProperties(tb, properties);
                 GenerateEquals(tb, fields);
                 GenerateGetHashCode(tb, fields);
+#if DotNetFull
                 Type result = tb.CreateType();
+#else
+                Type result = tb.CreateTypeInfo();
+#endif
                 classCount++;
                 return result;
             }
@@ -779,8 +787,10 @@ namespace System.Linq.Dynamic
             typeof(TimeSpan),
             typeof(Guid),
             typeof(Math),
-            typeof(Convert),
-			typeof(System.Data.Objects.EntityFunctions)
+            typeof(Convert)
+#if DotNetFull
+                ,typeof(System.Data.Objects.EntityFunctions)
+#endif
         };
 
         static readonly Expression trueLiteral = Expression.Constant(true);
@@ -1524,7 +1534,7 @@ namespace System.Linq.Dynamic
             {
                 args = new Expression[] { instance };
             }
-            
+
 
             else
             {

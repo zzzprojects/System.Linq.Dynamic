@@ -1,22 +1,13 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Linq.Dynamic", "System.Linq.Dynamic\System.Linq.Dynamic.csproj", "{B6EDF157-6153-4684-A577-DE33896DBAA8}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27520.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Linq.Dynamic", "System.Linq.Dynamic\System.Linq.Dynamic.csproj", "{B6EDF157-6153-4684-A577-DE33896DBAA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Linq.Dynamic.Test", "System.Linq.Dynamic.Test\System.Linq.Dynamic.Test.csproj", "{66D3514B-0E04-4C85-879D-67E15FBD0E37}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0185395A-4942-45C3-9C90-169A15D0E649}"
-	ProjectSection(SolutionItems) = preProject
-		Local.testsettings = Local.testsettings
-		..\NuGet\System.Linq.Dynamic.nuspec = ..\NuGet\System.Linq.Dynamic.nuspec
-		System.Linq.Dynamic.vsmdi = System.Linq.Dynamic.vsmdi
-		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Linq.Dynamic.Test", "System.Linq.Dynamic.Test\System.Linq.Dynamic.Test.csproj", "{66D3514B-0E04-4C85-879D-67E15FBD0E37}"
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = System.Linq.Dynamic.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -33,5 +24,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {276B7BAF-2F40-432E-BEA7-1513DBF421DA}
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = System.Linq.Dynamic.vsmdi
 	EndGlobalSection
 EndGlobal
