@@ -407,9 +407,12 @@ namespace System.Linq.Dynamic
 
         private ClassFactory()
         {
-#if DotNetFull
             AssemblyName name = new AssemblyName("DynamicClasses");
+#if DotNetFull
             AssemblyBuilder assembly = AppDomain.CurrentDomain.DefineDynamicAssembly(name, AssemblyBuilderAccess.Run);
+#else
+            AssemblyBuilder assembly = AssemblyBuilder.DefineDynamicAssembly(name, AssemblyBuilderAccess.Run);
+#endif
 #if ENABLE_LINQ_PARTIAL_TRUST
             new ReflectionPermission(PermissionState.Unrestricted).Assert();
 #endif
@@ -425,9 +428,6 @@ namespace System.Linq.Dynamic
             }
             classes = new Dictionary<Signature, Type>();
             rwLock = new ReaderWriterLock();
-#else
-            throw new NotSupportedException();
-#endif
         }
 
         public Type GetDynamicClass(IEnumerable<DynamicProperty> properties)
