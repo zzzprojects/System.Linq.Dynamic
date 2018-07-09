@@ -191,7 +191,7 @@ namespace System.Linq.Dynamic
                         new[] { source.Expression, Expression.Quote(selector) }));
             }
         }
-
+      
         private static Type GetRightOuterType(Type type)
         {
             if (type != null)
