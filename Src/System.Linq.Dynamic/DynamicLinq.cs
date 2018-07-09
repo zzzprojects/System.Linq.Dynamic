@@ -155,10 +155,10 @@ namespace System.Linq.Dynamic
             // We've tried to find an expression of the type Expression<Func<TSource, TAcc>>,
             // which is expressed as ( (TSource s) => s.Price );
 
-            var methods = typeof(Queryable).GetMethods().Where(x => x.Name == function && m.IsGenericMethod);
+            var methods = typeof(Queryable).GetMethods().Where(x => x.Name == function && x.IsGenericMethod);
 
             // Method
-	    MethodInfo aggregateMethod = methods.SingleOrDefault(m =>
+            MethodInfo aggregateMethod = methods.SingleOrDefault(m =>
             {
                 ParameterInfo lastParameter = m.GetParameters().LastOrDefault();
                 if (lastParameter != null)
@@ -191,8 +191,8 @@ namespace System.Linq.Dynamic
                         new[] { source.Expression, Expression.Quote(selector) }));
             }
         }
-	 
-	private static Type GetRightOuterType(Type type)
+      
+        private static Type GetRightOuterType(Type type)
         {
             if (type != null)
             {
@@ -455,7 +455,7 @@ namespace System.Linq.Dynamic
                 if (!classes.TryGetValue(signature, out type))
                 {
                     type = CreateAndCacheDynamicClass(signature);
-                    
+
                 }
                 return type;
             }
@@ -799,7 +799,7 @@ namespace System.Linq.Dynamic
             typeof(Guid),
             typeof(Math),
             typeof(Convert),
-			typeof(System.Data.Objects.EntityFunctions)
+            typeof(System.Data.Objects.EntityFunctions)
         };
 
         static readonly Expression trueLiteral = Expression.Constant(true);
@@ -1543,7 +1543,7 @@ namespace System.Linq.Dynamic
             {
                 args = new Expression[] { instance };
             }
-            
+
 
             else
             {
