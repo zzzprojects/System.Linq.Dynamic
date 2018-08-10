@@ -1448,20 +1448,25 @@ namespace System.Linq.Dynamic
             NextToken();
             if (token.id == TokenId.OpenParen)
             {
-                if (instance != null && type != typeof(string))
-                {
-                    Type enumerableType = FindGenericType(typeof(IEnumerable<>), type);
-                    if (enumerableType != null)
-                    {
-                        Type elementType = enumerableType.GetGenericArguments()[0];
-                        return ParseAggregate(instance, elementType, id, errorPos);
-                    }
-                }
+                int beforeArgumentListPos = textPos;
+                var beforeArgumentListToken = token;
                 Expression[] args = ParseArgumentList();
                 MethodBase mb;
                 switch (FindMethod(type, id, instance == null, args, out mb))
                 {
                     case 0:
+                        if (instance != null && type != typeof(string))
+                        {
+                            Type enumerableType = FindGenericType(typeof(IEnumerable<>), type);
+                            if (enumerableType != null)
+                            {
+                                Type elementType = enumerableType.GetGenericArguments()[0];
+                                SetTextPos(beforeArgumentListPos);
+                                token = beforeArgumentListToken;
+                                return ParseAggregate(instance, elementType, id, errorPos);
+                            }
+                        }
+
                         throw ParseError(errorPos, Res.NoApplicableMethod,
                             id, GetTypeName(type));
                     case 1:
