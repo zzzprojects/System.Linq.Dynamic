@@ -1450,14 +1450,16 @@ namespace System.Linq.Dynamic
             {
                 int beforeArgumentListPos = textPos;
                 var beforeArgumentListToken = token;
+                Exception argumentListParseException = null;
                 Expression[] args;
                 try
                 {
                     args = ParseArgumentList();
                 }
-                catch
+                catch(Exception x)
                 {
                     args = null;
+                    argumentListParseException = x;
                 }
                 MethodBase mb = null;
                 switch (args != null ? FindMethod(type, id, instance == null, args, out mb) : 0)
@@ -1474,6 +1476,9 @@ namespace System.Linq.Dynamic
                                 return ParseAggregate(instance, elementType, id, errorPos);
                             }
                         }
+
+                        if (argumentListParseException != null)
+                            throw argumentListParseException;
 
                         throw ParseError(errorPos, Res.NoApplicableMethod,
                             id, GetTypeName(type));
