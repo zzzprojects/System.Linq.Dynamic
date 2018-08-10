@@ -1450,9 +1450,17 @@ namespace System.Linq.Dynamic
             {
                 int beforeArgumentListPos = textPos;
                 var beforeArgumentListToken = token;
-                Expression[] args = ParseArgumentList();
-                MethodBase mb;
-                switch (FindMethod(type, id, instance == null, args, out mb))
+                Expression[] args;
+                try
+                {
+                    args = ParseArgumentList();
+                }
+                catch
+                {
+                    args = null;
+                }
+                MethodBase mb = null;
+                switch (args != null ? FindMethod(type, id, instance == null, args, out mb) : 0)
                 {
                     case 0:
                         if (instance != null && type != typeof(string))
