@@ -349,6 +349,14 @@ namespace System.Linq.Dynamic
         {
             return ClassFactory.Instance.GetDynamicClass(properties);
         }
+
+        //issue #84: https://github.com/kahanu/System.Linq.Dynamic/issues/84
+        public static Predicate<T> GetPredicate<T>(string stringExpression)
+        {
+            var exp = ParseLambda<T, bool>(stringExpression).Compile();
+            var predicate = new Predicate<T>(exp);
+            return predicate;
+        }
     }
 
     internal class DynamicOrdering
