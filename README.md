@@ -9,7 +9,7 @@ Then [@NArnott](https://github.com/NArnott
 ) forked from the @kahanu repository (by this time it was not supported for a while) and did a great job - he introduced unit-tests, web documentation and lots of stuff (for some period of time I was contributing to his fork). 
 
 Then sometime ago [@NArnott](https://github.com/NArnott
-) dismissed the NuGet package and deleted the documentation from hosted Azure instance and I took ownership of the library and uploaded a [package][1] and create a host for [documentation][2].
+) dismissed the NuGet package and deleted the documentation from hosted Azure instance and I took ownership of the library and uploaded a [package][1] and created a host for [documentation][2].
 
 [1]: https://www.nuget.org/packages/AK.System.Linq.Dynamic/ "NuGet - Dynamic Linq Library"
 [2]: http://ak-dynamic-linq.azurewebsites.net
