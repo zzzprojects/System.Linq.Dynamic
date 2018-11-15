@@ -43,6 +43,53 @@ namespace System.Linq.Dynamic.Test
         }
 
         [TestMethod]
+        public void ParseLambda_NewArrayInit()
+        {
+            DateTime dt = DateTime.Now;
+            
+            var expr = DynamicExpression.ParseLambda(
+                typeof(Func<DateTime, object[]>),
+                new []
+                {
+                    Expression.Parameter(typeof(DateTime), "dt")
+                },
+                null,
+                "array(dt.Year, dt.Month, 15, \"ala ma kota\", dt.Ticks, dt.Date.Ticks)"
+                );
+
+
+            Assert.AreEqual(typeof(object[]), expr.ReturnType);
+            Assert.AreEqual(typeof(Func<DateTime, object[]>), expr.Type);
+            var texpr = (Expression<Func<DateTime, object[]>>)expr;
+            var fun = texpr.Compile();
+            var res = fun(dt);
+        }
+
+        [TestMethod]
+        public void ParseLambda_NewDictionary()
+        {
+            //this does not work - didnt figure oout how to make useful lambda with dictionary initialization
+            DateTime dt = DateTime.Now;
+
+            var expr = DynamicExpression.ParseLambda(
+                typeof(Func<DateTime, Dictionary<string, object>>),
+                new[]
+                {
+                    Expression.Parameter(typeof(DateTime), "dt")
+                },
+                typeof(Dictionary<string, object>),
+                "dictionary(dt.Year as y, dt.Month as m, 15 as fifteen, \"ala ma kota\" as text, dt.Ticks, dt.Date.Ticks as rounded_ticks)"
+                );
+
+
+            Assert.AreEqual(typeof(Dictionary<string, object>), expr.ReturnType);
+            Assert.AreEqual(typeof(Func<DateTime, Dictionary<string, object>>), expr.Type);
+            var texpr = (Expression<Func<DateTime, Dictionary<string, object>>>)expr;
+            var fun = texpr.Compile();
+            var res = fun(dt);
+        }
+
+        [TestMethod]
         public void ParseLambda_VoidMethodCall_ReturnsActionDelegate()
         {
             var expression = DynamicExpression.ParseLambda(
@@ -52,6 +99,7 @@ namespace System.Linq.Dynamic.Test
             Assert.AreEqual(typeof(void), expression.ReturnType);
             Assert.AreEqual(typeof(Action<System.IO.FileStream>), expression.Type);
         }
+
 
         [TestMethod]
         public void CreateClass_TheadSafe()

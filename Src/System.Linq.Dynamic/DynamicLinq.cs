@@ -790,6 +790,8 @@ namespace System.Linq.Dynamic
         static readonly string keywordIt = "it";
         static readonly string keywordIif = "iif";
         static readonly string keywordNew = "new";
+        static readonly string keywordArray = "array";
+        static readonly string keywordDic = "dictionary";
         static readonly string keywordOuterIt = "outerIt";
 
         static Dictionary<string, object> keywords;
@@ -1262,6 +1264,8 @@ namespace System.Linq.Dynamic
                 if (value == (object)keywordOuterIt) return ParseOuterIt();
                 if (value == (object)keywordIif) return ParseIif();
                 if (value == (object)keywordNew) return ParseNew();
+                if (value == (object)keywordArray) return ParseNewArray();
+                if (value == (object)keywordDic) return ParseNewDictionary();
                 NextToken();
                 return (Expression)value;
             }
@@ -1375,6 +1379,73 @@ namespace System.Linq.Dynamic
             for (int i = 0; i < bindings.Length; i++)
                 bindings[i] = Expression.Bind(type.GetProperty(properties[i].Name), expressions[i]);
             return Expression.MemberInit(Expression.New(type), bindings);
+        }
+
+        /// <summary>
+        /// array(x1, x2, x3, ....)
+        /// </summary>
+        /// <returns></returns>
+        Expression ParseNewArray()
+        {
+            NextToken();
+            ValidateToken(TokenId.OpenParen, Res.OpenParenExpected);
+            NextToken();
+            List<Expression> expressions = new List<Expression>();
+            while (true)
+            {
+                int exprPos = token.pos;
+                Expression expr = ParseExpression();
+                expr = Expression.Convert(expr, typeof(object));
+                expressions.Add(expr);
+                if (token.id != TokenId.Comma) break;
+                NextToken();
+            }
+            ValidateToken(TokenId.CloseParen, Res.CloseParenOrCommaExpected);
+            NextToken();
+            return Expression.NewArrayInit(typeof(object), expressions);
+        }
+
+        //dictionary string->object
+        Expression ParseNewDictionary()
+        {
+            
+            NextToken();
+            ValidateToken(TokenId.OpenParen, Res.OpenParenExpected);
+            NextToken();
+            
+            List<ElementInit> elemz = new List<ElementInit>();
+            var dicType = typeof(Dictionary<string, object>);
+            var mi = dicType.GetMethod("Add");
+
+            while (true)
+            {
+                int exprPos = token.pos;
+                Expression expr = ParseExpression();
+                string propName;
+                if (TokenIdentifierIs("as"))
+                {
+                    NextToken();
+                    propName = GetIdentifier();
+                    NextToken();
+                }
+                else
+                {
+                    MemberExpression me = expr as MemberExpression;
+                    if (me == null) throw ParseError(exprPos, Res.MissingAsClause);
+                    propName = me.Member.Name;
+                }
+                if (expr.Type != typeof(object)) expr = Expression.Convert(expr, typeof(object));
+
+                var el = Expression.ElementInit(mi, Expression.Constant(propName), expr);
+                elemz.Add(el);
+                if (token.id != TokenId.Comma) break;
+                NextToken();
+            }
+            ValidateToken(TokenId.CloseParen, Res.CloseParenOrCommaExpected);
+            NextToken();
+
+            return Expression.ListInit(Expression.New(dicType), elemz);
+            
         }
 
         Expression ParseLambdaInvocation(LambdaExpression lambda)
@@ -2436,6 +2507,8 @@ namespace System.Linq.Dynamic
             d.Add(keywordOuterIt, keywordOuterIt);
             d.Add(keywordIif, keywordIif);
             d.Add(keywordNew, keywordNew);
+            d.Add(keywordArray, keywordArray);
+            d.Add(keywordDic, keywordDic);
             foreach (Type type in predefinedTypes) d.Add(type.Name, type);
             return d;
         }
