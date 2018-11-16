@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>rgdev_System.Linq.Dynamic</id>
+    <version>1.0.8</version>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>http://www.opensource.org/licenses/ms-pl</licenseUrl>
+    <projectUrl>https://github.com/kahanu/System.Linq.Dynamic</projectUrl>
+    <description>This is the Microsoft assembly for the .Net 4.0 Dynamic language functionality.</description>
+    <releaseNotes>lafar6502/System.Linq.Dynamic build
+contains some modifications not merged yet into the original repo kahanu</releaseNotes>
+    <tags>system linq dynamic</tags>
+  </metadata>
+  <files>
+    <file src="lib\net40\System.Linq.Dynamic.dll" target="lib\net40\System.Linq.Dynamic.dll" />
+    <file src="lib\net40\System.Linq.Dynamic.pdb" target="lib\net40\System.Linq.Dynamic.pdb" />
+  </files>
+</package>
