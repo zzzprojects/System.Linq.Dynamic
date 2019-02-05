@@ -24,7 +24,8 @@ namespace System.Linq.Dynamic.Test
             var expression = DynamicExpression.ParseLambda(
                 typeof(Tuple<int>),
                 typeof(string),
-                "it.ToString()");
+                "it.ToString()",
+                typeof(Tuple<int>));
             Assert.AreEqual(typeof(string), expression.ReturnType);
         }
 
@@ -48,9 +49,20 @@ namespace System.Linq.Dynamic.Test
             var expression = DynamicExpression.ParseLambda(
                 typeof(System.IO.FileStream),
                 null,
-                "it.Close()");
+                "it.Close()",
+                typeof(System.IO.FileStream));
             Assert.AreEqual(typeof(void), expression.ReturnType);
             Assert.AreEqual(typeof(Action<System.IO.FileStream>), expression.Type);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ParseException))]
+        public void ParseLambda_NonWhitelistedMethodCall_ThrowsParseException()
+        {
+            DynamicExpression.ParseLambda(
+                typeof(Reflection.Assembly),
+                typeof(Type[]),
+                "it.GetTypes()");
         }
 
         [TestMethod]
