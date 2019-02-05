@@ -780,7 +780,7 @@ namespace System.Linq.Dynamic
             typeof(Guid),
             typeof(Math),
             typeof(Convert),
-			typeof(System.Data.Objects.EntityFunctions)
+            typeof(System.Data.Objects.EntityFunctions)
         };
 
         static readonly Expression trueLiteral = Expression.Constant(true);
@@ -1465,7 +1465,10 @@ namespace System.Linq.Dynamic
                         throw ParseError(errorPos, Res.NoApplicableMethod,
                             id, GetTypeName(type));
                     case 1:
-                        return Expression.Call(instance, (MethodInfo)mb, args);
+                        MethodInfo method = (MethodInfo)mb;
+                        if (!IsWhitelistedType(method.DeclaringType))
+                            throw ParseError(errorPos, Res.MethodsAreInaccessible, GetTypeName(method.DeclaringType));
+                        return Expression.Call(instance, method, args);
                     default:
                         throw ParseError(errorPos, Res.AmbiguousMethodInvocation,
                             id, GetTypeName(type));
@@ -1591,6 +1594,11 @@ namespace System.Linq.Dynamic
                             GetTypeName(expr.Type));
                 }
             }
+        }
+
+        bool IsWhitelistedType(Type type)
+        {
+            return predefinedTypes.Contains(type);
         }
 
         static bool IsNullableType(Type type)
