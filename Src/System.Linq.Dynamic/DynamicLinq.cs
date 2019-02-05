@@ -797,6 +797,7 @@ namespace System.Linq.Dynamic
         Dictionary<string, object> symbols;
         IDictionary<string, object> externals;
         Dictionary<Expression, string> literals;
+        List<Type> whitelistedTypes;
         ParameterExpression it;
         ParameterExpression outerIt;
 
@@ -812,6 +813,7 @@ namespace System.Linq.Dynamic
             if (keywords == null) keywords = CreateKeywords();
             symbols = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
             literals = new Dictionary<Expression, string>();
+            whitelistedTypes = new List<Type>();
             if (parameters != null) ProcessParameters(parameters);
             if (values != null) ProcessValues(values);
             text = expression;
@@ -838,10 +840,24 @@ namespace System.Linq.Dynamic
                 {
                     externals = (IDictionary<string, object>)value;
                 }
+                else if (value is Type)
+                {
+                    var type = (Type)value;
+                    AddWhitelistedType(type);
+                }
                 else
                 {
                     AddSymbol("@" + i.ToString(System.Globalization.CultureInfo.InvariantCulture), value);
                 }
+            }
+        }
+
+        void AddWhitelistedType(Type type)
+        {
+            while (type != null && type != typeof(object))
+            {
+                whitelistedTypes.Add(type);
+                type = type.BaseType;
             }
         }
 
@@ -1598,7 +1614,7 @@ namespace System.Linq.Dynamic
 
         bool IsWhitelistedType(Type type)
         {
-            return predefinedTypes.Contains(type);
+            return predefinedTypes.Concat(whitelistedTypes).Contains(type);
         }
 
         static bool IsNullableType(Type type)
