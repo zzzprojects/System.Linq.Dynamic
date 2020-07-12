@@ -14,12 +14,10 @@ Archived Source Code: https://github.com/zzzprojects/System.Linq.Dynamic/tree/ar
 
 ### Dynamic LINQ is Powered By
 
-This library is powered by [Entity Framework Extensions](https://entityframework-extensions.net/?z=github&y=entityframework-plus)
+This library is powered by [Entity Framework Extensions](https://entityframework-extensions.net/?z=github&y=system-linq-dynamic)
 
-<a href="https://entityframework-extensions.net/?z=github&y=entityframework-plus">
+<a href="https://entityframework-extensions.net/?z=github&y=system-linq-dynamic">
 <kbd>
 <img src="https://zzzprojects.github.io/images/logo/entityframework-extensions-pub.jpg" alt="Entity Framework Extensions" />
 </kbd>
 </a>
-
----
