@@ -9,3 +9,17 @@ Use [System.Linq.Dynamic.Core](https://github.com/zzzprojects/System.Linq.Dynami
 - Website: https://dynamic-linq.net/
 
 Archived Source Code: https://github.com/zzzprojects/System.Linq.Dynamic/tree/archived 
+
+---
+
+### Dynamic LINQ is Powered By
+
+This library is powered by [Entity Framework Extensions](https://entityframework-extensions.net/?z=github&y=entityframework-plus)
+
+<a href="https://entityframework-extensions.net/?z=github&y=entityframework-plus">
+<kbd>
+<img src="https://zzzprojects.github.io/images/logo/entityframework-extensions-pub.jpg" alt="Entity Framework Extensions" />
+</kbd>
+</a>
+
+---
