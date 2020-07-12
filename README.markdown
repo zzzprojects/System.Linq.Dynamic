@@ -1,6 +1,6 @@
 # This package is deprecated (no longer maintained)
 
-Use System.Linq.Dynamic.Core instead
+Use [System.Linq.Dynamic.Core](https://github.com/zzzprojects/System.Linq.Dynamic.Core) instead
 
 - Dynamic Linq: https://www.nuget.org/packages/System.Linq.Dynamic.Core
 - Dynamic Linq (EF Core): https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.DynamicLinq
