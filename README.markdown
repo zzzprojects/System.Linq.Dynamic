@@ -19,10 +19,13 @@ This library is powered by [Entity Framework Extensions](https://entityframework
 </kbd>
 </a>
 
-# What's Html Agility Pack (HAP)?
-It is an agile HTML parser that builds a read/write DOM and supports plain XPATH or XSLT (you actually don't HAVE to understand XPATH nor XSLT to use it, don't worry...). It is a .NET code library that allows you to parse "out of the web" HTML files. The parser is very tolerant with "real world" malformed HTML. The object model is very similar to what proposes System.Xml, but for HTML documents (or streams).
+# What's System Linq Dynamic?
 
-NuGet: https://www.nuget.org/packages/HtmlAgilityPack/
+Using this Dynamic LINQ library, we can do the following:
+
+- Dynamic string-based querying through LINQ providers.
+- Dynamic parsing of strings to produce expression trees such as ParseLambda and Parse methods.
+- Dynamic creation of Data Classes using the CreateType method.
 
 ## Usefull links
 
