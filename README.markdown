@@ -1,3 +1,13 @@
+### Dynamic LINQ is Powered By
+
+This library is powered by [Entity Framework Extensions](https://entityframework-extensions.net/?z=github&y=system-linq-dynamic)
+
+<a href="https://entityframework-extensions.net/?z=github&y=system-linq-dynamic">
+<kbd>
+<img src="https://zzzprojects.github.io/images/logo/entityframework-extensions-pub.jpg" alt="Entity Framework Extensions" />
+</kbd>
+</a>
+
 ## This package is deprecated (no longer maintained)
 
 Use [System.Linq.Dynamic.Core](https://github.com/zzzprojects/System.Linq.Dynamic.Core) instead
@@ -8,16 +18,6 @@ Use [System.Linq.Dynamic.Core](https://github.com/zzzprojects/System.Linq.Dynami
 - GitHub: https://github.com/zzzprojects/System.Linq.Dynamic.Core
 
 ---
-
-### Dynamic LINQ is Powered By
-
-This library is powered by [Entity Framework Extensions](https://entityframework-extensions.net/?z=github&y=system-linq-dynamic)
-
-<a href="https://entityframework-extensions.net/?z=github&y=system-linq-dynamic">
-<kbd>
-<img src="https://zzzprojects.github.io/images/logo/entityframework-extensions-pub.jpg" alt="Entity Framework Extensions" />
-</kbd>
-</a>
 
 # What's System Linq Dynamic?
 
