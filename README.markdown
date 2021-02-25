@@ -27,7 +27,7 @@ Using this Dynamic LINQ library, we can do the following:
 - Dynamic parsing of strings to produce expression trees such as ParseLambda and Parse methods.
 - Dynamic creation of Data Classes using the CreateType method.
 
-## Usefull links
+## Useful links
 
 - [Website](https://dynamic-linq.net/)
 - [Knowledge Base](https://dynamic-linq.net/knowledge-base)
